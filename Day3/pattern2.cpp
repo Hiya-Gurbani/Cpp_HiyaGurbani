@@ -43,6 +43,6 @@ int main() {
     std::cout << "Enter the number of rows and columns: ";
     std::cin >> number;
 
-    pattern1(number/2 + 1);
-    pattern2(number/2 + 1);
+    pattern1(number);
+    pattern2(number);
 }
