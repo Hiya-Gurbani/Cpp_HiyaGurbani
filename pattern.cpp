@@ -17,7 +17,7 @@ void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
     }        
 }
 
-bool isValidInteger(const std::string& input, const size_t start, const size_t end, int& choice) {
+bool isValidInteger(const std::string& input, const size_t start, const size_t end, unsigned short& choice) {
     choice = 0;
 
     for (size_t index = start; index < end; ++index)
@@ -26,7 +26,7 @@ bool isValidInteger(const std::string& input, const size_t start, const size_t e
         {
             int digit = input[index] - '0';
             
-            if (choice > (INT_MAX - digit) / 10)
+            if (choice > (USHRT_MAX - digit) / 10)
             {
                 return false;
             }
@@ -42,7 +42,7 @@ bool isValidInteger(const std::string& input, const size_t start, const size_t e
 
 int getChoice() {
     std::string input;
-    int choice {0};
+    unsigned short choice {0};
 
     while (true) {
         std::getline(std::cin, input);
@@ -127,76 +127,80 @@ long long getValue() {
     return value;
 }
 
-void displayPattern(long long number) {
-    bool flag = false;
-    if (number % 2 == 0) flag = true;
+void printAlternateDigits(const long long startIndex, const long long endIndex) {
+    unsigned short digit = 1;
+    for (long long colIndex = startIndex; colIndex < endIndex; colIndex++)
+    {
+        std::cout << digit;
+        digit = (digit == 1) ? 0 : 1; 
+    }
+}
 
+void printSpaces(const long long startIndex, const long long endIndex) {
+    for (long long colIndex = startIndex; colIndex < endIndex; colIndex++)
+    {
+        std::cout << " ";
+    }
+}
+
+long long getColStartIndex(bool isEven) {
+    if (isEven)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+void displayPatternTop(long long number, bool isEven) {
     for (long long rowIndex = 0; rowIndex <= number; rowIndex++) {
-        int digit = 1;
+        printAlternateDigits(0, rowIndex + 1);
+
+        printSpaces(0, number - rowIndex);
+
+        long long colIndex = getColStartIndex(isEven);
+        printSpaces(colIndex, number - rowIndex);
+
+        unsigned short digit = 1;
         for (long long colIndex = 0; colIndex <= rowIndex; colIndex++)
         {
+            if (isEven && rowIndex == number && colIndex == 0)
+            {
+                digit = (digit == 1) ? 0 : 1;
+                continue;
+            }
+            
             std::cout << digit;
-            digit = (digit == 1) ? 0 : 1; 
-        }
-
-        for (long long colIndex = 0; colIndex < number - rowIndex; colIndex++)
-        {
-            std::cout << " ";
-        }
-
-        long long colIndex = 0;
-        if (flag)
-        {
-            colIndex = 1;
-        }
-        for (; colIndex < number - rowIndex; colIndex++)
-        {
-            std::cout << " ";
-        }
-
-        digit = 1;
-        for (long long colIndex = 0; colIndex <= rowIndex; colIndex++)
-        {
-            if (!flag || rowIndex != number || colIndex != 0)
-                std::cout << digit;
             digit = (digit == 1) ? 0 : 1;
         }
 
         std::cout << "\n";
     }
+}
 
+void displayPatternBottom(long long number, bool isEven) {
     for (long long rowIndex = 0; rowIndex < number; rowIndex++) {
-        int digit = 1;
-        for (long long colIndex = 0; colIndex < number - rowIndex; colIndex++)
-        {
-            std::cout << digit;
-            digit = (digit == 1) ? 0 : 1; 
-        }
+        printAlternateDigits(0, number - rowIndex);
 
-        for (long long colIndex = 0; colIndex <= rowIndex; colIndex++)
-        {
-            std::cout << " ";
-        }
+        printSpaces(0, rowIndex + 1);
 
-        long long colIndex = 0;
-        if (flag)
-        {
-            colIndex = 1;
-        }
-        for (; colIndex <= rowIndex; colIndex++)
-        {
-            std::cout << " ";
-        }
+        long long colIndex = getColStartIndex(isEven);
+        printSpaces(colIndex, rowIndex + 1);
 
-        digit = 1;
-        for (long long colIndex = 0; colIndex < number - rowIndex; colIndex++)
-        {
-            std::cout << digit;
-            digit = (digit == 1) ? 0 : 1;
-        }
+        printAlternateDigits(0, number - rowIndex);
 
         std::cout << "\n";
     }
+}
+
+void displayPattern(long long number) {
+    bool isEven = false;
+    if (number % 2 == 0) 
+    {
+        isEven = true;
+    }
+
+    displayPatternTop(number, isEven);
+    displayPatternBottom(number, isEven);
 }
 
 void printMenu() {
@@ -205,7 +209,7 @@ void printMenu() {
     std::cout << "\nEnter your choice: ";
 }
 
-bool handleChoice(const int choice) {
+bool handleChoice(const unsigned short choice) {
     if (choice == 1)
     {
         std::cout << "Enter value: ";
@@ -228,7 +232,7 @@ bool handleChoice(const int choice) {
 int main() {
     while (true) {
         printMenu();
-        int choice = getChoice();
+        unsigned short choice = getChoice();
 
         bool shouldExit = handleChoice(choice);
 
