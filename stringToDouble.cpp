@@ -2,11 +2,17 @@
 #include <string>
 #include <cmath>
 #include <climits>
+#include <cctype>
 
 #define MIN_CHOICE 1
 #define MAX_CHOICE 2
 
-void removeWhitespace(const std::string& input, size_t& start, size_t end) {
+#define DECIMAL_BASE 10
+#define HEX_BASE 16
+#define DECIMAL_EXPONENT_BASE 10
+#define HEX_EXPONENT_BASE 2
+
+void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
     while (start < end && input[start] == ' ')
     {
         start++;
@@ -19,28 +25,27 @@ void removeWhitespace(const std::string& input, size_t& start, size_t end) {
 }
 
 bool isValidInteger(const std::string& input, const size_t start, 
-    const size_t end, unsigned short& choice ) {
-    
-        choice = 0;
+                    const size_t end, unsigned short& choice ) {
+    choice = 0;
 
-        for (int index = start; index < end; index++)
+    for (size_t index = start; index < end; index++)
+    {
+        if (input[index] >= '0' && input[index] <= '9')
         {
-            if (input[index] >= '0' && input[index] <= '9')
-            {
-                int digit = input[index] - '0';
-                if (choice > (USHRT_MAX - digit) / 10)
-                {
-                    return false;
-                }
-                choice = (choice * 10) + digit;
-            }
-            else
+            int digit = input[index] - '0';
+            if (choice > (USHRT_MAX - digit) / 10)
             {
                 return false;
             }
+            choice = (choice * 10) + digit;
         }
+        else
+        {
+            return false;
+        }
+    }
 
-        return true;
+    return true;
 }
 
 int getChoice() {
@@ -78,24 +83,59 @@ int getChoice() {
     return choice;
 }
 
-bool isPositiveNumber(const char character, size_t& startIndex) {
-    if (character == '-')
+int getSign(char character, size_t& index) {
+    if (character == '-' || character == '+')
     {
-        startIndex++;
-        return false;
+        index++;
+        if (character == '-')
+        {
+            return -1; 
+        }
     }
-    return true;
+
+    return 1;
+}
+
+double handleSpecialCase(std::string& inputSubstring, int sign, double& value) {
+    for (auto& character : inputSubstring)
+    {
+        character = std::tolower(static_cast<unsigned char>(character));
+    }
+
+    if (inputSubstring == "inf")
+    {
+        value = sign * std::numeric_limits<double>::infinity();
+    }
+    else if (inputSubstring == "nan")
+    {
+        value = sign * std::numeric_limits<double>::quiet_NaN();
+    }
+
+    return value;
+}
+
+bool isHexadecimalNumber(const std::string& input, size_t& start, 
+                         size_t end, double& decimalFactor) {
+    if (start + 1 < end && input[start] == '0' && 
+    (input[start + 1] == 'x' || input[start + 1] == 'X'))
+    {
+        start += 2;
+        decimalFactor = 1.0 / HEX_BASE;
+        return true;
+    }
+
+    return false;
 }
 
 void handleDigit(double& value, double& decimalFactor, bool isDecimal, int digit) {
     if (!isDecimal)
     {
-        value = (value * 10) + digit;
+        value = (value * DECIMAL_BASE) + digit;
     }
     else
     {
         value += digit * decimalFactor;
-        decimalFactor /= 10;
+        decimalFactor /= DECIMAL_BASE;
     }
 }
 
@@ -106,71 +146,62 @@ int getDigitValue(char character) {
     }
     else 
     {
-        return ((std::tolower(character) - 'a') + 10);
+        return 
+        ((std::tolower(static_cast<unsigned char> (character)) - 'a') + DECIMAL_BASE);
     }
 
     return 0;
 }
 
-void handleHexadecimalDigit(double& value, double& decimalFactor, bool isDecimal, char character) {
+void handleHexadecimalDigit(double& value, double& decimalFactor, 
+                            bool isDecimal, char character) {
     int digit = getDigitValue(character);
 
     if (!isDecimal)
     {
-        value = (value * 16) + digit;
+        value = (value * HEX_BASE) + digit;
     }
     else
     {
         value += (digit * decimalFactor);
-        decimalFactor /= 16;
+        decimalFactor /= HEX_BASE;
     }
 }
 
-int getExponentSign(char character, int& index) {
-    if (character == '-' || character == '+')
-    {
-        index++;
-        if (character == '-')
-        {
-            return -1; 
-        }
-    }
-    return 1;
-}
-
-int getExponentValue(const std::string& input, int& index) {
+int getExponentValue(const std::string& input, size_t& index) {
     int exponentValue = 0;
 
     while (index < input.size() && input[index] >= '0' && input[index] <= '9')
     {
-        exponentValue = (exponentValue * 10) + (input[index] - '0');
+        exponentValue = (exponentValue * DECIMAL_BASE) + (input[index] - '0');
         index++;
     }
 
     return exponentValue;
 }
 
-void handleExponent(const std::string& input, int& index, bool isHex, double& value) {
+void handleExponent(const std::string& input, size_t& index, 
+                    bool isHexadecimal, double& value) {
     index++;
     if (index >= input.size())
     {
         return;
     }
 
-    int exponentSign = getExponentSign(input[index], index);
+    int exponentSign = getSign(input[index], index);
     int exponentValue = getExponentValue(input, index);
 
-    int exponentBase = (isHex ? 2 : 10); 
+    int exponentBase = (isHexadecimal? HEX_EXPONENT_BASE : DECIMAL_EXPONENT_BASE); 
     value *= pow(exponentBase, exponentSign * exponentValue);
 }
 
-bool handleCharacter(std::string& input, int& index, double& value, 
-                    double& decimalFactor, bool& isDecimal, bool& isHex) {
-    if (!isHex && input[index] >= '0' && input[index] <= '9')
+bool handleCharacter(std::string& input, size_t& index, double& value, 
+                    double& decimalFactor, bool& isDecimal, bool& isHexadecimal) {
+    if (!isHexadecimal && input[index] >= '0' && input[index] <= '9')
     {
         handleDigit(value, decimalFactor, isDecimal, input[index] - '0');
     }
-    else if (isHex && std::isxdigit(input[index]))
+    else if (isHexadecimal && std::isxdigit(static_cast<unsigned char> (input[index])))
     {
         handleHexadecimalDigit(value, decimalFactor, isDecimal, input[index]);
     }
@@ -182,15 +213,14 @@ bool handleCharacter(std::string& input, int& index, double& value,
         }
         isDecimal = true;
     }
-    else if (input[index] == 'e' || input[index] == 'E')
+    else if (!isHexadecimal && (input[index] == 'e' || input[index] == 'E'))
     {
-        handleExponent(input, index, isHex, value);
-        
+        handleExponent(input, index, isHexadecimal, value);
         return false;
     }
-    else if (input[index] == 'p' || input[index] == 'P')
+    else if (isHexadecimal && (input[index] == 'p' || input[index] == 'P'))
     {
-        handleExponent(input, index, isHex, value);
+        handleExponent(input, index, isHexadecimal, value);
         return false;
     }
     else
@@ -201,7 +231,7 @@ bool handleCharacter(std::string& input, int& index, double& value,
     return true;
 }
 
-double atof(std::string input) {
+double stringToDouble(std::string input) {
     double value = 0;
     size_t start = 0;
     size_t end = input.size();
@@ -212,34 +242,31 @@ double atof(std::string input) {
         return value;
     }
 
-    bool isPositive = isPositiveNumber(input[start], start);
-    
     double decimalFactor = 0.1;
     bool isDecimal = false;
-    bool isHex = false;
 
-    if (start + 1 < end && input[start] == '0' && 
-    (input[start + 1] == 'x' || input[start + 1] == 'X'))
+    int sign = getSign(input[start], start);
+    bool isHexadecimal = isHexadecimalNumber(input, start, end, decimalFactor);
+
+    std::string inputSubstring = input.substr(start, 3);
+    if (handleSpecialCase(inputSubstring, sign, value) != 0)
     {
-        isHex = true;
-        start += 2;
-        decimalFactor = 1.0 / 16;
+        return value;
     }
     
-    for (int index = start; index < end; index++)
+    for (size_t index = start; index < end; index++)
     {
-        if (!handleCharacter(input, index, value, decimalFactor, isDecimal, isHex))
+        if (!handleCharacter(input, index, value, decimalFactor, isDecimal, isHexadecimal))
         {
             break;
         }
     }
 
-    if (!isPositive && value != 0)
+    if (value == 0 && sign == -1)
     {
-        value = -value;
+        return 0;
     }
-
-    return value;
+    return (value * sign);
 }
 
 void printMenu() {
@@ -254,7 +281,7 @@ bool handleChoice(unsigned short choice) {
         std::cout << "Enter string: ";
         std::getline(std::cin, input);
 
-        double result = atof(input);
+        double result = stringToDouble(input);
         std::cout << "Output: " << result << "\n";
     }
     else if (choice == 2)
@@ -286,6 +313,5 @@ int main() {
         }
     }
 
-
-    
+    return 0;
 }

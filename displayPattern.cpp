@@ -38,12 +38,13 @@ bool isValidInteger(const std::string& input, const size_t start,
             return false;
         }
     }
+    
     return true;
 }
 
 int getChoice() {
     std::string input;
-    unsigned short choice {0};
+    unsigned short choice = 0;
 
     while (true) {
         std::getline(std::cin, input);
@@ -52,7 +53,7 @@ int getChoice() {
         size_t end = input.size();
 
         removeWhitespace(input, start, end);
-        if (start == end)
+        if (start >= end)
         {
             std::cout << "Empty Input! Enter again: ";
             continue;
@@ -97,6 +98,7 @@ bool isValidLongLong(const std::string& input, const size_t start,
             return false;
         }
     }
+
     return true;
 }
 
@@ -145,68 +147,63 @@ void printSpaces(const long long startIndex, const long long endIndex) {
     }
 }
 
-long long getColStartIndex(bool isEven) {
-    if (isEven)
+void printTopLastDigits(long long range, long long rowIndex, bool isEven) {
+    unsigned short digit = 1;
+    for (long long colIndex = 0; colIndex <= rowIndex; colIndex++)
     {
-        return 1;
+        if (isEven && rowIndex == range && colIndex == 0)
+        {
+            digit = (digit == 1) ? 0 : 1;
+            continue;
+        }
+            
+        std::cout << digit;
+        digit = (digit == 1) ? 0 : 1;
     }
-    return 0;
 }
 
-void displayPatternTop(long long number, bool isEven) {
-    for (long long rowIndex = 0; rowIndex <= number; rowIndex++) {
+long long getColStartIndex(bool isEven) {
+    return (isEven) ? 1 : 0;
+}
+
+void displayPatternTop(long long range, bool isEven) {
+    for (long long rowIndex = 0; rowIndex <= range; rowIndex++) {
         printAlternateDigits(0, rowIndex + 1);
 
-        printSpaces(0, number - rowIndex);
+        printSpaces(0, range - rowIndex);
 
-        printSpaces(getColStartIndex(isEven), number - rowIndex);
+        printSpaces(getColStartIndex(isEven), range - rowIndex);
 
-        unsigned short digit = 1;
-        for (long long colIndex = 0; colIndex <= rowIndex; colIndex++)
-        {
-            if (isEven && rowIndex == number && colIndex == 0)
-            {
-                digit = (digit == 1) ? 0 : 1;
-                continue;
-            }
-            
-            std::cout << digit;
-            digit = (digit == 1) ? 0 : 1;
-        }
+        printTopLastDigits(range, rowIndex, isEven);
 
         std::cout << "\n";
     }
 }
 
-void displayPatternBottom(long long number, bool isEven) {
-    for (long long rowIndex = 0; rowIndex < number; rowIndex++) {
-        printAlternateDigits(0, number - rowIndex);
+void displayPatternBottom(long long range, bool isEven) {
+    for (long long rowIndex = 0; rowIndex < range; rowIndex++) {
+        printAlternateDigits(0, range - rowIndex);
 
         printSpaces(0, rowIndex + 1);
 
         printSpaces(getColStartIndex(isEven), rowIndex + 1);
 
-        printAlternateDigits(0, number - rowIndex);
+        printAlternateDigits(0, range - rowIndex);
 
         std::cout << "\n";
     }
 }
 
-void displayPattern(long long number) {
-    bool isEven = false;
-    if (number % 2 == 0) 
-    {
-        isEven = true;
-    }
+void displayPattern(long long range) {
+    bool isEven = (range % 2 == 0);
 
-    displayPatternTop(number, isEven);
-    displayPatternBottom(number, isEven);
+    displayPatternTop(range, isEven);
+    displayPatternBottom(range, isEven);
 }
 
 void printMenu() {
-    std::cout << "\nOperations:";
-    std::cout << "\n1. Print Pattern\n2. Exit\n";
-    std::cout << "\nEnter your choice: ";
+    std::cout << "\nOperations:\n";
+    std::cout << "1. Print Pattern\n2. Exit\n";
 }
 
 bool handleChoice(const unsigned short choice) {
@@ -223,7 +220,7 @@ bool handleChoice(const unsigned short choice) {
     }
     else
     {
-        std::cout << "Invalid Choice.\n";
+        std::cout << "Invalid Choice. Enter again: \n";
     }
 
     return false;
@@ -232,6 +229,8 @@ bool handleChoice(const unsigned short choice) {
 int main() {
     while (true) {
         printMenu();
+
+        std::cout << "\nEnter your choice: ";
         unsigned short choice = getChoice();
 
         bool shouldExit = handleChoice(choice);
