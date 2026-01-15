@@ -17,7 +17,8 @@ void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
     }        
 }
 
-bool isValidInteger(const std::string& input, const size_t start, const size_t end, unsigned short& choice) {
+bool isValidInteger(const std::string& input, const size_t start, 
+                    const size_t end, unsigned short& choice) {
     choice = 0;
 
     for (size_t index = start; index < end; ++index)
@@ -75,7 +76,8 @@ int getChoice() {
     return choice;
 }
 
-bool isValidLongLong(const std::string& input, const size_t start, const size_t end, long long& value) {
+bool isValidLongLong(const std::string& input, const size_t start, 
+                     const size_t end, long long& value) {
     value = 0;
 
     for (size_t index = start; index < end; ++index)
@@ -157,8 +159,7 @@ void displayPatternTop(long long number, bool isEven) {
 
         printSpaces(0, number - rowIndex);
 
-        long long colIndex = getColStartIndex(isEven);
-        printSpaces(colIndex, number - rowIndex);
+        printSpaces(getColStartIndex(isEven), number - rowIndex);
 
         unsigned short digit = 1;
         for (long long colIndex = 0; colIndex <= rowIndex; colIndex++)
@@ -183,8 +184,7 @@ void displayPatternBottom(long long number, bool isEven) {
 
         printSpaces(0, rowIndex + 1);
 
-        long long colIndex = getColStartIndex(isEven);
-        printSpaces(colIndex, rowIndex + 1);
+        printSpaces(getColStartIndex(isEven), rowIndex + 1);
 
         printAlternateDigits(0, number - rowIndex);
 
