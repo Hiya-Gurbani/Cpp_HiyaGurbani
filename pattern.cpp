@@ -1,7 +1,44 @@
 #include <iostream>
+#include <climits>
+#include <string>
 
 #define MIN_CHOICE 1
 #define MAX_CHOICE 2
+
+void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
+    while (start < end && input[start] == ' ')
+    {
+        start++;
+    }
+
+    while (end > start && input[end - 1] == ' ')
+    {
+        end--;
+    }        
+}
+
+bool isValidInteger(const std::string& input, const size_t start, const size_t end, int& choice) {
+    choice = 0;
+
+    for (size_t index = start; index < end; ++index)
+    {
+        if (input[index] >= '0' && input[index] <= '9')
+        {
+            int digit = input[index] - '0';
+            
+            if (choice > (INT_MAX - digit) / 10)
+            {
+                return false;
+            }
+            choice = (choice * 10) + digit;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 int getChoice() {
     std::string input;
@@ -11,39 +48,16 @@ int getChoice() {
         std::getline(std::cin, input);
 
         size_t start = 0;
-        while (start < input.size() && input[start] == ' ')
-        {
-            start++;
-        }
-
         size_t end = input.size();
-        while (end > start && input[end - 1] == ' ')
-        {
-            end--;
-        }
 
+        removeWhitespace(input, start, end);
         if (start == end)
         {
-            std::cout << "Invalid Input! Enter again: ";
+            std::cout << "Empty Input! Enter again: ";
             continue;
         }
 
-        bool isValid = true;
-        choice = 0;
-        for (size_t index = start; index < end; ++index)
-        {
-            if (input[index] >= '0' && input[index] <= '9')
-            {
-                choice =  (choice * 10) + (input[index] - '0');
-            }
-            else
-            {
-                isValid = false;
-                break;
-            }
-        }
-
-        if (!isValid)
+        if (!isValidInteger(input, start, end, choice))
         {
             std::cout << "Invalid Input! Enter again: ";
             continue;
@@ -61,6 +75,29 @@ int getChoice() {
     return choice;
 }
 
+bool isValidLongLong(const std::string& input, const size_t start, const size_t end, long long& value) {
+    value = 0;
+
+    for (size_t index = start; index < end; ++index)
+    {
+        if (input[index] >= '0' && input[index] <= '9')
+        {
+            int digit = input[index] - '0';
+            
+            if (value > (LLONG_MAX - digit) / 10)
+            {
+                return false;
+            }
+            value = (value * 10) + digit;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 long long getValue() {
     std::string input;
     long long value {0};
@@ -69,41 +106,18 @@ long long getValue() {
         std::getline(std::cin, input);
 
         size_t start = 0;
-        while (start < input.size() && input[start] == ' ')
-        {
-            start++;
-        }
-
         size_t end = input.size();
-        while (end > start && input[end - 1] == ' ')
-        {
-            end--;
-        }
 
+        removeWhitespace(input, start, end);
         if (start == end)
         {
-            std::cout << "Invalid Input! Enter again: ";
+            std::cout << "Empty Input! Enter again: ";
             continue;
         }
 
-        bool isValid = true;
-        value = 0;
-        for (size_t index = start; index < end; ++index)
+        if (!isValidLongLong(input, start, end, value))
         {
-            if (input[index] >= '0' && input[index] <= '9')
-            {
-                value =  (value * 10) + (input[index] - '0');
-            }
-            else
-            {
-                isValid = false;
-                break;
-            }
-        }
-
-        if (!isValid)
-        {
-            std::cout << "Invalid Value! Enter again: ";
+            std::cout << "Invalid Input! Enter again: ";
             continue;
         }
 
@@ -113,7 +127,7 @@ long long getValue() {
     return value;
 }
 
-void pattern(long long number) {
+void displayPattern(long long number) {
     bool flag = false;
     if (number % 2 == 0) flag = true;
 
@@ -185,24 +199,44 @@ void pattern(long long number) {
     }
 }
 
+void printMenu() {
+    std::cout << "\nOperations:";
+    std::cout << "\n1. Print Pattern\n2. Exit\n";
+    std::cout << "\nEnter your choice: ";
+}
+
+bool handleChoice(const int choice) {
+    if (choice == 1)
+    {
+        std::cout << "Enter value: ";
+        long long value = getValue();
+        displayPattern(value);
+    }
+    else if (choice == 2)
+    {
+        std::cout << "Exiting Program...\n";
+        return true;
+    }
+    else
+    {
+        std::cout << "Invalid Choice.\n";
+    }
+
+    return false;
+}
+
 int main() {
     while (true) {
-        std::cout << "\nOperations:";
-        std::cout << "\n1. Print Pattern\n2. Exit\n";
-        std::cout << "\nEnter your choice: ";
+        printMenu();
         int choice = getChoice();
 
-        if (choice == 1)
+        bool shouldExit = handleChoice(choice);
+
+        if (shouldExit)
         {
-            std::cout << "Enter value: ";
-            long long value = getValue();
-            pattern(value);
-        }
-        else if (choice == 2)
-        {
-            std::cout << "Exiting Program...\n";
             return 0;
         }
     }
+
     return 0;
 }
