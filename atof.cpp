@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <cmath>
 
 void removeWhitespace(const std::string input, size_t& start, size_t end) {
     while (start < input.size() && input[start] == ' ')
@@ -33,18 +35,62 @@ void handleDigit(double& value, double& decimalFactor, bool isDecimal, int digit
     }
 }
 
-bool handleCharacter(char character, double& value, double& decimalFactor, bool& isDecimal) {
-    if (character >= '0' && character <= '9')
+int getExponentSign(char character, int& index) {
+    if (character == '-')
     {
-        handleDigit(value, decimalFactor, isDecimal, character - '0');
+        index++;
+        return -1; 
     }
-    else if (character == '.')
+    else if (character == '+')
+    {
+        index++;
+    }
+    return 1;
+}
+
+int getExponentValue(const std::string& input, int& index) {
+    int exponentValue = 0;
+
+    while (index < input.size() && input[index] >= '0' && input[index] <= '9')
+    {
+        exponentValue = (exponentValue * 10) + (input[index] - '0');
+        index++;
+    }
+
+    return exponentValue;
+}
+
+void handleExponent(const std::string& input, int& index, double& value) {
+    index++;
+    if (index >= input.size())
+    {
+        return;
+    }
+
+    int exponentSign = getExponentSign(input[index], index);
+    int exponentValue = getExponentValue(input, index);
+
+    value *= pow(10, exponentSign * exponentValue);
+}
+
+bool handleCharacter(std::string& input, int& index, double& value, 
+                    double& decimalFactor, bool& isDecimal) {
+    if (input[index] >= '0' && input[index] <= '9')
+    {
+        handleDigit(value, decimalFactor, isDecimal, input[index] - '0');
+    }
+    else if (input[index] == '.')
     {
         if (isDecimal)
         {
             return false;
         }
         isDecimal = true;
+    }
+    else if (input[index] == 'e' || input[index] == 'E')
+    {
+        handleExponent(input, index, value);
+        return false;
     }
     else
     {
@@ -72,7 +118,7 @@ double atof(std::string input) {
     
     for (int index = start; index < end; index++)
     {
-        if (!handleCharacter(input[index], value, decimalFactor, isDecimal))
+        if (!handleCharacter(input, index, value, decimalFactor, isDecimal))
         {
             break;
         }
