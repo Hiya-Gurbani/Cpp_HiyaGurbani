@@ -1,9 +1,13 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <climits>
 
-void removeWhitespace(const std::string input, size_t& start, size_t end) {
-    while (start < input.size() && input[start] == ' ')
+#define MIN_CHOICE 1
+#define MAX_CHOICE 2
+
+void removeWhitespace(const std::string& input, size_t& start, size_t end) {
+    while (start < end && input[start] == ' ')
     {
         start++;
     }
@@ -12,6 +16,66 @@ void removeWhitespace(const std::string input, size_t& start, size_t end) {
     {
         end--;
     }
+}
+
+bool isValidInteger(const std::string& input, const size_t start, 
+    const size_t end, unsigned short& choice ) {
+    
+        choice = 0;
+
+        for (int index = start; index < end; index++)
+        {
+            if (input[index] >= '0' && input[index] <= '9')
+            {
+                int digit = input[index] - '0';
+                if (choice > (USHRT_MAX - digit) / 10)
+                {
+                    return false;
+                }
+                choice = (choice * 10) + digit;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+}
+
+int getChoice() {
+    std::string input;
+    unsigned short choice = 0;
+
+    while (true) {
+        std::getline(std::cin, input);
+
+        size_t start = 0;
+        size_t end = input.size();
+
+        removeWhitespace(input, start, end);
+        if (start >= end)
+        {
+            std::cout << "Empty Input! Enter again: ";
+            continue;
+        }
+
+        if (!isValidInteger(input, start, end, choice))
+        {
+            std::cout << "Invalid Input! Enter again: ";
+            continue;
+        }
+
+        if (choice < MIN_CHOICE || choice > MAX_CHOICE)
+        {
+            std::cout << "Invalid Choice! Enter again: ";
+            continue;
+        }
+
+        return choice;
+    }
+
+    return choice;
 }
 
 bool isPositiveNumber(const char character, size_t& startIndex) {
@@ -35,15 +99,41 @@ void handleDigit(double& value, double& decimalFactor, bool isDecimal, int digit
     }
 }
 
-int getExponentSign(char character, int& index) {
-    if (character == '-')
+int getDigitValue(char character) {
+    if (character >= '0' && character <= '9')
     {
-        index++;
-        return -1; 
+        return (character - '0');
     }
-    else if (character == '+')
+    else 
+    {
+        return ((std::tolower(character) - 'a') + 10);
+    }
+
+    return 0;
+}
+
+void handleHexadecimalDigit(double& value, double& decimalFactor, bool isDecimal, char character) {
+    int digit = getDigitValue(character);
+
+    if (!isDecimal)
+    {
+        value = (value * 16) + digit;
+    }
+    else
+    {
+        value += (digit * decimalFactor);
+        decimalFactor /= 16;
+    }
+}
+
+int getExponentSign(char character, int& index) {
+    if (character == '-' || character == '+')
     {
         index++;
+        if (character == '-')
+        {
+            return -1; 
+        }
     }
     return 1;
 }
@@ -60,7 +150,7 @@ int getExponentValue(const std::string& input, int& index) {
     return exponentValue;
 }
 
-void handleExponent(const std::string& input, int& index, double& value) {
+void handleExponent(const std::string& input, int& index, bool isHex, double& value) {
     index++;
     if (index >= input.size())
     {
@@ -70,14 +160,19 @@ void handleExponent(const std::string& input, int& index, double& value) {
     int exponentSign = getExponentSign(input[index], index);
     int exponentValue = getExponentValue(input, index);
 
-    value *= pow(10, exponentSign * exponentValue);
+    int exponentBase = (isHex ? 2 : 10); 
+    value *= pow(exponentBase, exponentSign * exponentValue);
 }
 
 bool handleCharacter(std::string& input, int& index, double& value, 
-                    double& decimalFactor, bool& isDecimal) {
-    if (input[index] >= '0' && input[index] <= '9')
+                    double& decimalFactor, bool& isDecimal, bool& isHex) {
+    if (!isHex && input[index] >= '0' && input[index] <= '9')
     {
         handleDigit(value, decimalFactor, isDecimal, input[index] - '0');
+    }
+    else if (isHex && std::isxdigit(input[index]))
+    {
+        handleHexadecimalDigit(value, decimalFactor, isDecimal, input[index]);
     }
     else if (input[index] == '.')
     {
@@ -89,7 +184,13 @@ bool handleCharacter(std::string& input, int& index, double& value,
     }
     else if (input[index] == 'e' || input[index] == 'E')
     {
-        handleExponent(input, index, value);
+        handleExponent(input, index, isHex, value);
+        
+        return false;
+    }
+    else if (input[index] == 'p' || input[index] == 'P')
+    {
+        handleExponent(input, index, isHex, value);
         return false;
     }
     else
@@ -106,7 +207,7 @@ double atof(std::string input) {
     size_t end = input.size();
 
     removeWhitespace(input, start, end);
-    if (start > end)
+    if (start >= end)
     {
         return value;
     }
@@ -115,10 +216,19 @@ double atof(std::string input) {
     
     double decimalFactor = 0.1;
     bool isDecimal = false;
+    bool isHex = false;
+
+    if (start + 1 < end && input[start] == '0' && 
+    (input[start + 1] == 'x' || input[start + 1] == 'X'))
+    {
+        isHex = true;
+        start += 2;
+        decimalFactor = 1.0 / 16;
+    }
     
     for (int index = start; index < end; index++)
     {
-        if (!handleCharacter(input, index, value, decimalFactor, isDecimal))
+        if (!handleCharacter(input, index, value, decimalFactor, isDecimal, isHex))
         {
             break;
         }
@@ -132,11 +242,50 @@ double atof(std::string input) {
     return value;
 }
 
+void printMenu() {
+    std::cout << "\nOperations: \n";
+    std::cout << "1. Convert String to Double\n2. Exit\n";
+}
+
+bool handleChoice(unsigned short choice) {
+    if (choice == 1)
+    {
+        std::string input;
+        std::cout << "Enter string: ";
+        std::getline(std::cin, input);
+
+        double result = atof(input);
+        std::cout << "Output: " << result << "\n";
+    }
+    else if (choice == 2)
+    {
+        std::cout << "Exiting Program...\n";
+        return true;
+    }
+    else
+    {
+        std::cout << "Invalid Choice! Enter again: ";
+    }
+
+    return false;
+}
+
 int main() {
-    std::string input;
-    std::getline(std::cin, input);
+    while (true)
+    {
+        printMenu();
 
-    double result = atof(input);
+        std::cout << "\nEnter your choice: ";
+        unsigned short choice = getChoice();
 
-    std::cout << result << "\n";
+        bool shouldExit = handleChoice(choice);
+
+        if (shouldExit)
+        {
+            return 0;
+        }
+    }
+
+
+    
 }
