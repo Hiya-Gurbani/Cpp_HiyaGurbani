@@ -19,6 +19,8 @@ void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
 bool isValidInteger(const std::string& input, size_t start, 
                     size_t end, unsigned short& choice ) {
 
+    bool isValid = true;
+
     for (size_t index = start; index < end; index++)
     {
         if (input[index] >= '0' && input[index] <= '9')
@@ -27,18 +29,18 @@ bool isValidInteger(const std::string& input, size_t start,
             if (choice > (USHRT_MAX - digit) / 10)
             {
                 std::cout << "Invalid Input! The entered choice is too long. Enter again: ";
-                return false;
+                isValid = false;
             }
             choice = (choice * 10) + digit;
         }
         else
         {
-            std::cout << "Invalid Input! Only digits allowed. Enter again: ";
-            return false;
+            std::cout << "Invalid Input! Only positive digits allowed. Enter again: ";
+            isValid = false;
         }
     }
 
-    return true;
+    return isValid;
 }
 
 int getChoice() {
@@ -50,7 +52,8 @@ int getChoice() {
     constexpr int MIN_CHOICE = 1;
     constexpr int MAX_CHOICE = 2;
 
-    while (true) {
+    while (true) 
+    {
         isValidChoice = true;
         choice = 0;
         std::getline(std::cin, input);
