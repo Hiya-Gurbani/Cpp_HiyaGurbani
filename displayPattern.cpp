@@ -17,6 +17,7 @@ void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
 bool isValidInteger(const std::string& input, size_t start, 
                     size_t end, unsigned short& choice) {
 
+    bool isValid = true;
     for (size_t index = start; index < end; ++index)
     {
         if (input[index] >= '0' && input[index] <= '9')
@@ -26,18 +27,18 @@ bool isValidInteger(const std::string& input, size_t start,
             if (choice > (USHRT_MAX - digit) / 10)
             {
                 std::cout << "Invalid Input! The entered choice is too long. Enter again: ";
-                return false;
+                isValid = false;
             }
             choice = (choice * 10) + digit;
         }
         else
         {
-            std::cout << "Invalid Input! Only digits allowed. Enter again: ";
-            return false;
+            std::cout << "Invalid Input! Only positive digits allowed. Enter again: ";
+            isValid = false;
         }
     }
     
-    return true;
+    return isValid;
 }
 
 int getChoice() {
@@ -49,7 +50,8 @@ int getChoice() {
     constexpr int MIN_CHOICE = 1;
     constexpr int MAX_CHOICE = 2;
 
-    while (true) {
+    while (true) 
+    {
         isValidChoice = true;
         choice = 0;
         std::getline(std::cin, input);
@@ -84,8 +86,33 @@ int getChoice() {
     return choice;
 }
 
+bool handleDecimalCharacter(const std::string& input, size_t end, size_t& index) {
+    index++;
+    bool isValidDecimal = true;
+
+    if (index == end)
+    {
+        isValidDecimal = false;
+    }
+    else
+    {
+        while (index < end)
+        {
+            if (input[index] != '0')
+            {
+                isValidDecimal = false;
+            }
+            index++;
+        }
+    }
+
+    return isValidDecimal;
+}
+
 bool isValidLongLong(const std::string& input, size_t start, 
                      size_t end, long long& value) {
+
+    bool isValid = true;
 
     for (size_t index = start; index < end; ++index)
     {
@@ -96,18 +123,26 @@ bool isValidLongLong(const std::string& input, size_t start,
             if (value > (LLONG_MAX - digit) / 10)
             {
                 std::cout << "Invalid Input! The entered number is too long. Enter again: ";
-                return false;
+                isValid = false;
             }
             value = (value * 10) + digit;
         }
+        else if (input[index] == '.')
+        {
+            isValid = handleDecimalCharacter(input, end, index);
+            if (!isValid)
+            {
+                std::cout << "Invalid Input! Enter a whole number: ";
+            }
+        }
         else
         {
-            std::cout << "Invalid Input! Only digits allowed. Enter again: ";
-            return false;
+            std::cout << "Invalid Input! Only positive digits allowed. Enter again: ";
+            isValid = false;
         }
     }
 
-    return true;
+    return isValid;
 }
 
 long long getValue() {
@@ -116,9 +151,11 @@ long long getValue() {
 
     bool isValidValue = true;
 
-    while (true) {
+    while (true) 
+    {
         isValidValue = true;
         value = 0;
+    
         std::getline(std::cin, input);
 
         size_t start = 0;
@@ -178,7 +215,8 @@ void printTopLastDigits(long long range, long long rowIndex, bool isEven) {
 }
 
 void displayPatternTop(long long range, bool isEven) {
-    for (long long rowIndex = 0; rowIndex <= range; rowIndex++) {
+    for (long long rowIndex = 0; rowIndex <= range; rowIndex++) 
+    {
         printAlternateDigits(0, rowIndex + 1);
 
         printSpaces(0, range - rowIndex);
@@ -192,7 +230,8 @@ void displayPatternTop(long long range, bool isEven) {
 }
 
 void displayPatternBottom(long long range, bool isEven) {
-    for (long long rowIndex = 0; rowIndex < range; rowIndex++) {
+    for (long long rowIndex = 0; rowIndex < range; rowIndex++) 
+    {
         printAlternateDigits(0, range - rowIndex);
 
         printSpaces(0, rowIndex + 1);
@@ -238,7 +277,8 @@ bool handleChoice(unsigned short choice) {
 }
 
 int main() {
-    while (true) {
+    while (true) 
+    {
         printMenu();
 
         std::cout << "\nEnter your choice: ";
