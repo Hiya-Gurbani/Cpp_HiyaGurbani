@@ -2,7 +2,7 @@
 #include <climits>
 #include <string>
 
-void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
+void skipWhitespace(const std::string& input, size_t& start, size_t& end) {
     while (start < end && input[start] == ' ')
     {
         start++;
@@ -45,42 +45,34 @@ int getChoice() {
     std::string input;
     unsigned short choice = 0;
 
-    bool isValidChoice = true;
-
     constexpr int MIN_CHOICE = 1;
     constexpr int MAX_CHOICE = 2;
 
     while (true) 
     {
-        isValidChoice = true;
         choice = 0;
         std::getline(std::cin, input);
 
         size_t start = 0;
         size_t end = input.size();
 
-        removeWhitespace(input, start, end);
+        skipWhitespace(input, start, end);
         if (start >= end)
         {
             std::cout << "Empty Input! Kindly enter a value: ";
-            isValidChoice = false;
         }
         else if (!isValidInteger(input, start, end, choice))
         {
-            isValidChoice = false;
+            //Invalid Integer. Error printed in isValidInteger itself!
         }
         else if (choice < MIN_CHOICE || choice > MAX_CHOICE)
         {
             std::cout << "Invalid Choice! Choice must be 1 or 2. Enter again: ";
-            isValidChoice = false;
         }
-
-        if (!isValidChoice)
+        else
         {
-            continue;
+            return choice;
         }
-
-        return choice;
     }
 
     return choice;
@@ -149,11 +141,8 @@ long long getValue() {
     std::string input;
     long long value {0};
 
-    bool isValidValue = true;
-
     while (true) 
     {
-        isValidValue = true;
         value = 0;
     
         std::getline(std::cin, input);
@@ -161,23 +150,19 @@ long long getValue() {
         size_t start = 0;
         size_t end = input.size();
 
-        removeWhitespace(input, start, end);
+        skipWhitespace(input, start, end);
         if (start == end)
         {
             std::cout << "Empty Input! Kindly enter a value: ";
-            isValidValue = false;
         }
         else if (!isValidLongLong(input, start, end, value))
         {
-            isValidValue = false;
+            //Invalid Long long. Error printed in isValidLongLong itself!
         }
-
-        if (!isValidValue)
+        else
         {
-            continue;
+            return value;
         }
-
-        return value;
     }
 
     return value;
