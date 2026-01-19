@@ -2,9 +2,6 @@
 #include <climits>
 #include <string>
 
-#define MIN_CHOICE 1
-#define MAX_CHOICE 2
-
 void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
     while (start < end && input[start] == ' ')
     {
@@ -17,9 +14,8 @@ void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
     }        
 }
 
-bool isValidInteger(const std::string& input, const size_t start, 
-                    const size_t end, unsigned short& choice) {
-    choice = 0;
+bool isValidInteger(const std::string& input, size_t start, 
+                    size_t end, unsigned short& choice) {
 
     for (size_t index = start; index < end; ++index)
     {
@@ -29,12 +25,14 @@ bool isValidInteger(const std::string& input, const size_t start,
             
             if (choice > (USHRT_MAX - digit) / 10)
             {
+                std::cout << "Invalid Input! The entered choice is too long. Enter again: ";
                 return false;
             }
             choice = (choice * 10) + digit;
         }
         else
         {
+            std::cout << "Invalid Input! Only digits allowed. Enter again: ";
             return false;
         }
     }
@@ -46,7 +44,14 @@ int getChoice() {
     std::string input;
     unsigned short choice = 0;
 
+    bool isValidChoice = true;
+
+    constexpr int MIN_CHOICE = 1;
+    constexpr int MAX_CHOICE = 2;
+
     while (true) {
+        isValidChoice = true;
+        choice = 0;
         std::getline(std::cin, input);
 
         size_t start = 0;
@@ -55,19 +60,21 @@ int getChoice() {
         removeWhitespace(input, start, end);
         if (start >= end)
         {
-            std::cout << "Empty Input! Enter again: ";
-            continue;
+            std::cout << "Empty Input! Kindly enter a value: ";
+            isValidChoice = false;
+        }
+        else if (!isValidInteger(input, start, end, choice))
+        {
+            isValidChoice = false;
+        }
+        else if (choice < MIN_CHOICE || choice > MAX_CHOICE)
+        {
+            std::cout << "Invalid Choice! Choice must be 1 or 2. Enter again: ";
+            isValidChoice = false;
         }
 
-        if (!isValidInteger(input, start, end, choice))
+        if (!isValidChoice)
         {
-            std::cout << "Invalid Input! Enter again: ";
-            continue;
-        }
-
-        if (choice < MIN_CHOICE || choice > MAX_CHOICE)
-        {
-            std::cout << "Invalid Choice! Enter again: ";
             continue;
         }
 
@@ -77,9 +84,8 @@ int getChoice() {
     return choice;
 }
 
-bool isValidLongLong(const std::string& input, const size_t start, 
-                     const size_t end, long long& value) {
-    value = 0;
+bool isValidLongLong(const std::string& input, size_t start, 
+                     size_t end, long long& value) {
 
     for (size_t index = start; index < end; ++index)
     {
@@ -89,12 +95,14 @@ bool isValidLongLong(const std::string& input, const size_t start,
             
             if (value > (LLONG_MAX - digit) / 10)
             {
+                std::cout << "Invalid Input! The entered number is too long. Enter again: ";
                 return false;
             }
             value = (value * 10) + digit;
         }
         else
         {
+            std::cout << "Invalid Input! Only digits allowed. Enter again: ";
             return false;
         }
     }
@@ -106,7 +114,11 @@ long long getValue() {
     std::string input;
     long long value {0};
 
+    bool isValidValue = true;
+
     while (true) {
+        isValidValue = true;
+        value = 0;
         std::getline(std::cin, input);
 
         size_t start = 0;
@@ -115,13 +127,16 @@ long long getValue() {
         removeWhitespace(input, start, end);
         if (start == end)
         {
-            std::cout << "Empty Input! Enter again: ";
-            continue;
+            std::cout << "Empty Input! Kindly enter a value: ";
+            isValidValue = false;
+        }
+        else if (!isValidLongLong(input, start, end, value))
+        {
+            isValidValue = false;
         }
 
-        if (!isValidLongLong(input, start, end, value))
+        if (!isValidValue)
         {
-            std::cout << "Invalid Input! Enter again: ";
             continue;
         }
 
@@ -131,7 +146,7 @@ long long getValue() {
     return value;
 }
 
-void printAlternateDigits(const long long startIndex, const long long endIndex) {
+void printAlternateDigits(long long startIndex, long long endIndex) {
     unsigned short digit = 1;
     for (long long colIndex = startIndex; colIndex < endIndex; colIndex++)
     {
@@ -140,7 +155,7 @@ void printAlternateDigits(const long long startIndex, const long long endIndex) 
     }
 }
 
-void printSpaces(const long long startIndex, const long long endIndex) {
+void printSpaces(long long startIndex, long long endIndex) {
     for (long long colIndex = startIndex; colIndex < endIndex; colIndex++)
     {
         std::cout << " ";
@@ -162,17 +177,13 @@ void printTopLastDigits(long long range, long long rowIndex, bool isEven) {
     }
 }
 
-long long getColStartIndex(bool isEven) {
-    return (isEven) ? 1 : 0;
-}
-
 void displayPatternTop(long long range, bool isEven) {
     for (long long rowIndex = 0; rowIndex <= range; rowIndex++) {
         printAlternateDigits(0, rowIndex + 1);
 
         printSpaces(0, range - rowIndex);
 
-        printSpaces(getColStartIndex(isEven), range - rowIndex);
+        printSpaces(isEven ? 1 : 0, range - rowIndex);
 
         printTopLastDigits(range, rowIndex, isEven);
 
@@ -186,7 +197,7 @@ void displayPatternBottom(long long range, bool isEven) {
 
         printSpaces(0, rowIndex + 1);
 
-        printSpaces(getColStartIndex(isEven), rowIndex + 1);
+        printSpaces(isEven ? 1 : 0, rowIndex + 1);
 
         printAlternateDigits(0, range - rowIndex);
 
@@ -206,7 +217,7 @@ void printMenu() {
     std::cout << "1. Print Pattern\n2. Exit\n";
 }
 
-bool handleChoice(const unsigned short choice) {
+bool handleChoice(unsigned short choice) {
     if (choice == 1)
     {
         std::cout << "Enter value: ";
@@ -240,6 +251,4 @@ int main() {
             return 0;
         }
     }
-
-    return 0;
 }

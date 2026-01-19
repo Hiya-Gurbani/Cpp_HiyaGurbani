@@ -4,14 +4,6 @@
 #include <climits>
 #include <cctype>
 
-#define MIN_CHOICE 1
-#define MAX_CHOICE 2
-
-#define DECIMAL_BASE 10
-#define HEX_BASE 16
-#define DECIMAL_EXPONENT_BASE 10
-#define HEX_EXPONENT_BASE 2
-
 void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
     while (start < end && input[start] == ' ')
     {
@@ -24,9 +16,8 @@ void removeWhitespace(const std::string& input, size_t& start, size_t& end) {
     }
 }
 
-bool isValidInteger(const std::string& input, const size_t start, 
-                    const size_t end, unsigned short& choice ) {
-    choice = 0;
+bool isValidInteger(const std::string& input, size_t start, 
+                    size_t end, unsigned short& choice ) {
 
     for (size_t index = start; index < end; index++)
     {
@@ -35,12 +26,14 @@ bool isValidInteger(const std::string& input, const size_t start,
             int digit = input[index] - '0';
             if (choice > (USHRT_MAX - digit) / 10)
             {
+                std::cout << "Invalid Input! The entered choice is too long. Enter again: ";
                 return false;
             }
             choice = (choice * 10) + digit;
         }
         else
         {
+            std::cout << "Invalid Input! Only digits allowed. Enter again: ";
             return false;
         }
     }
@@ -52,7 +45,14 @@ int getChoice() {
     std::string input;
     unsigned short choice = 0;
 
+    bool isValidChoice = true;
+
+    constexpr int MIN_CHOICE = 1;
+    constexpr int MAX_CHOICE = 2;
+
     while (true) {
+        isValidChoice = true;
+        choice = 0;
         std::getline(std::cin, input);
 
         size_t start = 0;
@@ -61,19 +61,21 @@ int getChoice() {
         removeWhitespace(input, start, end);
         if (start >= end)
         {
-            std::cout << "Empty Input! Enter again: ";
-            continue;
+            std::cout << "Empty Input! Kindly enter a value: ";
+            isValidChoice = false;
+        }
+        else if (!isValidInteger(input, start, end, choice))
+        {
+            isValidChoice = false;
+        }
+        else if (choice < MIN_CHOICE || choice > MAX_CHOICE)
+        {
+            std::cout << "Invalid Choice! Choice must be 1 or 2. Enter again: ";
+            isValidChoice = false;
         }
 
-        if (!isValidInteger(input, start, end, choice))
+        if (!isValidChoice)
         {
-            std::cout << "Invalid Input! Enter again: ";
-            continue;
-        }
-
-        if (choice < MIN_CHOICE || choice > MAX_CHOICE)
-        {
-            std::cout << "Invalid Choice! Enter again: ";
             continue;
         }
 
@@ -116,6 +118,9 @@ double handleSpecialCase(std::string& inputSubstring, int sign, double& value) {
 
 bool isHexadecimalNumber(const std::string& input, size_t& start, 
                          size_t end, double& decimalFactor) {
+
+    constexpr int HEX_BASE = 16;
+
     if (start + 1 < end && input[start] == '0' && 
     (input[start + 1] == 'x' || input[start + 1] == 'X'))
     {
@@ -128,6 +133,8 @@ bool isHexadecimalNumber(const std::string& input, size_t& start,
 }
 
 void handleDigit(double& value, double& decimalFactor, bool isDecimal, int digit) {
+    constexpr int DECIMAL_BASE = 10;
+
     if (!isDecimal)
     {
         value = (value * DECIMAL_BASE) + digit;
@@ -140,6 +147,8 @@ void handleDigit(double& value, double& decimalFactor, bool isDecimal, int digit
 }
 
 int getDigitValue(char character) {
+    constexpr int DECIMAL_BASE = 10;
+
     if (character >= '0' && character <= '9')
     {
         return (character - '0');
@@ -155,6 +164,8 @@ int getDigitValue(char character) {
 
 void handleHexadecimalDigit(double& value, double& decimalFactor, 
                             bool isDecimal, char character) {
+
+    constexpr int HEX_BASE = 16;
     int digit = getDigitValue(character);
 
     if (!isDecimal)
@@ -169,6 +180,7 @@ void handleHexadecimalDigit(double& value, double& decimalFactor,
 }
 
 int getExponentValue(const std::string& input, size_t& index) {
+    constexpr int DECIMAL_BASE = 10;
     int exponentValue = 0;
 
     while (index < input.size() && input[index] >= '0' && input[index] <= '9')
@@ -182,6 +194,10 @@ int getExponentValue(const std::string& input, size_t& index) {
 
 void handleExponent(const std::string& input, size_t& index, 
                     bool isHexadecimal, double& value) {
+
+    constexpr int DECIMAL_EXPONENT_BASE = 10;
+    constexpr int HEX_EXPONENT_BASE = 2;
+
     index++;
     if (index >= input.size())
     {
@@ -195,8 +211,11 @@ void handleExponent(const std::string& input, size_t& index,
     value *= pow(exponentBase, exponentSign * exponentValue);
 }
 
-bool handleCharacter(std::string& input, size_t& index, double& value, 
+bool handleCharacter(const std::string& input, size_t& index, double& value, 
                     double& decimalFactor, bool& isDecimal, bool& isHexadecimal) {
+
+    bool continueParsing = true;
+
     if (!isHexadecimal && input[index] >= '0' && input[index] <= '9')
     {
         handleDigit(value, decimalFactor, isDecimal, input[index] - '0');
@@ -210,28 +229,29 @@ bool handleCharacter(std::string& input, size_t& index, double& value,
         if (isDecimal)
         {
             return false;
+            continueParsing = false;
         }
         isDecimal = true;
     }
     else if (!isHexadecimal && (input[index] == 'e' || input[index] == 'E'))
     {
         handleExponent(input, index, isHexadecimal, value);
-        return false;
+        continueParsing = false;
     }
     else if (isHexadecimal && (input[index] == 'p' || input[index] == 'P'))
     {
         handleExponent(input, index, isHexadecimal, value);
-        return false;
+        continueParsing = false;
     }
     else
     {
-        return false;
+        continueParsing = false;
     }
 
-    return true;
+    return continueParsing;
 }
 
-double stringToDouble(std::string input) {
+double stringToDouble(const std::string& input) {
     double value = 0;
     size_t start = 0;
     size_t end = input.size();
