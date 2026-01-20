@@ -1,0 +1,26 @@
+Commands:
+
+To compile add.cpp:
+g++ -fPIC -c add.cpp -o add.o
+
+To create shared library
+g++ -shared -o libadd.so add.o
+
+{Preferred}
+To compile the program
+g++ main.cpp -L. -ladd -Wl,-rpath=. -o main
+
+To run the program
+./main
+
+Or 
+
+To compile the program
+g++ main.cpp -L. -ladd -o main
+
+To run the program
+LD_LIBRARY_PATH=. ./main
+
+To verify if dynamically linked
+ldd ./main 
+(ldd -> list dynamic dependencies)
