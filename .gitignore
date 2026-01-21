@@ -1,0 +1,14 @@
+# Ignore Object Files
+*.o
+*.out
+
+# Ignore Binary Files
+bin/
+*.exe
+*.s
+
+# Ignore Libraries
+*.a
+*.so
+
+
