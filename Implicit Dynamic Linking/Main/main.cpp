@@ -3,7 +3,6 @@
 #include "Multiplication.h"
 #include "Division.h"
 #include <iostream>
-#include <string>
 
 void printMenu() {
     std::cout << "\nOperations: \n";
@@ -19,8 +18,12 @@ unsigned int getChoice() {
         if (std::cin.fail()) 
         {
             std::cin.clear();
-            while (getchar() != '\n')
+            while (getchar() != '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
+        }
+        else if (choice < 1 || choice > 5) 
+        {
+            std::cout << "Choice must be between 1 and 5. Enter again: ";
         }
         else
         {
@@ -40,7 +43,7 @@ double getOperand() {
         if (std::cin.fail()) 
         {
             std::cin.clear();
-            while (getchar() != '\n')
+            while (getchar() != '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
         else
@@ -79,7 +82,7 @@ void handleDivision() {
     }
 }
 
-bool handleChoice(unsigned int& choice) {
+bool handleChoice(unsigned int choice) {
     double operand1, operand2;
     double result;
 

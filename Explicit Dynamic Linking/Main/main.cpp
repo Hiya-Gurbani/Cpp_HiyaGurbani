@@ -4,6 +4,7 @@
 #include "Division.h"
 #include <iostream>
 #include <dlfcn.h>
+#include <optional>
 
 namespace operation
 {
@@ -26,6 +27,10 @@ unsigned int getChoice() {
             std::cin.clear();
             while (getchar() != '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
+        }
+        else if (choice < 1 || choice > 5) 
+        {
+            std::cout << "Choice must be between 1 and 5. Enter again: ";
         }
         else
         {
@@ -95,36 +100,42 @@ operation::arithmeticFunction loadFunction(void* handle, const char* functionNam
     return operationFunction;
 }
 
-double performOperation(const char* functionName, double operand1, double operand2) {
+std::optional<double> performOperation(const char* functionName, double operand1, double operand2) {
+    std::optional<double> result = std::nullopt;
+    
     void* handle = loadLibrary();
-    if (!handle)
+    if (handle)
     {
-        exit(0);
-    }
-
-    operation::arithmeticFunction operationFunction = 
+        operation::arithmeticFunction operationFunction = 
                                         loadFunction(handle, functionName);
-    if (!operationFunction)
-    {
+        if (operationFunction)
+        {
+            result = operationFunction(operand1, operand2);
+        }
         dlclose(handle);
-        exit(0);
     }
-
-    double result = operationFunction(operand1, operand2);
-    dlclose(handle);
 
     return result;
 }
 
-void handleOperation(const char* functionName) {
+bool handleOperation(const char* functionName) {
     double operand1, operand2;
+    bool shouldContinue = false;
 
     getInputOperands(operand1, operand2);
-    double result = performOperation(functionName, operand1, operand2);
-    printResult(result);
+    std::optional<double> result = performOperation(functionName, operand1, operand2);
+
+    if (result.has_value())
+    {
+        printResult(result.value());
+        shouldContinue = true;
+    }
+    
+    return shouldContinue;
 }
 
-void handleDivision() {
+bool handleDivision() {
+    bool shouldContinue = false;
     double operand1, operand2;
     getInputOperands(operand1, operand2);
 
@@ -134,38 +145,49 @@ void handleDivision() {
     }
     else
     {
-        double result = performOperation("divideOperands", operand1, operand2);
-        printResult(result);
+        std::optional<double> result = 
+                                performOperation("divideOperands", operand1, operand2);
+
+        if (result.has_value())
+        {
+            printResult(result.value());
+            shouldContinue = true;
+        }
     }
+
+    return shouldContinue;
 }
 
 bool handleChoice(unsigned int choice) {
+    bool shouldContinue = true;
+
     switch (choice) 
     {
         case 1:
-        handleOperation("addOperands");
+        shouldContinue = handleOperation("addOperands");
         break;
 
         case 2:
-        handleOperation("subtractOperands");
+        shouldContinue = handleOperation("subtractOperands");
         break;
 
         case 3:
-        handleOperation("multiplyOperands");
+        shouldContinue = handleOperation("multiplyOperands");
         break;
 
         case 4:
-        handleDivision();
+        shouldContinue = handleDivision();
         break;
         
         case 5:
-        return false;
+        shouldContinue = false;
+        break;
 
         default:
         std::cout << "Invalid Choice! Choice must be in range of 1 to 5.\n";
     }
 
-    return true;
+    return shouldContinue;
 }
 
 int main() {
