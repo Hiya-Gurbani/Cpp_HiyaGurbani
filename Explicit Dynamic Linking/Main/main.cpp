@@ -5,9 +5,9 @@
 #include <iostream>
 #include <dlfcn.h>
 
-namespace ops
+namespace operation
 {
-    using ArithmeticFunc = double(*)(double, double);
+    using arithmeticFunction = double(*)(double, double);
 }
 
 void printMenu() {
@@ -24,7 +24,7 @@ unsigned int getChoice() {
         if (std::cin.fail()) 
         {
             std::cin.clear();
-            std::cin.ignore(); 
+            while (getchar() != '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
         else
@@ -45,7 +45,7 @@ double getOperand() {
         if (std::cin.fail()) 
         {
             std::cin.clear();
-            std::cin.ignore(); 
+            while (getchar() != '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
         else
@@ -79,10 +79,10 @@ void* loadLibrary() {
     return handle;
 }
 
-ops::ArithmeticFunc fetchFunctionPointer(void* handle, const char* functionName) {
+operation::arithmeticFunction fetchFunctionPointer(void* handle, const char* functionName) {
     dlerror();
-    ops::ArithmeticFunc operationFunction = 
-                                    (ops::ArithmeticFunc)dlsym(handle, functionName);
+    operation::arithmeticFunction operationFunction = 
+                            (operation::arithmeticFunction)dlsym(handle, functionName);
 
     char* error = dlerror();
     if (error)
@@ -102,7 +102,8 @@ double performOperation(const char* functionName, double operand1, double operan
         return 0;
     }
 
-    ops::ArithmeticFunc operationFunction = fetchFunctionPointer(handle, functionName);
+    operation::arithmeticFunction operationFunction = 
+                                        fetchFunctionPointer(handle, functionName);
     if (!operationFunction)
     {
         return 0;

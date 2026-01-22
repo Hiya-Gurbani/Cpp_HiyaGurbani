@@ -11,7 +11,7 @@ Week2/
 │   ├── src/
 │   └── Main/
         └── main.cpp
-├── Explicit/
+├── Explicit Dynamic Linking/
 │   ├── inc/
 │   ├── src/
 │   └── Main/
