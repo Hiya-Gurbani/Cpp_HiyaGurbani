@@ -99,14 +99,15 @@ double performOperation(const char* functionName, double operand1, double operan
     void* handle = loadLibrary();
     if (!handle)
     {
-        return 0;
+        exit(0);
     }
 
     operation::arithmeticFunction operationFunction = 
                                         loadFunction(handle, functionName);
     if (!operationFunction)
     {
-        return 0;
+        dlclose(handle);
+        exit(0);
     }
 
     double result = operationFunction(operand1, operand2);
