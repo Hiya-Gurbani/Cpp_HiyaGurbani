@@ -79,7 +79,7 @@ void* loadLibrary() {
     return handle;
 }
 
-operation::arithmeticFunction fetchFunctionPointer(void* handle, const char* functionName) {
+operation::arithmeticFunction loadFunction(void* handle, const char* functionName) {
     dlerror();
     operation::arithmeticFunction operationFunction = 
                             (operation::arithmeticFunction)dlsym(handle, functionName);
@@ -103,7 +103,7 @@ double performOperation(const char* functionName, double operand1, double operan
     }
 
     operation::arithmeticFunction operationFunction = 
-                                        fetchFunctionPointer(handle, functionName);
+                                        loadFunction(handle, functionName);
     if (!operationFunction)
     {
         return 0;
