@@ -1,12 +1,13 @@
-#include "rescue.h"
+#include "Rescue.h"
 #include <iostream>
+#include <string>
 
 void logInfo(const std::string &msg) {
-    std::cout << msg << std::endl;
+    std::cout << msg << "\n";
 }
 
 void logError(const std::string &msg) {
-    std::cerr << msg << std::endl;
+    std::cerr << msg << "\n";
 }
 
 bool checkDisk() {

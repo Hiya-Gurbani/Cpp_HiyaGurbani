@@ -1,11 +1,14 @@
-#include "rescue.h"
+#include "Rescue.h"
 
 int main() {
     logInfo("Rescue tool starting...");
 
-    if (checkDisk()) {
+    if (checkDisk()) 
+    {
         logInfo("Disk found!");
-    } else {
+    } 
+    else 
+    {
         logError("Disk not found!");
     }
 
