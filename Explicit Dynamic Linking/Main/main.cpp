@@ -11,6 +11,12 @@ namespace operation
     using arithmeticFunction = double(*)(double, double);
 }
 
+enum class ExitStatus {
+    CONTINUE,
+    USER_EXIT,
+    ERROR_EXIT
+};
+
 void printMenu() {
     std::cout << "\nOperations: \n";
     std::cout << "1. Addition\n2. Subtraction\n3. Multiplication\n4. Division\n5. Exit\n";
@@ -158,40 +164,53 @@ bool handleDivision() {
     return shouldContinue;
 }
 
-bool handleChoice(unsigned int choice) {
-    bool shouldContinue = true;
+ExitStatus handleChoice(unsigned int choice) {
+    ExitStatus status = ExitStatus::CONTINUE;
 
     switch (choice) 
     {
         case 1:
-        shouldContinue = handleOperation("addOperands");
+        if (!handleOperation("addOperands"))
+        {
+            status = ExitStatus::ERROR_EXIT;
+        }
         break;
 
         case 2:
-        shouldContinue = handleOperation("subtractOperands");
+        if (!handleOperation("subtractOperands"))
+        {
+            status = ExitStatus::ERROR_EXIT;
+        }
         break;
 
         case 3:
-        shouldContinue = handleOperation("multiplyOperands");
+        if (!handleOperation("multiplyOperands"))
+        {
+            status = ExitStatus::ERROR_EXIT;
+        }
         break;
 
         case 4:
-        shouldContinue = handleDivision();
+        if (!handleDivision())
+        {
+            status = ExitStatus::ERROR_EXIT;
+        }
         break;
         
         case 5:
-        shouldContinue = false;
+        status = ExitStatus::USER_EXIT;
         break;
 
         default:
         std::cout << "Invalid Choice! Choice must be in range of 1 to 5.\n";
     }
 
-    return shouldContinue;
+    return status;
 }
 
 int main() {
     unsigned int choice;
+    ExitStatus status;
 
     while (true) 
     {
@@ -200,12 +219,14 @@ int main() {
         std::cout << "\nEnter your choice: ";
         choice = getChoice();
 
-        if (!handleChoice(choice))
+        status = handleChoice(choice);
+
+        if (status != ExitStatus::CONTINUE)
         {
             std::cout << "Exiting Program...\n";
-            return 0;
+            break;
         }
     }
 
-    return 0;
+    return (status == ExitStatus::ERROR_EXIT) ? 1 : 0;
 }
