@@ -1,10 +1,8 @@
-#include "Addition.h"
-#include "Subtraction.h"
-#include "Multiplication.h"
-#include "Division.h"
 #include <iostream>
 #include <dlfcn.h>
 #include <optional>
+#include <limits>
+#include <string>
 
 namespace operation
 {
@@ -28,10 +26,10 @@ unsigned int getChoice() {
     while (true)
     {
         std::cin >> choice;
-        if (std::cin.fail()) 
+        if (std::cin.fail() || std::cin.peek() != '\n') 
         {
             std::cin.clear();
-            while (getchar() != '\n');
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
         else if (choice < 1 || choice > 5) 
@@ -53,10 +51,10 @@ double getOperand() {
     while (true)
     {
         std::cin >> operand;
-        if (std::cin.fail()) 
+        if (std::cin.fail() || std::cin.peek() != '\n') 
         {
             std::cin.clear();
-            while (getchar() != '\n');
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
         else
@@ -76,10 +74,6 @@ void getInputOperands(double& operand1, double& operand2) {
     operand2 = getOperand();
 }
 
-void printResult(double result) {
-    std::cout << "Result: " << result << "\n";
-}
-
 void* loadLibrary() {
     void* handle = dlopen("./liboperations.so", RTLD_LAZY);
     if (!handle)
@@ -90,26 +84,25 @@ void* loadLibrary() {
     return handle;
 }
 
-operation::arithmeticFunction loadFunction(void* handle, const char* functionName) {
+operation::arithmeticFunction loadFunction(void* handle, const std::string& functionName) {
     dlerror();
     operation::arithmeticFunction operationFunction = 
-                            (operation::arithmeticFunction)dlsym(handle, functionName);
+                            (operation::arithmeticFunction)dlsym(handle, functionName.c_str());
 
     char* error = dlerror();
     if (error)
     {
         std::cerr << "Cannot Find Function: " << error << "\n";
-        dlclose(handle);
         operationFunction = nullptr;
     }
 
     return operationFunction;
 }
 
-std::optional<double> performOperation(const char* functionName, double operand1, double operand2) {
+std::optional<double> performOperation(void* handle, const std::string& functionName, 
+    double operand1, double operand2) {
     std::optional<double> result = std::nullopt;
     
-    void* handle = loadLibrary();
     if (handle)
     {
         operation::arithmeticFunction operationFunction = 
@@ -118,80 +111,62 @@ std::optional<double> performOperation(const char* functionName, double operand1
         {
             result = operationFunction(operand1, operand2);
         }
-        dlclose(handle);
     }
 
     return result;
 }
 
-bool handleOperation(const char* functionName) {
+bool handleOperation(void* handle, const std::string& functionName) {
     double operand1, operand2;
     bool shouldContinue = false;
 
     getInputOperands(operand1, operand2);
-    std::optional<double> result = performOperation(functionName, operand1, operand2);
-
-    if (result.has_value())
+    if (functionName == "divideOperands" && operand2 == 0)
     {
-        printResult(result.value());
+        std::cout << "Error: Division by zero is not allowed.\n";
         shouldContinue = true;
+    }
+    else
+    {
+        std::optional<double> result = performOperation(handle, functionName, operand1, operand2);
+        if (result.has_value())
+        {
+            std::cout << "Result: " << result.value() << "\n";
+            shouldContinue = true;
+        }
     }
     
     return shouldContinue;
 }
 
-bool handleDivision() {
-    bool shouldContinue = false;
-    double operand1, operand2;
-    getInputOperands(operand1, operand2);
-
-    if (operand2 == 0)
-    {
-        std::cout << "Error: Division by zero is not allowed.\n";
-    }
-    else
-    {
-        std::optional<double> result = 
-                                performOperation("divideOperands", operand1, operand2);
-
-        if (result.has_value())
-        {
-            printResult(result.value());
-            shouldContinue = true;
-        }
-    }
-
-    return shouldContinue;
-}
-
-ExitStatus handleChoice(unsigned int choice) {
+ExitStatus handleChoice(void* handle, unsigned int choice) {
     ExitStatus status = ExitStatus::CONTINUE;
 
     switch (choice) 
     {
         case 1:
-        if (!handleOperation("addOperands"))
+        if (!handleOperation(handle, "addOperands"))
         {
             status = ExitStatus::ERROR_EXIT;
         }
         break;
 
         case 2:
-        if (!handleOperation("subtractOperands"))
+        if (!handleOperation(handle, "subtractOperands"))
         {
             status = ExitStatus::ERROR_EXIT;
         }
         break;
 
         case 3:
-        if (!handleOperation("multiplyOperands"))
+        if (!handleOperation(handle, "multiplyOperands"))
         {
             status = ExitStatus::ERROR_EXIT;
         }
         break;
 
         case 4:
-        if (!handleDivision())
+        if (!handleOperation(handle, "divideOperands"))
         {
             status = ExitStatus::ERROR_EXIT;
         }
@@ -212,6 +187,12 @@ int main() {
     unsigned int choice;
     ExitStatus status;
 
+    void* handle = loadLibrary();
+    if (!handle)
+    {
+        return 1;
+    }
+
     while (true) 
     {
         printMenu();
@@ -219,10 +200,11 @@ int main() {
         std::cout << "\nEnter your choice: ";
         choice = getChoice();
 
-        status = handleChoice(choice);
+        status = handleChoice(handle, choice);
 
         if (status != ExitStatus::CONTINUE)
         {
+            dlclose(handle);
             std::cout << "Exiting Program...\n";
             break;
         }
