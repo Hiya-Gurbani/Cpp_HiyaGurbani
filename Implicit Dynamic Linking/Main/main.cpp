@@ -11,16 +11,24 @@ void printMenu() {
     std::cout << "1. Addition\n2. Subtraction\n3. Multiplication\n4. Division\n5. Exit\n";
 }
 
+bool isInputStreamValid() {
+    if (std::cin.fail() || std::cin.peek() != '\n') 
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return false;
+    }
+    return true;
+}
+
 unsigned int getChoice() {
     unsigned int choice;
 
     while (true)
     {
         std::cin >> choice;
-        if (std::cin.fail() || std::cin.peek() != '\n') 
+        if (isInputStreamValid()) 
         {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
         else if (choice < 1 || choice > 5) 
@@ -42,10 +50,8 @@ double getOperand() {
     while (true)
     {
         std::cin >> operand;
-        if (std::cin.fail() || std::cin.peek() != '\n') 
+        if (isInputStreamValid()) 
         {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
         else
