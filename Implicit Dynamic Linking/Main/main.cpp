@@ -27,7 +27,7 @@ unsigned int getChoice() {
     while (true)
     {
         std::cin >> choice;
-        if (isInputStreamValid()) 
+        if (!isInputStreamValid()) 
         {
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
@@ -50,7 +50,7 @@ double getOperand() {
     while (true)
     {
         std::cin >> operand;
-        if (isInputStreamValid()) 
+        if (!isInputStreamValid()) 
         {
             std::cout << "Invalid Input. Kindly enter a number: ";
         }
