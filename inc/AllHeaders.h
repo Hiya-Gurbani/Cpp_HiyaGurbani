@@ -8,4 +8,9 @@
 #include "HelperFunction.h"
 #include "ValidationFunction.h"
 
+struct MatrixDimension {
+    int rows;
+    int cols;
+};
+
 #endif

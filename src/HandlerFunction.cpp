@@ -8,7 +8,7 @@ void handleMatrixAddition() {
     int matrixRows, matrixColumns;
     getMatrixDimensions(matrixRows, matrixColumns);
 
-    int** result = addNMatrices(numberOfMatrix, matrixRows, matrixColumns);
+    double** result = addNMatrices(numberOfMatrix, matrixRows, matrixColumns);
 
     std::cout << "Result: \n";
     displayMatrix(result, matrixRows, matrixColumns);
@@ -21,15 +21,15 @@ void handleMatrixMultiplication() {
     std::cout << "Enter number of matrix you want to perform multiplication at: ";
     std::cin >> numberOfMatrix;
 
-    int** matricesDimensions = inputMatrixDimensions(numberOfMatrix);
+    MatrixDimension* matricesDimensions = inputMatrixDimensions(numberOfMatrix);
 
-    int** result = multiplyNMatrices(matricesDimensions, numberOfMatrix);
+    double** result = multiplyNMatrices(matricesDimensions, numberOfMatrix);
 
     std::cout << "Result: \n";
-    displayMatrix(result, matricesDimensions[0][0], matricesDimensions[numberOfMatrix -1][1]);
+    displayMatrix(result, matricesDimensions[0].rows, matricesDimensions[numberOfMatrix -1].cols);
     
-    deleteMatrix(result, matricesDimensions[0][0]);
-    deleteMatrix(matricesDimensions, numberOfMatrix);
+    deleteMatrix(result, matricesDimensions[0].rows);
+    delete[] matricesDimensions;
 }
 
 bool handleChoice(int choice) {

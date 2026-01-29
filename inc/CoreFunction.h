@@ -1,10 +1,12 @@
 #ifndef CORE_FUNCTION_H
 #define CORE_FUNCTION_H
 
-void addMatrices(int** matrix1, int** matrix2, int matrixRows, int matrixColumns);
-int** addNMatrices(int numberOfMatrix, int matrixRows, int matrixColumns);
+struct MatrixDimension;
 
-int** multiplyMatrices(int** matrix1, int** matrix2, int rows, int cols, int common);
-int** multiplyNMatrices(int** matrixDimensions, int numberOfMatrix);
+void addMatrices(double** matrix1, double** matrix2, int matrixRows, int matrixColumns);
+double** addNMatrices(int numberOfMatrix, int matrixRows, int matrixColumns);
+
+double** multiplyMatrices(double** matrix1, double** matrix2, int rows, int cols, int common);
+double** multiplyNMatrices(MatrixDimension* matrixDimensions, int numberOfMatrix);
 
 #endif

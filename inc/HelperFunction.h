@@ -1,17 +1,19 @@
 #ifndef HELPER_FUNCTION_H
 #define HELPER_FUNCTION_H
 
+struct MatrixDimension;
+
 void printMenu();
 
 void getMatrixDimensions(int& matrixRows, int& matrixColumns);
-int** getMatricesDimensions(int numberOfMatrix);
-bool areDimensionsValid(int** matricesDimensions, int numberOfMatrix);
-int** inputMatrixDimensions(int numberOfMatrices);
+MatrixDimension* getMatricesDimensions(int numberOfMatrix);
+bool areDimensionsValid(MatrixDimension* matricesDimensions, int numberOfMatrix);
+MatrixDimension* inputMatrixDimensions(int numberOfMatrices);
 
 //Matrix Helpers
-int** allocateMatrix(int matrixRows, int matrixColumns);
-void inputMatrix(int** matrix, int matrixRows, int matrixColumns);
-void displayMatrix(int** array, int matrixRows, int matrixColumns);
-void deleteMatrix(int** matrix, int matrixRows);
+double** allocateMatrix(int matrixRows, int matrixColumns);
+void inputMatrix(double** matrix, int matrixRows, int matrixColumns);
+void displayMatrix(double** array, int matrixRows, int matrixColumns);
+void deleteMatrix(double** matrix, int matrixRows);
 
 #endif

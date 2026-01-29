@@ -13,21 +13,22 @@ void getMatrixDimensions(int& matrixRows, int& matrixColumns) {
     inputValue(matrixColumns);
 }
 
-int** getMatricesDimensions(int numberOfMatrix) {
-    int** matricesDimensions = allocateMatrix(numberOfMatrix, 2);
+MatrixDimension* getMatricesDimensions(int numberOfMatrix) {
+    MatrixDimension* matricesDimensions = new MatrixDimension[numberOfMatrix];
 
     for (int index = 0; index < numberOfMatrix; index++) {
         std::cout << "Matrix " << index + 1 << ":\n";
-        getMatrixDimensions(matricesDimensions[index][0], matricesDimensions[index][1]);
+        getMatrixDimensions(matricesDimensions[index].rows, 
+        matricesDimensions[index].cols);
     }
 
     return matricesDimensions;
 }
 
-bool areDimensionsValid(int** matricesDimensions, int numberOfMatrix) {
+bool areDimensionsValid(MatrixDimension* matricesDimensions, int numberOfMatrix) {
     for (int index = 1; index < numberOfMatrix; index++)
     {
-        if (matricesDimensions[index - 1][1] != matricesDimensions[index][0])
+        if (matricesDimensions[index - 1].cols != matricesDimensions[index].rows)
         {
             std::cout << "Error: Matrices can't be multiplied! Dimensions are invalid.\n";
             return false;
@@ -36,8 +37,8 @@ bool areDimensionsValid(int** matricesDimensions, int numberOfMatrix) {
     return true;
 }
 
-int** inputMatrixDimensions(int numberOfMatrices) {
-    int** matricesDimensions;
+MatrixDimension* inputMatrixDimensions(int numberOfMatrices) {
+    MatrixDimension* matricesDimensions;
     do {
         std::cout << "\nMatrix multiplication rule:\n"
                     "For every consecutive pair, columns of matrix i "
@@ -49,22 +50,22 @@ int** inputMatrixDimensions(int numberOfMatrices) {
     return matricesDimensions;
 }
 
-int** allocateMatrix(int matrixRows, int matrixColumns) {
-    int** matrix = new int*[matrixRows]();
+double** allocateMatrix(int matrixRows, int matrixColumns) {
+    double** matrix = new double*[matrixRows]();
     for (int index = 0; index < matrixRows; index++)
     {
-        matrix[index] = new int[matrixColumns]();
+        matrix[index] = new double[matrixColumns]();
     }
 
     return matrix;
 }
 
-void inputMatrix(int** matrix, int matrixRows, int matrixColumns) {
+void inputMatrix(double** matrix, int matrixRows, int matrixColumns) {
     for (int rowIndex = 0; rowIndex < matrixRows; rowIndex++)
     {
         for (int colIndex = 0; colIndex < matrixColumns; colIndex++)
         {
-            std::cout << "Enter element of [" << rowIndex << "] [" << colIndex + "] : ";
+            std::cout << "Enter element at [" << rowIndex << "][" << colIndex << "] : ";
             inputValue(*(*(matrix + rowIndex) + colIndex));
         }
     }
@@ -72,7 +73,7 @@ void inputMatrix(int** matrix, int matrixRows, int matrixColumns) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void displayMatrix(int** matrix, int matrixRows, int matrixColumns) {
+void displayMatrix(double** matrix, int matrixRows, int matrixColumns) {
     for (int rowIndex = 0; rowIndex < matrixRows; rowIndex++)
     {
         for (int colIndex = 0; colIndex < matrixColumns; colIndex++)
@@ -83,7 +84,7 @@ void displayMatrix(int** matrix, int matrixRows, int matrixColumns) {
     }
 }
 
-void deleteMatrix(int** matrix, int matrixRows) {
+void deleteMatrix(double** matrix, int matrixRows) {
     for (int index = 0; index < matrixRows; index++)
     {
         delete[] matrix[index];
