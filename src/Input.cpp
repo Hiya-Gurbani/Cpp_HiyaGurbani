@@ -3,7 +3,7 @@
 #include <limits>
 
 bool isInputStreamValid() {
-    bool isValid = false;
+    bool isValidStream = false;
     if (std::cin.fail()) 
     {
         std::cin.clear();
@@ -18,14 +18,14 @@ bool isInputStreamValid() {
     
         if (std::cin.peek() == '\n') 
         {
-            isValid = true;
+            isValidStream = true;
         }
         else
         {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
-    return isValid;
+    return isValidStream;
 }
 
 int inputValue(int minValue, int maxValue) {

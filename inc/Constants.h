@@ -8,6 +8,6 @@ const int MIN_COLS = 1;
 const int MAX_COLS = 10;
 
 const int MIN_MATRICES = 2;
-const int MAX_MATRICES = 10;
+const int MAX_MATRICES = 20;
 
 #endif

@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "MatrixOperations.h"
 #include "MatrixStructs.h"
+#include "MatrixUtils.h"
 #include <iostream>
 
 void printMenu() {
@@ -15,12 +16,13 @@ void printMenu() {
 }
 
 bool handleMatrixAddition() {
-    std::cout << "Enter number of matrices to add: ";
-    int numberOfMatrix = inputValue(MIN_MATRICES, MAX_MATRICES);
+    std::cout << "Enter number of matrices to add (between " 
+              << MIN_MATRICES << " and " << MAX_MATRICES << "): ";
+    int numberOfMatrices = inputValue(MIN_MATRICES, MAX_MATRICES);
 
-    MatrixDimension dimension = getDimensions();
+    MatrixDimension dimension = inputDimension();
 
-    Matrix result = addMultipleMatrices(numberOfMatrix, dimension);
+    Matrix result = addMultipleMatrices(numberOfMatrices, dimension);
     if (result.data)
     {
         std::cout << "\nResultant Matrix: \n";
@@ -36,14 +38,15 @@ bool handleMatrixAddition() {
 }
 
 bool handleMatrixMultiplication() {
-    std::cout << "Enter number of matrices to multiply: ";
-    int numberOfMatrix = inputValue(MIN_MATRICES, MAX_MATRICES);
+    std::cout << "Enter number of matrices to multiply (between " 
+              << MIN_MATRICES << " and " << MAX_MATRICES << "): ";
+    int numberOfMatrices = inputValue(MIN_MATRICES, MAX_MATRICES);
     bool isSuccess = false;
 
-    MatrixDimension* dimensions = getValidMultipleDimensions(numberOfMatrix);
+    MatrixDimension* dimensions = inputValidDimensions(numberOfMatrices);
     if (dimensions)
     {
-        Matrix result = multiplyMultipleMatrices(dimensions, numberOfMatrix);
+        Matrix result = multiplyMultipleMatrices(dimensions, numberOfMatrices);
         if (result.data)
         {
             std::cout << "\nResultant Matrix: \n";

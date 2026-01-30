@@ -12,6 +12,7 @@ mkdir bin
 g++ -I./inc -fPIC -c src/DimensionHelpers.cpp -o bin/DimensionHelpers.o
 g++ -I./inc -fPIC -c src/Input.cpp -o bin/Input.o
 g++ -I./inc -fPIC -c src/MatrixOperations.cpp -o bin/MatrixOperations.o
+g++ -I./inc -fPIC -c src/MatrixUtils.cpp -o bin/MatrixUtils.o
 g++ -I./inc -fPIC -c src/MenuHandlers.cpp -o bin/MenuHandlers.o
 ```
 

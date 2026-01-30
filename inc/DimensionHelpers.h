@@ -3,8 +3,8 @@
 
 struct MatrixDimension;
 
-MatrixDimension getDimensions();
-MatrixDimension getValidNextDimension(int matrixIndex, int requiredRows);
-MatrixDimension* getValidMultipleDimensions(int numberOfMatrix);
+MatrixDimension inputDimension();
+MatrixDimension inputValidNextDimension(int matrixIndex, int requiredRows);
+MatrixDimension* inputValidDimensions(int numberOfMatrix);
 
 #endif

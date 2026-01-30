@@ -1,72 +1,8 @@
 #include "MatrixOperations.h"
 #include "Input.h"
 #include "MatrixStructs.h"
+#include "MatrixUtils.h"
 #include <iostream>
-#include <iomanip>
-
-void deleteMatrix(Matrix& matrix) {
-    if (!matrix.data)
-    {
-        return;
-    }
-    
-    for (int rowIndex = 0; rowIndex < matrix.dimension.rows; rowIndex++)
-    {
-        delete[] *(matrix.data + rowIndex);
-    }
-    delete[] matrix.data;
-    matrix.data = nullptr;
-    matrix.dimension.rows = matrix.dimension.cols = 0;
-}
-
-Matrix createMatrix(MatrixDimension dimension) {
-    Matrix matrix;
-    matrix.dimension = dimension;
-
-    matrix.data = new(std::nothrow) double*[dimension.rows]();
-    if (matrix.data)
-    {
-        for (int rowIndex = 0; rowIndex < dimension.rows; rowIndex++)
-        {
-            *(matrix.data + rowIndex) = new (std::nothrow) double[dimension.cols]();
-            if (!matrix.data[rowIndex])
-            {
-                deleteMatrix(matrix); 
-                break;
-            }
-        }
-    }
-    if (!matrix.data)
-    {
-        std::cerr << "Error: Failed to allocate memory\n";
-    }
-
-    return matrix;
-}
-
-void inputMatrix(Matrix& matrix) {
-    for (int rowIndex = 0; rowIndex < matrix.dimension.rows; rowIndex++)
-    {
-        for (int colIndex = 0; colIndex < matrix.dimension.cols; colIndex++)
-        {
-            std::cout << "Enter element [" << rowIndex << "][" << colIndex << "]: ";
-            inputValue(*(*(matrix.data + rowIndex) + colIndex));
-        }
-    }
-}
-
-void displayMatrix(const Matrix& matrix) {
-    const int columnWidth = 4;
-    for (int rowIndex = 0; rowIndex < matrix.dimension.rows; rowIndex++)
-    {
-        for (int colIndex = 0; colIndex < matrix.dimension.cols; colIndex++)
-        {
-            std::cout << std::setw(columnWidth) << 
-            *(*(matrix.data + rowIndex) + colIndex) << " ";
-        }
-        std::cout << "\n";
-    }
-}
 
 void addMatricesInPlace(Matrix& result, const Matrix& matrix) {
     for (int rowIndex = 0; rowIndex < result.dimension.rows; rowIndex++)
@@ -79,7 +15,7 @@ void addMatricesInPlace(Matrix& result, const Matrix& matrix) {
     }
 }
 
-Matrix addMultipleMatrices(int numberOfMatrix, MatrixDimension dimension) {
+Matrix addMultipleMatrices(int numberOfMatrices, MatrixDimension dimension) {
     Matrix result = createMatrix(dimension);
     if (result.data) {
         Matrix nextMatrix = createMatrix(dimension);
@@ -87,7 +23,7 @@ Matrix addMultipleMatrices(int numberOfMatrix, MatrixDimension dimension) {
         {
             std::cout << "\nEnter Matrix 1: \n";
             inputMatrix(result);
-            for (int index = 2; index <= numberOfMatrix; index++)
+            for (int index = 2; index <= numberOfMatrices; index++)
             {
                 std::cout << "\nEnter Matrix " << index << ": \n";
                 inputMatrix(nextMatrix);
@@ -125,45 +61,44 @@ Matrix multiplyMatrices(const Matrix& matrix1, const Matrix& matrix2) {
     return result;
 }
 
-bool updateAccumulatedProduct(Matrix& result, Matrix& nextMatrix) {
-    Matrix tempResult = multiplyMatrices(result, nextMatrix);
+bool updateAccumulatedProduct(Matrix& product, Matrix& nextMatrix) {
+    Matrix tempProduct = multiplyMatrices(product, nextMatrix);
     deleteMatrix(nextMatrix);
-    
-    if (!tempResult.data) {
-        deleteMatrix(result);
-        result = tempResult;
+    if (!tempProduct.data) {
+        deleteMatrix(product);
+        product = tempProduct;
         return false;
     }
     
-    deleteMatrix(result);
-    result = tempResult;
+    deleteMatrix(product);
+    product = tempProduct;
     return true;
 }
 
-Matrix multiplyMultipleMatrices(MatrixDimension* dimensions, int numberOfMatrix) {
-    Matrix result = createMatrix(dimensions[0]);
-    if (result.data) {
+Matrix multiplyMultipleMatrices(MatrixDimension* dimensions, int numberOfMatrices) {
+    Matrix product = createMatrix(dimensions[0]);
+    if (product.data) {
         std::cout << "\nEnter Matrix 1: \n";
-        inputMatrix(result);
+        inputMatrix(product);
 
-        for (int index = 1; index < numberOfMatrix; index++)
+        for (int index = 1; index < numberOfMatrices; index++)
         {
             Matrix nextMatrix = createMatrix(dimensions[index]);
             if (!nextMatrix.data) {
-                deleteMatrix(result);
-                result = nextMatrix;
+                deleteMatrix(product);
+                product = nextMatrix;
                 break;
             }
 
             std::cout << "\nEnter Matrix " << index + 1 << ": \n";
             inputMatrix(nextMatrix);
 
-            if (!updateAccumulatedProduct(result, nextMatrix))
+            if (!updateAccumulatedProduct(product, nextMatrix))
             {
                 break;
             }
         }
     }
 
-    return result;
+    return product;
 }

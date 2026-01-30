@@ -4,9 +4,10 @@
 #include "MatrixStructs.h"
 #include <iostream>
 
-MatrixDimension getDimensions() {
+MatrixDimension inputDimension() {
     MatrixDimension dimension;
-    std::cout << "\nEnter the number of rows: ";
+    std::cout << "Enter the number of rows: "; 
+              
     dimension.rows = inputValue(MIN_ROWS, MAX_ROWS);
 
     std::cout << "Enter the number of columns: ";
@@ -15,19 +16,19 @@ MatrixDimension getDimensions() {
     return dimension;
 }
 
-MatrixDimension getValidNextDimension(int matrixIndex, int requiredRows) {
+MatrixDimension inputValidNextDimension(int matrixIndex, int requiredRows) {
     MatrixDimension dimension;
-    bool isValid = false;
+    bool isValidDimension = false;
 
-    while (!isValid) {
+    while (!isValidDimension) {
         std::cout << "\nMatrix " << matrixIndex + 1 << " dimensions: \n"
                   << "Note: Rows must be equal to " << requiredRows << " \n";
 
-        dimension = getDimensions();
+        dimension = inputDimension();
 
         if (dimension.cols == requiredRows)
         {
-            isValid = true;
+            isValidDimension = true;
         }
         else
         {
@@ -35,19 +36,18 @@ MatrixDimension getValidNextDimension(int matrixIndex, int requiredRows) {
                       << dimension.cols << " rows. Try again.\n";
         }
     }
-
     return dimension;
 }
 
-MatrixDimension* getValidMultipleDimensions(int numberOfMatrix) {
-    MatrixDimension* dimensions = new(std::nothrow) MatrixDimension[numberOfMatrix];
+MatrixDimension* inputValidDimensions(int numberOfMatrices) {
+    MatrixDimension* dimensions = new(std::nothrow) MatrixDimension[numberOfMatrices];
     if (dimensions)
     {
         std::cout << "\nMatrix 1 dimensions:\n";
-        dimensions[0] = getDimensions();
+        dimensions[0] = inputDimension();
 
-        for (int index = 1; index < numberOfMatrix; index++) {
-            dimensions[index] = getValidNextDimension(index, dimensions[index - 1].cols);
+        for (int index = 1; index < numberOfMatrices; index++) {
+            dimensions[index] = inputValidNextDimension(index, dimensions[index - 1].cols);
         }
     }
     else
