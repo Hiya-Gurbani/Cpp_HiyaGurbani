@@ -2,8 +2,8 @@
 #define MENU_HANDLERS_H
 
 void printMenu();
-void handleMatrixAddition();
-void handleMatrixMultiplication();
+bool handleMatrixAddition();
+bool handleMatrixMultiplication();
 bool handleChoice(int choice);
 
 #endif

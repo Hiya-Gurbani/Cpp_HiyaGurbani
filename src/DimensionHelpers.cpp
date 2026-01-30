@@ -7,38 +7,52 @@
 MatrixDimension getDimensions() {
     MatrixDimension dimension;
     std::cout << "\nEnter the number of rows: ";
-    dimension.rows = inputValue(MIN_DIMENSION, MAX_DIMENSION);
+    dimension.rows = inputValue(MIN_ROWS, MAX_ROWS);
 
     std::cout << "Enter the number of columns: ";
-    dimension.cols = inputValue(MIN_DIMENSION, MAX_DIMENSION);
+    dimension.cols = inputValue(MIN_COLS, MAX_COLS);
+
+    return dimension;
+}
+
+MatrixDimension getValidNextDimension(int matrixIndex, int requiredRows) {
+    MatrixDimension dimension;
+    bool isValid = false;
+
+    while (!isValid) {
+        std::cout << "\nMatrix " << matrixIndex + 1 << " dimensions: \n"
+                  << "Note: Rows must be equal to " << requiredRows << " \n";
+
+        dimension = getDimensions();
+
+        if (dimension.cols == requiredRows)
+        {
+            isValid = true;
+        }
+        else
+        {
+            std::cout << "Error: Matrix " << matrixIndex + 1 << " must have "
+                      << dimension.cols << " rows. Try again.\n";
+        }
+    }
 
     return dimension;
 }
 
 MatrixDimension* getValidMultipleDimensions(int numberOfMatrix) {
-    MatrixDimension* dimensions = new MatrixDimension[numberOfMatrix];
+    MatrixDimension* dimensions = new(std::nothrow) MatrixDimension[numberOfMatrix];
+    if (dimensions)
+    {
+        std::cout << "\nMatrix 1 dimensions:\n";
+        dimensions[0] = getDimensions();
 
-    std::cout << "\nMatrix 1 dimensions:\n";
-    dimensions[0] = getDimensions();
-
-    for (int index = 1; index < numberOfMatrix; index++) {
-        bool isValid = false;
-        while (!isValid)
-        {
-            std::cout << "\nMatrix " << index + 1 << " dimensions: \n";
-            std::cout << "Note: Rows must be equal to " << dimensions[index - 1].cols << " \n";
-            dimensions[index] = getDimensions();
-
-            if (dimensions[index].rows == dimensions[index - 1].cols)
-            {
-                isValid = true;
-            }
-            else
-            {
-                std::cout << "Error: Matrix " << index + 1 << " must have "
-                          << dimensions[index - 1].cols << " rows. Try again.\n";
-            }
+        for (int index = 1; index < numberOfMatrix; index++) {
+            dimensions[index] = getValidNextDimension(index, dimensions[index - 1].cols);
         }
+    }
+    else
+    {
+        std::cerr << "Memory allocation failed! Cannot perform matrix multiplication.\n";
     }
 
     return dimensions;

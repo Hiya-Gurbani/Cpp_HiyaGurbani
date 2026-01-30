@@ -15,20 +15,20 @@ g++ -I./inc -fPIC -c src/MatrixOperations.cpp -o bin/MatrixOperations.o
 g++ -I./inc -fPIC -c src/MenuHandlers.cpp -o bin/MenuHandlers.o
 ```
 
-4. **Create the shared library:**
+3. **Create the shared library:**
 
 ```bash
 g++ -shared -o libmatrix.so bin/*.o
 ```
 
-5. **Compile the main program and link it with the shared library:**
+4. **Compile the main program and link it with the shared library:**
 
 ```bash
 g++ -I./inc main/main.cpp -L. -lmatrix -Wl,-rpath=. -o main.out
 ```
 
 
-6. **Run the program:**
+5. **Run the program:**
 
 ```bash
 ./main.out

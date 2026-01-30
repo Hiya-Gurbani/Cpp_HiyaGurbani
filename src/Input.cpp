@@ -4,7 +4,6 @@
 
 bool isInputStreamValid() {
     bool isValid = false;
-
     if (std::cin.fail()) 
     {
         std::cin.clear();
@@ -26,7 +25,6 @@ bool isInputStreamValid() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
-    
     return isValid;
 }
 
