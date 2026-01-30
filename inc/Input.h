@@ -1,5 +1,5 @@
-#ifndef VALIDATION_FUNCTION_H
-#define VALIDATION_FUNCTION_H
+#ifndef INPUT_H
+#define INPUT_H
 
 bool isInputStreamValid();
 void inputValue(int& value);

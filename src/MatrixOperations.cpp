@@ -1,6 +1,48 @@
 #include "AllHeaders.h"
 
-void addMatrices(double** matrix1, double** matrix2, int matrixRows, int matrixColumns) {
+double** allocateMatrix(int matrixRows, int matrixColumns) {
+    double** matrix = new double*[matrixRows]();
+    for (int index = 0; index < matrixRows; index++)
+    {
+        matrix[index] = new double[matrixColumns]();
+    }
+
+    return matrix;
+}
+
+void inputMatrix(double** matrix, int matrixRows, int matrixColumns) {
+    for (int rowIndex = 0; rowIndex < matrixRows; rowIndex++)
+    {
+        for (int colIndex = 0; colIndex < matrixColumns; colIndex++)
+        {
+            std::cout << "Enter element at [" << rowIndex << "][" << colIndex << "] : ";
+            inputValue(*(*(matrix + rowIndex) + colIndex));
+        }
+    }
+
+    // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void displayMatrix(double** matrix, int matrixRows, int matrixColumns) {
+    for (int rowIndex = 0; rowIndex < matrixRows; rowIndex++)
+    {
+        for (int colIndex = 0; colIndex < matrixColumns; colIndex++)
+        {
+            std::cout << *(*(matrix + rowIndex) + colIndex) << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+void deleteMatrix(double** matrix, int matrixRows) {
+    for (int index = 0; index < matrixRows; index++)
+    {
+        delete[] matrix[index];
+    }
+    delete[] matrix;
+}
+
+void addMatricesInPlace(double** matrix1, double** matrix2, int matrixRows, int matrixColumns) {
     for (int rowIndex = 0; rowIndex < matrixRows; rowIndex++)
     {
         for (int colIndex = 0; colIndex < matrixColumns; colIndex++)
@@ -11,7 +53,7 @@ void addMatrices(double** matrix1, double** matrix2, int matrixRows, int matrixC
     }
 }
 
-double** addNMatrices(int numberOfMatrix, int matrixRows, int matrixColumns) {
+double** addMultipleMatrices(int numberOfMatrix, int matrixRows, int matrixColumns) {
     double** result = allocateMatrix(matrixRows, matrixColumns);
     double** nextMatrix = allocateMatrix(matrixRows, matrixColumns);
 
@@ -23,7 +65,7 @@ double** addNMatrices(int numberOfMatrix, int matrixRows, int matrixColumns) {
         std::cout << "Enter the " << index << " array: ";
         inputMatrix(nextMatrix, matrixRows, matrixColumns);
 
-        addMatrices(result, nextMatrix, matrixRows, matrixColumns);
+        addMatricesInPlace(result, nextMatrix, matrixRows, matrixColumns);
     }
 
     deleteMatrix(nextMatrix, matrixRows);
@@ -46,7 +88,7 @@ double** multiplyMatrices(double** matrix1, double** matrix2, int rows, int cols
     return result;
 }
 
-double** multiplyNMatrices(MatrixDimension* matrixDimensions, int numberOfMatrix) {
+double** multiplyMultipleMatrices(MatrixDimension* matrixDimensions, int numberOfMatrix) {
     double** result = allocateMatrix(matrixDimensions[0].rows, matrixDimensions[0].cols);
     std::cout << "Enter Matrix 1: ";
     inputMatrix(result, matrixDimensions[0].rows, matrixDimensions[0].cols);

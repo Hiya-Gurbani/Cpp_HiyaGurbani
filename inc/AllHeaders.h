@@ -3,14 +3,9 @@
 
 #include <iostream>
 #include <limits>
-#include "CoreFunction.h"
-#include "HandlerFunction.h"
-#include "HelperFunction.h"
-#include "ValidationFunction.h"
-
-struct MatrixDimension {
-    int rows;
-    int cols;
-};
+#include "DimensionHelpers.h"
+#include "Input.h"
+#include "MatrixOperations.h"
+#include "MenuHandlers.h"
 
 #endif

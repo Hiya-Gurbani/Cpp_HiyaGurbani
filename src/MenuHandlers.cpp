@@ -1,14 +1,19 @@
 #include "AllHeaders.h"
 
+void printMenu() {
+    std::cout << "\nOperations: \n";
+    std::cout << "1. Matrix Addition\n2. Matrix Multiplication\n3. Exit\n";
+}
+
 void handleMatrixAddition() {
     int numberOfMatrix;
     std::cout << "Enter number of matrix you want to perform addition at: ";
     inputValue(numberOfMatrix);
 
     int matrixRows, matrixColumns;
-    getMatrixDimensions(matrixRows, matrixColumns);
+    getDimensions(matrixRows, matrixColumns);
 
-    double** result = addNMatrices(numberOfMatrix, matrixRows, matrixColumns);
+    double** result = addMultipleMatrices(numberOfMatrix, matrixRows, matrixColumns);
 
     std::cout << "Result: \n";
     displayMatrix(result, matrixRows, matrixColumns);
@@ -19,11 +24,11 @@ void handleMatrixAddition() {
 void handleMatrixMultiplication() {
     int numberOfMatrix;
     std::cout << "Enter number of matrix you want to perform multiplication at: ";
-    std::cin >> numberOfMatrix;
+    inputValue(numberOfMatrix);
 
-    MatrixDimension* matricesDimensions = inputMatrixDimensions(numberOfMatrix);
+    MatrixDimension* matricesDimensions = inputValidatedDimensions(numberOfMatrix);
 
-    double** result = multiplyNMatrices(matricesDimensions, numberOfMatrix);
+    double** result = multiplyMultipleMatrices(matricesDimensions, numberOfMatrix);
 
     std::cout << "Result: \n";
     displayMatrix(result, matricesDimensions[0].rows, matricesDimensions[numberOfMatrix -1].cols);
