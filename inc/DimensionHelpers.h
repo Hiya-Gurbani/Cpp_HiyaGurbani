@@ -1,12 +1,10 @@
 #ifndef DIMENSION_HELPERS_H
 #define DIMENSION_HELPERS_H
 
-struct MatrixDimension {
-    int rows;
-    int cols;
-};
+struct MatrixDimension;
+struct Matrix;
 
-void getDimensions(int& matrixRows, int& matrixColumns);
+MatrixDimension getDimensions();
 MatrixDimension* getMultipleDimensions(int numberOfMatrix);
 bool areDimensionsValid(MatrixDimension* matricesDimensions, int numberOfMatrix);
 MatrixDimension* inputValidatedDimensions(int numberOfMatrices);

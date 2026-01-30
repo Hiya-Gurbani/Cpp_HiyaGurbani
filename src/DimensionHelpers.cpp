@@ -1,31 +1,36 @@
 #include "AllHeaders.h"
 
-void getDimensions(int& matrixRows, int& matrixColumns) {
-    std::cout << "Enter the number of rows of matrix: ";
-    inputValue(matrixRows);
+MatrixDimension getDimensions() {
+    MatrixDimension dimension;
+    std::cout << "\nEnter the number of rows: ";
+    inputValue(dimension.rows);
 
-    std::cout << "Enter the number of columns of matrix: ";
-    inputValue(matrixColumns);
+    std::cout << "Enter the number of columns: ";
+    inputValue(dimension.cols);
+
+    return dimension;
 }
 
 MatrixDimension* getMultipleDimensions(int numberOfMatrix) {
-    MatrixDimension* matricesDimensions = new MatrixDimension[numberOfMatrix];
+    MatrixDimension* dimensions = new MatrixDimension[numberOfMatrix];
 
     for (int index = 0; index < numberOfMatrix; index++) {
-        std::cout << "Matrix " << index + 1 << ":\n";
-        getDimensions(matricesDimensions[index].rows, 
-        matricesDimensions[index].cols);
+        std::cout << "\nMatrix " << index + 1 << " dimensions:";
+        dimensions[index] = getDimensions();
     }
 
-    return matricesDimensions;
+    return dimensions;
 }
 
-bool areDimensionsValid(MatrixDimension* matricesDimensions, int numberOfMatrix) {
+bool areDimensionsValid(MatrixDimension* dimensions, int numberOfMatrix) {
     for (int index = 1; index < numberOfMatrix; index++)
     {
-        if (matricesDimensions[index - 1].cols != matricesDimensions[index].rows)
+        if (dimensions[index - 1].cols != dimensions[index].rows)
         {
-            std::cout << "Error: Matrices can't be multiplied! Dimensions are invalid.\n";
+            std::cout << "\nError: Invalid dimensions for multiplication.\n";
+            std::cout << "Matrix " << index << " has " << dimensions[index - 1].cols 
+            << " columns but Matrix " << index + 1 << " has " 
+            << dimensions[index - 1].cols << " rows.\n";
             return false;
         }
     }
@@ -33,18 +38,19 @@ bool areDimensionsValid(MatrixDimension* matricesDimensions, int numberOfMatrix)
 }
 
 MatrixDimension* inputValidatedDimensions(int numberOfMatrices) {
-    MatrixDimension* matricesDimensions = nullptr;
+    MatrixDimension* dimensions = nullptr;
     do {
-        if (matricesDimensions != nullptr)
+        if (dimensions != nullptr)
         {
-            delete[] matricesDimensions;
+            delete[] dimensions;
         }
-        std::cout << "\nMatrix multiplication rule:\n"
-                    "For every consecutive pair, columns of matrix i "
-                    "must equal rows of matrix i+1.\n\n";
 
-        matricesDimensions = getMultipleDimensions(numberOfMatrices);
-    } while (!areDimensionsValid(matricesDimensions, numberOfMatrices));
+        std::cout << "\nMatrix Multiplication Requirement:\n"
+                    "The number of columns in each matrix must be "
+                    "equal to rows of next matrix.\n";
 
-    return matricesDimensions;
+        dimensions = getMultipleDimensions(numberOfMatrices);
+    } while (!areDimensionsValid(dimensions, numberOfMatrices));
+
+    return dimensions;
 }

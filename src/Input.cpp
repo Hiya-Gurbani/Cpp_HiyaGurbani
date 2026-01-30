@@ -1,40 +1,29 @@
 #include "AllHeaders.h"
 
 bool isInputStreamValid() {
-    if (std::cin.fail() || std::cin.peek() != '\n') 
+    bool isValid = true;
+
+    if (std::cin.fail()) 
     {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return false;
+        isValid = false;
     }
-    return true;
+    
+    while (std::cin.peek() == ' ' || std::cin.peek() == '\t') 
+    {
+        std::cin.get();
+    }
+    
+    if (std::cin.peek() != '\n') 
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        isValid = false;
+    }
+    
+    return isValid;
 }
-
-// bool isInputStreamValid() {
-//     if (std::cin.fail()) 
-//     {
-//         std::cin.clear();
-//         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-//         return false;
-//     }
-    
-//     // Skip trailing whitespace (spaces and tabs)
-//     char nextChar;
-//     while (std::cin.peek() == ' ' || std::cin.peek() == '\t') {
-//         std::cin.get();
-//     }
-    
-//     // After skipping spaces, next character must be newline
-//     nextChar = std::cin.peek();
-//     if (nextChar != '\n' && nextChar != EOF) 
-//     {
-//         std::cin.clear();
-//         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-//         return false;
-//     }
-    
-//     return true;
-// }
 
 void inputValue(int& value) {
     while (true) 
@@ -46,7 +35,7 @@ void inputValue(int& value) {
         }
         else
         {
-            std::cout << "Invalid Input. Only integers allowed. Enter again: ";
+            std::cout << "Invalid Input. Please enter an integer: ";
         }
     }
 }
@@ -61,7 +50,7 @@ void inputValue(double& value) {
         }
         else
         {
-            std::cout << "Invalid Input. Only double allowed. Enter again: ";
+            std::cout << "Invalid Input. Please enter a number: ";
         }
     }
 }

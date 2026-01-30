@@ -1,40 +1,42 @@
 #include "AllHeaders.h"
 
 void printMenu() {
-    std::cout << "\nOperations: \n";
-    std::cout << "1. Matrix Addition\n2. Matrix Multiplication\n3. Exit\n";
+    std::cout << "\n===============Operations===============\n"
+              << "1. Matrix Addition\n"
+              << "2. Matrix Multiplication\n"
+              << "3. Exit\n"
+              << "========================================\n";
 }
 
 void handleMatrixAddition() {
     int numberOfMatrix;
-    std::cout << "Enter number of matrix you want to perform addition at: ";
+    std::cout << "Enter number of matrices to add: ";
     inputValue(numberOfMatrix);
 
-    int matrixRows, matrixColumns;
-    getDimensions(matrixRows, matrixColumns);
+    MatrixDimension dimension = getDimensions();
 
-    double** result = addMultipleMatrices(numberOfMatrix, matrixRows, matrixColumns);
+    Matrix result = addMultipleMatrices(numberOfMatrix, dimension);
 
-    std::cout << "Result: \n";
-    displayMatrix(result, matrixRows, matrixColumns);
+    std::cout << "\nResultant Matrix: \n";
+    displayMatrix(result);
 
-    deleteMatrix(result, matrixRows);
+    deleteMatrix(result);
 }
 
 void handleMatrixMultiplication() {
     int numberOfMatrix;
-    std::cout << "Enter number of matrix you want to perform multiplication at: ";
+    std::cout << "Enter number of matrices to multiply: ";
     inputValue(numberOfMatrix);
 
-    MatrixDimension* matricesDimensions = inputValidatedDimensions(numberOfMatrix);
+    MatrixDimension* dimensions = inputValidatedDimensions(numberOfMatrix);
 
-    double** result = multiplyMultipleMatrices(matricesDimensions, numberOfMatrix);
+    Matrix result = multiplyMultipleMatrices(dimensions, numberOfMatrix);
 
-    std::cout << "Result: \n";
-    displayMatrix(result, matricesDimensions[0].rows, matricesDimensions[numberOfMatrix -1].cols);
+    std::cout << "\nResultant Matrix: \n";
+    displayMatrix(result);
     
-    deleteMatrix(result, matricesDimensions[0].rows);
-    delete[] matricesDimensions;
+    deleteMatrix(result);
+    delete[] dimensions;
 }
 
 bool handleChoice(int choice) {
@@ -46,7 +48,7 @@ bool handleChoice(int choice) {
         break;
 
         case 2:
-        std::cout << "Matrix Multiplication Chosen!\n";
+        std::cout << "\nMatrix Multiplication Chosen!\n";
         handleMatrixMultiplication();
         break;
 
@@ -54,7 +56,7 @@ bool handleChoice(int choice) {
         return false;
 
         default:
-        std::cout << "Invalid Choice! Choice one of options form menu.\n";
+        std::cout << "Invalid Choice! Please choose an option from the menu.\n";
     }
     
     return true;

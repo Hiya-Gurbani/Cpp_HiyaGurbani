@@ -2,16 +2,18 @@
 #define MATRIX_OPERATIONS_H
 
 struct MatrixDimension;
+struct Matrix;
 
-double** allocateMatrix(int matrixRows, int matrixColumns);
-void inputMatrix(double** matrix, int matrixRows, int matrixColumns);
-void displayMatrix(double** matrix, int matrixRows, int matrixColumns);
-void deleteMatrix(double** matrix, int matrixRows);
+Matrix createMatrix(MatrixDimension dimension);
+void deleteMatrix(Matrix& matrix);
 
-void addMatricesInPlace(double** matrix1, double** matrix2, int matrixRows, int matrixColumns);
-double** addMultipleMatrices(int numberOfMatrix, int matrixRows, int matrixColumns);
+void inputMatrix(Matrix& matrix);
+void displayMatrix(const Matrix& matrix);
 
-double** multiplyMatrices(double** matrix1, double** matrix2, int rows, int cols, int common);
-double** multiplyMultipleMatrices(MatrixDimension* matrixDimensions, int numberOfMatrix);
+void addMatricesInPlace(Matrix& result, const Matrix& matrix);
+Matrix addMultipleMatrices(int numberOfMatrix, MatrixDimension dimension);
+
+Matrix multiplyMatrices(const Matrix& matrix1, const Matrix& matrix2);
+Matrix multiplyMultipleMatrices(MatrixDimension* dimension, int numberOfMatrix);
 
 #endif

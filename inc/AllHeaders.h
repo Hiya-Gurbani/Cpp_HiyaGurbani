@@ -8,4 +8,14 @@
 #include "MatrixOperations.h"
 #include "MenuHandlers.h"
 
+struct MatrixDimension {
+    int rows;
+    int cols;
+};
+
+struct Matrix {
+    double** data;
+    MatrixDimension dimension;
+};
+
 #endif
