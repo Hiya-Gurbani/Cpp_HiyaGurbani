@@ -1,22 +1,25 @@
-#include "AllHeaders.h"
+#include "MatrixOperations.h"
+#include "Input.h"
+#include "MatrixStructs.h"
+#include <iostream>
 
 Matrix createMatrix(MatrixDimension dimension) {
     Matrix matrix;
     matrix.dimension = dimension;
     matrix.data = new double*[dimension.rows]();
 
-    for (int index = 0; index < dimension.rows; index++)
+    for (int rowIndex = 0; rowIndex < dimension.rows; rowIndex++)
     {
-        matrix.data[index] = new double[dimension.cols]();
+        *(matrix.data + rowIndex) = new double[dimension.cols]();
     }
 
     return matrix;
 }
 
 void deleteMatrix(Matrix& matrix) {
-    for (int index = 0; index < matrix.dimension.rows; index++)
+    for (int rowIndex = 0; rowIndex < matrix.dimension.rows; rowIndex++)
     {
-        delete[] matrix.data[index];
+        delete[] *(matrix.data + rowIndex);
     }
     delete[] matrix.data;
     matrix.data = nullptr;
@@ -50,7 +53,7 @@ void addMatricesInPlace(Matrix& result, const Matrix& matrix) {
         for (int colIndex = 0; colIndex < result.dimension.cols; colIndex++)
         {
             *(*(result.data + rowIndex) + colIndex) += 
-                                        *(*(matrix.data + rowIndex) + colIndex);
+                                    *(*(matrix.data + rowIndex) + colIndex);
         }
     }
 }
@@ -82,10 +85,11 @@ Matrix multiplyMatrices(const Matrix& matrix1, const Matrix& matrix2) {
     {
         for (int colIndex = 0; colIndex < matrix2.dimension.cols; colIndex++)
         {
-            for (int k = 0; k < matrix2.dimension.rows; k++)
+            for (int commonIndex = 0; commonIndex < matrix2.dimension.rows; commonIndex++)
             {
-                result.data[rowIndex][colIndex] += 
-                            matrix1.data[rowIndex][k] * matrix2.data[k][colIndex];
+                *(*(result.data + rowIndex) + colIndex) += 
+                    *(*(matrix1.data + rowIndex) + commonIndex) * 
+                    *(*(matrix2.data + commonIndex) + colIndex);
             }
         }
     }

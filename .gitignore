@@ -6,5 +6,8 @@
 bin/
 *.exe
 
+# Ignore Libraries
+*.so
+
 # Ignore vs code files
 .vscode/

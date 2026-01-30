@@ -1,4 +1,6 @@
-#include "AllHeaders.h"
+#include "Input.h"
+#include "MenuHandlers.h"
+#include <iostream>
 
 int main() {
     int choice;
@@ -7,7 +9,7 @@ int main() {
     {
         printMenu();
         std::cout << "\nEnter your choice: ";
-        inputValue(choice);
+        choice = inputValue();
 
         if (!handleChoice(choice))
         {

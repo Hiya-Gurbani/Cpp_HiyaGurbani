@@ -1,43 +1,55 @@
-#include "AllHeaders.h"
+#include "Input.h"
+#include <iostream>
+#include <limits>
 
 bool isInputStreamValid() {
-    bool isValid = true;
+    bool isValid = false;
 
     if (std::cin.fail()) 
     {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        isValid = false;
     }
-    
-    while (std::cin.peek() == ' ' || std::cin.peek() == '\t') 
+    else
     {
-        std::cin.get();
-    }
+        while (std::cin.peek() == ' ' || std::cin.peek() == '\t') 
+        {
+            std::cin.get();
+        }
     
-    if (std::cin.peek() != '\n') 
-    {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        isValid = false;
+        if (std::cin.peek() == '\n') 
+        {
+            isValid = true;
+        }
+        else
+        {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
     }
     
     return isValid;
 }
 
-void inputValue(int& value) {
+int inputValue(int minValue, int maxValue) {
+    int value;
     while (true) 
     {
         std::cin >> value;
-        if (isInputStreamValid())
-        {
-            break;
-        }
-        else
+        if (!isInputStreamValid())
         {
             std::cout << "Invalid Input. Please enter an integer: ";
         }
+        else if (value < minValue || value > maxValue)
+        {
+            std::cout << "Invalid Value. Please enter an integer in range "
+                      <<  minValue << "-" << maxValue << ": ";
+        } 
+        else
+        {
+            break;
+        }
     }
+    return value;
 }
 
 void inputValue(double& value) {

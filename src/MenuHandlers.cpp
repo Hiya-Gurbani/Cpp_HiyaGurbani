@@ -1,4 +1,10 @@
-#include "AllHeaders.h"
+#include "MenuHandlers.h"
+#include "Constants.h"
+#include "DimensionHelpers.h"
+#include "Input.h"
+#include "MatrixOperations.h"
+#include "MatrixStructs.h"
+#include <iostream>
 
 void printMenu() {
     std::cout << "\n===============Operations===============\n"
@@ -9,9 +15,8 @@ void printMenu() {
 }
 
 void handleMatrixAddition() {
-    int numberOfMatrix;
     std::cout << "Enter number of matrices to add: ";
-    inputValue(numberOfMatrix);
+    int numberOfMatrix = inputValue(MIN_MATRICES, MAX_MATRICES);
 
     MatrixDimension dimension = getDimensions();
 
@@ -24,11 +29,10 @@ void handleMatrixAddition() {
 }
 
 void handleMatrixMultiplication() {
-    int numberOfMatrix;
     std::cout << "Enter number of matrices to multiply: ";
-    inputValue(numberOfMatrix);
+    int numberOfMatrix = inputValue(MIN_MATRICES, MAX_MATRICES);
 
-    MatrixDimension* dimensions = inputValidatedDimensions(numberOfMatrix);
+    MatrixDimension* dimensions = getValidMultipleDimensions(numberOfMatrix);
 
     Matrix result = multiplyMultipleMatrices(dimensions, numberOfMatrix);
 

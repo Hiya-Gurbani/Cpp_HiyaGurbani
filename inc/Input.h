@@ -1,8 +1,10 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include <climits>
+
 bool isInputStreamValid();
-void inputValue(int& value);
-void inputValue(double& value);
+int inputValue(int minValue = INT_MIN, int maxValue = INT_MAX);
+void inputValue(double&);
 
 #endif
