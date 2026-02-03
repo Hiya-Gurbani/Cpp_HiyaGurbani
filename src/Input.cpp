@@ -1,5 +1,7 @@
 #include "Input.h"
+#include "Constants.h"
 #include <iostream>
+#include <climits>
 #include <limits>
 
 bool isInputStreamValid() {
@@ -28,7 +30,46 @@ bool isInputStreamValid() {
     return isValidStream;
 }
 
-int inputValue(int minValue, int maxValue) {
+bool isValidRange(InputType input, int value) {
+    bool isValid = true;
+    int minValue, maxValue;
+
+    switch (input)
+    {
+        case CHOICE:
+        minValue = MIN_CHOICE;
+        maxValue = MAX_CHOICE;
+        break;
+
+        case MATRICES_NUMBER:
+        minValue = MIN_MATRICES;
+        maxValue = MAX_MATRICES;
+        break;
+
+        case ROWS:
+        minValue = MIN_ROWS;
+        maxValue = MAX_ROWS;
+        break;
+
+        case COLUMNS:
+        minValue = MIN_COLS;
+        maxValue = MAX_COLS;
+        break;
+
+        default:
+        minValue = INT_MIN;
+        maxValue = INT_MAX;
+    }
+
+    if (value < minValue || value > maxValue)
+    {
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+int inputValue(InputType input) {
     int value;
     while (true) 
     {
@@ -37,10 +78,9 @@ int inputValue(int minValue, int maxValue) {
         {
             std::cout << "Invalid Input. Please enter an integer: ";
         }
-        else if (value < minValue || value > maxValue)
+        else if (!isValidRange(input, value))
         {
-            std::cout << "Invalid Value. Please enter an integer in range "
-                      <<  minValue << "-" << maxValue << ": ";
+            std::cout << "Invalid Value. Please enter an integer in range: ";
         } 
         else
         {
@@ -50,7 +90,9 @@ int inputValue(int minValue, int maxValue) {
     return value;
 }
 
-void inputValue(double& value) {
+double inputValue() {
+    double value;
+
     while (true) 
     {
         std::cin >> value;
@@ -63,4 +105,6 @@ void inputValue(double& value) {
             std::cout << "Invalid Input. Please enter a number: ";
         }
     }
+    
+    return value;
 }

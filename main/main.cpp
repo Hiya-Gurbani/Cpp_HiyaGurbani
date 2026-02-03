@@ -1,5 +1,5 @@
 #include "Input.h"
-#include "MenuHandlers.h"
+#include "MenuHandler.h"
 #include <iostream>
 
 int main() {
@@ -9,7 +9,7 @@ int main() {
     {
         printMenu();
         std::cout << "\nEnter your choice: ";
-        choice = inputValue();
+        choice = inputValue(CHOICE);
 
         if (!handleChoice(choice))
         {

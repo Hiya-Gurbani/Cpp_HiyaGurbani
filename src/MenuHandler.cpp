@@ -20,7 +20,7 @@ bool handleMatrixAddition() {
 
     std::cout << "Enter number of matrices to add (between " 
               << MIN_MATRICES << " and " << MAX_MATRICES << "): ";
-    int numberOfMatrices = inputValue(MIN_MATRICES, MAX_MATRICES);
+    int numberOfMatrices = inputValue(MATRICES_NUMBER);
 
     MatrixDimension dimension = inputDimension();
 
@@ -39,7 +39,7 @@ bool handleMatrixAddition() {
 bool handleMatrixMultiplication() {
     std::cout << "Enter number of matrices to multiply (between " 
               << MIN_MATRICES << " and " << MAX_MATRICES << "): ";
-    int numberOfMatrices = inputValue(MIN_MATRICES, MAX_MATRICES);
+    int numberOfMatrices = inputValue(MATRICES_NUMBER);
     bool isSuccessful = false;
 
     MatrixDimension* dimensions = inputValidDimensions(numberOfMatrices);
@@ -78,9 +78,6 @@ bool handleChoice(int choice) {
         case 3:
         continueProgram = false;
         break;
-
-        default:
-        std::cout << "Invalid Choice! Please choose an option from the menu.\n";
     }
     
     return continueProgram;

@@ -1,6 +1,9 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+const int MIN_CHOICE = 1;
+const int MAX_CHOICE = 3;
+
 const int MIN_ROWS = 1;
 const int MAX_ROWS = 10;
 

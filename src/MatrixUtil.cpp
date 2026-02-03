@@ -51,7 +51,7 @@ void inputMatrix(Matrix& matrix) {
         for (int colIndex = 0; colIndex < matrix.dimension.cols; colIndex++)
         {
             std::cout << "Enter element [" << rowIndex << "][" << colIndex << "]: ";
-            inputValue(*(*(matrix.data + rowIndex) + colIndex));
+            *(*(matrix.data + rowIndex) + colIndex) = inputValue();
         }
     }
 }

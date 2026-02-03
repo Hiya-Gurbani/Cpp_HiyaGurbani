@@ -8,10 +8,10 @@ MatrixDimension inputDimension() {
     MatrixDimension dimension;
     std::cout << "Enter the number of rows: "; 
               
-    dimension.rows = inputValue(MIN_ROWS, MAX_ROWS);
+    dimension.rows = inputValue(ROWS);
 
     std::cout << "Enter the number of columns: ";
-    dimension.cols = inputValue(MIN_COLS, MAX_COLS);
+    dimension.cols = inputValue(COLUMNS);
 
     return dimension;
 }
@@ -33,7 +33,7 @@ MatrixDimension inputValidNextDimension(int matrixIndex, int requiredRows) {
         else
         {
             std::cout << "Error: Matrix " << matrixIndex + 1 << " must have "
-                      << dimension.rows << " rows. Try again.\n";
+                      << requiredRows << " rows. Try again.\n";
         }
     }
     return dimension;
