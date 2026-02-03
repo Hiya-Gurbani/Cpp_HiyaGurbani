@@ -1,6 +1,7 @@
-#include "MatrixUtils.h"
+#include "MatrixUtil.h"
+#include "Constants.h"
 #include "Input.h"
-#include "MatrixStructs.h"
+#include "MatrixStruct.h"
 #include <iostream>
 #include <iomanip>
 
@@ -56,12 +57,11 @@ void inputMatrix(Matrix& matrix) {
 }
 
 void displayMatrix(const Matrix& matrix) {
-    const int columnWidth = 4;
     for (int rowIndex = 0; rowIndex < matrix.dimension.rows; rowIndex++)
     {
         for (int colIndex = 0; colIndex < matrix.dimension.cols; colIndex++)
         {
-            std::cout << std::setw(columnWidth) << 
+            std::cout << std::setw(COLUMN_WIDTH) << 
             *(*(matrix.data + rowIndex) + colIndex) << " ";
         }
         std::cout << "\n";

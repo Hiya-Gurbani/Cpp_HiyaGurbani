@@ -1,5 +1,5 @@
-#ifndef MATRIX_UTILS_H
-#define MATRIX_UTILS_H
+#ifndef MATRIX_UTIL_H
+#define MATRIX_UTIL_H
 
 struct MatrixDimension;
 struct Matrix;

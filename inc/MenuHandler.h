@@ -1,5 +1,5 @@
-#ifndef MENU_HANDLERS_H
-#define MENU_HANDLERS_H
+#ifndef MENU_HANDLER_H
+#define MENU_HANDLER_H
 
 void printMenu();
 bool handleMatrixAddition();

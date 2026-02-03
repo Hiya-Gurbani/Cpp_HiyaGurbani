@@ -10,4 +10,6 @@ const int MAX_COLS = 10;
 const int MIN_MATRICES = 2;
 const int MAX_MATRICES = 20;
 
+const int COLUMN_WIDTH = 4;
+
 #endif

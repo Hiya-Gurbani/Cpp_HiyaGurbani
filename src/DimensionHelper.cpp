@@ -1,7 +1,7 @@
-#include "DimensionHelpers.h"
+#include "DimensionHelper.h"
 #include "Constants.h"
 #include "Input.h"
-#include "MatrixStructs.h"
+#include "MatrixStruct.h"
 #include <iostream>
 
 MatrixDimension inputDimension() {

@@ -1,5 +1,5 @@
-#ifndef DIMENSION_HELPERS_H
-#define DIMENSION_HELPERS_H
+#ifndef DIMENSION_HELPER_H
+#define DIMENSION_HELPER_H
 
 struct MatrixDimension;
 

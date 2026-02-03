@@ -1,10 +1,10 @@
-#include "MatrixOperations.h"
+#include "MatrixOperation.h"
 #include "Input.h"
-#include "MatrixStructs.h"
-#include "MatrixUtils.h"
+#include "MatrixStruct.h"
+#include "MatrixUtil.h"
 #include <iostream>
 
-void addMatricesInPlace(Matrix& result, const Matrix& matrix) {
+Matrix& addMatricesInPlace(Matrix& result, const Matrix& matrix) {
     for (int rowIndex = 0; rowIndex < result.dimension.rows; rowIndex++)
     {
         for (int colIndex = 0; colIndex < result.dimension.cols; colIndex++)
@@ -13,6 +13,8 @@ void addMatricesInPlace(Matrix& result, const Matrix& matrix) {
                                     *(*(matrix.data + rowIndex) + colIndex);
         }
     }
+
+    return result;
 }
 
 Matrix addMultipleMatrices(int numberOfMatrices, MatrixDimension dimension) {
@@ -62,17 +64,19 @@ Matrix multiplyMatrices(const Matrix& matrix1, const Matrix& matrix2) {
 }
 
 bool updateAccumulatedProduct(Matrix& product, Matrix& nextMatrix) {
+    bool isSuccessful = true;
+
     Matrix tempProduct = multiplyMatrices(product, nextMatrix);
     deleteMatrix(nextMatrix);
     if (!tempProduct.data) {
         deleteMatrix(product);
         product = tempProduct;
-        return false;
+        isSuccessful = false;
     }
     
     deleteMatrix(product);
     product = tempProduct;
-    return true;
+    return isSuccessful;
 }
 
 Matrix multiplyMultipleMatrices(MatrixDimension* dimensions, int numberOfMatrices) {
