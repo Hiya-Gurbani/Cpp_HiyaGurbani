@@ -26,14 +26,14 @@ MatrixDimension inputValidNextDimension(int matrixIndex, int requiredRows) {
 
         dimension = inputDimension();
 
-        if (dimension.cols == requiredRows)
+        if (dimension.rows == requiredRows)
         {
             isValidDimension = true;
         }
         else
         {
             std::cout << "Error: Matrix " << matrixIndex + 1 << " must have "
-                      << dimension.cols << " rows. Try again.\n";
+                      << dimension.rows << " rows. Try again.\n";
         }
     }
     return dimension;

@@ -9,11 +9,11 @@ mkdir bin
 2. **Compile the source files into position-independent code (`.o` files):**
 
 ```bash
-g++ -I./inc -fPIC -c src/DimensionHelpers.cpp -o bin/DimensionHelpers.o
+g++ -I./inc -fPIC -c src/DimensionHelper.cpp -o bin/DimensionHelper.o
 g++ -I./inc -fPIC -c src/Input.cpp -o bin/Input.o
-g++ -I./inc -fPIC -c src/MatrixOperations.cpp -o bin/MatrixOperations.o
-g++ -I./inc -fPIC -c src/MatrixUtils.cpp -o bin/MatrixUtils.o
-g++ -I./inc -fPIC -c src/MenuHandlers.cpp -o bin/MenuHandlers.o
+g++ -I./inc -fPIC -c src/MatrixOperation.cpp -o bin/MatrixOperation.o
+g++ -I./inc -fPIC -c src/MatrixUtil.cpp -o bin/MatrixUtil.o
+g++ -I./inc -fPIC -c src/MenuHandler.cpp -o bin/MenuHandler.o
 ```
 
 3. **Create the shared library:**
