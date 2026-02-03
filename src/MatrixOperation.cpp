@@ -4,13 +4,13 @@
 #include "MatrixUtil.h"
 #include <iostream>
 
-Matrix& addMatricesInPlace(Matrix& result, const Matrix& matrix) {
+Matrix& addMatricesInPlace(Matrix& result, const Matrix& sourceMatrix) {
     for (int rowIndex = 0; rowIndex < result.dimension.rows; rowIndex++)
     {
         for (int colIndex = 0; colIndex < result.dimension.cols; colIndex++)
         {
             *(*(result.data + rowIndex) + colIndex) += 
-                                    *(*(matrix.data + rowIndex) + colIndex);
+                                    *(*(sourceMatrix.data + rowIndex) + colIndex);
         }
     }
 
