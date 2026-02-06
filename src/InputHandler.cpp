@@ -1,5 +1,6 @@
 #include "InputHandler.h"
 #include "Validator.h"
+#include "Constants.h"
 #include "Logger.h"
 #include "Matrix.h"
 #include <iostream>
@@ -32,7 +33,7 @@ int InputHandler::inputValue(InputType input) {
         {
             std::cout << Logger::MSG_INVALID_INTEGER;
         }
-        else if (!Validator::isValidRange(input, value))
+        else if (!Validator::isValueInValidRange(input, value))
         {
             std::cout << Logger::MSG_OUT_OF_RANGE;
         } 
@@ -44,49 +45,44 @@ int InputHandler::inputValue(InputType input) {
     return value;
 }
 
-Matrix& InputHandler::inputMatrix(Matrix& matrix) {
+void InputHandler::inputMatrix(Matrix& matrix) {
     for (int rowIndex = 0; rowIndex < matrix.getRows(); rowIndex++)
     {
         for (int colIndex = 0; colIndex < matrix.getCols(); colIndex++)
         {
-            std::cout << Logger::MSG_INPUT_ELEMENT << "[" << rowIndex << "][" << colIndex << "] : ";
-            matrix.setMatrixElement(inputValue(), rowIndex, colIndex);
+            Logger::inputMatrixElement(rowIndex, colIndex);
+            matrix.setElementAt(inputValue(), rowIndex, colIndex);
         }
     }
-    return matrix;
 }
 
-void InputHandler::inputDimensionsForMultiplication(int numberofMatrices,
-                int*& rows, int*& cols) {
+void InputHandler::inputDimensionsForMultiplication(int numberOfMatrices,
+                int*& rowsArray, int*& colsArray) {
 
-    rows = new int[numberofMatrices];
-    cols = new int[numberofMatrices];
+    int index = 1;
+    std::cout << Logger::MSG_MATRIX_DIMENSIONS << index;
+    std::cout << Logger::MSG_INPUT_ROWS;
+    rowsArray[0] = inputValue(ROWS);
+    std::cout << Logger::MSG_INPUT_COLUMNS;
+    colsArray[0] = inputValue(COLUMNS);
 
-    std::cout << "\nMatrix 1 dimensions: ";
-    std::cout << "Enter number of rows: ";
-    rows[0] = inputValue(ROWS);
-    std::cout << "Enter number of columns: ";
-    cols[0] = inputValue(COLUMNS);
-
-    for (int index = 1; index < numberofMatrices; index++)
+    for (index = 1; index < numberOfMatrices; index++)
     {
-        std::cout << "\nMatrix " << (index + 1) << " dimensions:\n";
-        std::cout << "Note: Rows must be " << cols[index - 1] << "\n";
+        std::cout << Logger::MSG_MATRIX_DIMENSIONS << index + 1;
+        std::cout << Logger::MSG_ROWS_NOTE << colsArray[index - 1] << Constants::NEWLINE_SPACE;
         
         while (true) {
-            std::cout << "Enter number of rows: ";
-            rows[index] = inputValue(ROWS);
+            std::cout << Logger::MSG_INPUT_ROWS;
+            rowsArray[index] = inputValue(ROWS);
             
-            if (cols[index - 1] == rows[index]) 
+            if (colsArray[index - 1] == rowsArray[index]) 
             {
                 break;
             }
-            std::cout << "Error: Matrix " << (index + 1) 
-                     << " must have " << cols[index - 1] 
-                     << " rows. Try again.\n";
+            std::cout << Logger::MSG_DIMENSION_MISMATCH;
         }
         
-        std::cout << "Enter number of columns: ";
-        cols[index] = inputValue(COLUMNS);
+        std::cout << Logger::MSG_INPUT_COLUMNS;
+        colsArray[index] = inputValue(COLUMNS);
     }
 }

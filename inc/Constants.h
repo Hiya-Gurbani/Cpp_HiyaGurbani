@@ -15,8 +15,9 @@ public:
     static const int MAX_MATRICES = 20;
 
     static const int COLUMN_WIDTH = 4;
+
     static const char WHITE_SPACE = ' ';
-    static const char LINE_SPACE = '\n';
+    static const char NEWLINE_SPACE = '\n';
 };
 
 #endif

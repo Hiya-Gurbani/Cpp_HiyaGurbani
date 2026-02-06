@@ -27,10 +27,11 @@ bool Validator::isInputStreamValid() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
+    
     return isValidStream;
 }
 
-bool Validator::isValidRange(InputType input, int value) {
+bool Validator::isValueInValidRange(InputType input, int value) {
     bool isValid = true;
     int minValue, maxValue;
 

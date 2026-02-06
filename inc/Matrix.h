@@ -8,22 +8,26 @@ class Matrix {
     int rows;
     int cols;
 
+    double** allocateMemory();
+    void deallocateMemory();
+    void copyDataFrom(const Matrix& sourceMatrix);
+
 public:
     Matrix();
     Matrix(int currRows, int currCols);
-    Matrix(const Matrix& matrix);
+    Matrix(const Matrix& sourceMatrix);
 
     ~Matrix();
 
     int getRows();
     int getCols();
 
-    void setMatrixElement(double value, int row, int col);
+    void setElementAt(double value, int row, int col);
     void displayMatrix();
 
-    Matrix& operator+=(const Matrix& sourceMatrix);
-    Matrix operator*(const Matrix& other);
-    Matrix& operator=(const Matrix& other);
+    Matrix& operator+=(const Matrix& rhsMatrix);
+    Matrix operator*(const Matrix& rhsMatrix);
+    Matrix& operator=(const Matrix& sourceMatrix);
 };
 
 #endif

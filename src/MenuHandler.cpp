@@ -1,40 +1,31 @@
 #include "MenuHandler.h"
+#include "Constants.h"
 #include "InputHandler.h"
 #include "Logger.h"
 #include "Matrix.h"
 #include <iostream>
 
-void MenuHandler::printMenu() {
-    std::cout << "\n===============Operations===============\n"
-            << "1. Matrix Addition\n"
-            << "2. Matrix Multiplication\n"
-            << "3. Exit\n"
-            << "========================================\n";
-}
-
 Matrix MenuHandler::performMatrixAddition() {
     std::cout << Logger::MSG_INPUT_MATRICES_NUMBER;
     int numberOfMatrices = InputHandler::inputValue(MATRICES_NUMBER);
 
-    std::cout << "Enter number of rows: ";
+    std::cout << Logger::MSG_INPUT_ROWS;
     int rows = InputHandler::inputValue(ROWS);
-    std::cout << "Enter number of columns: ";
+    std::cout << Logger::MSG_INPUT_COLUMNS;
     int cols = InputHandler::inputValue(COLUMNS);
 
     Matrix result(rows, cols);
-    std::cout << "Enter Matrix 1: \n";
+    int index = 1;
+    std::cout << Logger::MSG_INPUT_MATRIX << index << Constants::NEWLINE_SPACE;
     InputHandler::inputMatrix(result);
 
-    Matrix sourceMatrix(rows, cols);
-    for (int index = 2; index <= numberOfMatrices; index++)
+    Matrix nextMatrix(rows, cols);
+    for (index = 2; index <= numberOfMatrices; index++)
     {
-        std::cout << "Enter Matrix " << index << ": \n";
-        InputHandler::inputMatrix(sourceMatrix);
-        result += sourceMatrix;
+        std::cout << Logger::MSG_INPUT_MATRIX << index << Constants::NEWLINE_SPACE;
+        InputHandler::inputMatrix(nextMatrix);
+        result += nextMatrix;
     }
-
-    std::cout << "\nResultant Matrix:\n";
-    result.displayMatrix();
 
     return result;
 }
@@ -43,29 +34,26 @@ Matrix MenuHandler::performMatrixMultiplication() {
     std::cout << Logger::MSG_INPUT_MATRICES_NUMBER;
     int numberOfMatrices = InputHandler::inputValue(MATRICES_NUMBER);
 
-    int* rowsArray = nullptr;
-    int* colsArray = nullptr;
+    int* rowsArray = new int[numberOfMatrices];
+    int* colsArray = new int[numberOfMatrices];
     InputHandler::inputDimensionsForMultiplication(numberOfMatrices, rowsArray, colsArray);
 
     Matrix result(rowsArray[0], colsArray[0]);
-    std::cout << "Enter Matrix 1:";
+    int index = 1;
+    std::cout << Logger::MSG_INPUT_MATRIX << index << Constants::NEWLINE_SPACE;
     InputHandler::inputMatrix(result);
 
-    for (int index = 1; index < numberOfMatrices; index++)
+    for (index = 1; index < numberOfMatrices; index++)
     {
         Matrix nextMatrix(rowsArray[index], colsArray[index]);
-        std::cout << "\nEnter Matrix " << (index + 1) << ":\n";
+        std::cout << Logger::MSG_INPUT_MATRIX << index + 1 << Constants::NEWLINE_SPACE;
         InputHandler::inputMatrix(nextMatrix);
         
-        Matrix tempResult = result * nextMatrix;
-        result = tempResult;
+        result = result * nextMatrix;
     }
 
     delete[] rowsArray;
     delete[] colsArray;
-
-    std::cout << "\nResultant Matrix:\n";
-    result.displayMatrix();
     
     return result;
 }
@@ -88,7 +76,12 @@ bool MenuHandler::handleChoice(int choice) {
 
         case 3:
         continueProgram = false;
-        break;
+    }
+
+    if (continueProgram)
+    {
+        std::cout << Logger::MSG_RESULTANT_MATRIX;
+        result.displayMatrix();
     }
     
     return continueProgram;

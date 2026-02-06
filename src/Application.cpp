@@ -8,7 +8,7 @@ void Application::execute() {
 
     while (true) 
     {
-        MenuHandler::printMenu();
+        std::cout << Logger::MSG_OPERATIONS_MENU;
         std::cout << Logger::MSG_INPUT_CHOICE;
         choice = InputHandler::inputValue(CHOICE);
 

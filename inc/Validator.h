@@ -11,7 +11,7 @@ enum InputType {
 class Validator {
 public:
     static bool isInputStreamValid();
-    static bool isValidRange(InputType input, int value);
+    static bool isValueInValidRange(InputType input, int value);
 };
 
 #endif

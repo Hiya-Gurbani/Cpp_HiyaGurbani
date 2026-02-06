@@ -6,9 +6,8 @@
 class MenuHandler {
     static Matrix performMatrixAddition();
     static Matrix performMatrixMultiplication();
-    
+
 public:
-    static void printMenu();
     static bool handleChoice(int choice);
 };
 
