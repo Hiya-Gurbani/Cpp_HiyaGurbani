@@ -2,6 +2,7 @@
 #define INPUT_HANDLER_H
 
 #include "Matrix.h"
+#include "Validator.h"
 
 class InputHandler {
 public:
