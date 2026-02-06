@@ -3,6 +3,7 @@
 #include "InputHandler.h"
 #include "Logger.h"
 #include "Matrix.h"
+#include "Validator.h"
 #include <iostream>
 
 Matrix MenuHandler::performMatrixAddition() {

@@ -1,8 +1,8 @@
 #include "InputHandler.h"
-#include "Validator.h"
 #include "Constants.h"
 #include "Logger.h"
 #include "Matrix.h"
+#include "Validator.h"
 #include <iostream>
 
 double InputHandler::inputValue() {

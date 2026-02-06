@@ -1,7 +1,9 @@
 #include "Application.h"
-#include "Logger.h"
 #include "InputHandler.h"
+#include "Logger.h"
 #include "MenuHandler.h"
+#include "Validator.h"
+#include <iostream>
 
 void Application::execute() {
     int choice;

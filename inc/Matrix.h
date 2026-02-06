@@ -1,8 +1,6 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include <iostream>
-
 class Matrix {
     double** data;
     int rows;

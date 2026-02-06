@@ -14,6 +14,7 @@ const std::string Logger::MSG_PROGRAM_EXIT = "Exiting Program...\n";
 const std::string Logger::MSG_INVALID_NUMBER = "Invalid Input. Please enter a number: ";
 const std::string Logger::MSG_INVALID_INTEGER = "Invalid Input. Please enter an integer: ";
 const std::string Logger::MSG_OUT_OF_RANGE = "Invalid Value. Please enter an integer in range: ";
+
 void Logger::inputMatrixElement(int rowIndex, int colIndex) {
     std::cout << "Enter element [" << rowIndex << "][" << colIndex << "] : ";
 }
