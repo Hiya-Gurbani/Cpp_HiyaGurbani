@@ -6,9 +6,9 @@ class Matrix {
     int rows;
     int cols;
 
-    double** allocateMemory();
-    void deallocateMemory();
-    void copyDataFrom(const Matrix& sourceMatrix);
+    double** allocateMatrix();
+    void deallocateMatrix();
+    void copyMatrixData(const Matrix& sourceMatrix);
 
 public:
     Matrix();
@@ -17,10 +17,18 @@ public:
 
     ~Matrix();
 
-    int getRows();
-    int getCols();
+    int getRows() {
+        return rows;
+    };
 
-    void setElementAt(double value, int row, int col);
+    int getCols() {
+        return cols;
+    }
+
+    void setMatrixElement(int row, int col, double value) {
+        data[row][col] = value;
+    }
+    
     void displayMatrix();
 
     Matrix& operator+=(const Matrix& rhsMatrix);

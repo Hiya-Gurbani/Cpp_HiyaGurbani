@@ -4,11 +4,11 @@
 #include "Matrix.h"
 
 class MenuHandler {
-    static Matrix performMatrixAddition();
-    static Matrix performMatrixMultiplication();
+    Matrix performMatrixAddition();
+    Matrix performMatrixMultiplication();
 
 public:
-    static bool handleChoice(int choice);
+    bool handleChoice(int choice);
 };
 
 #endif

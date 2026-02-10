@@ -3,7 +3,7 @@
 
 class Application {
 public:
-    static void execute();
+    void execute();
 };
 
 #endif

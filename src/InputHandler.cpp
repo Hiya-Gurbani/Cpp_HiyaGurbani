@@ -50,8 +50,10 @@ void InputHandler::inputMatrix(Matrix& matrix) {
     {
         for (int colIndex = 0; colIndex < matrix.getCols(); colIndex++)
         {
-            Logger::inputMatrixElement(rowIndex, colIndex);
-            matrix.setElementAt(inputValue(), rowIndex, colIndex);
+            std::cout << Logger::MSG_INPUT_MATRIX_ELEMENT 
+            << Constants::OPEN_BRACKET << rowIndex << Constants::CLOSE_BRACKET 
+            << Constants::OPEN_BRACKET << colIndex << Constants::CLOSE_BRACKET;
+            matrix.setMatrixElement(inputValue(), rowIndex, colIndex);
         }
     }
 }

@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <iostream>
 
-double** Matrix::allocateMemory() {
+double** Matrix::allocateMatrix() {
     data = new double*[rows];
     for (int index = 0; index < rows; index++) 
     {
@@ -13,8 +13,9 @@ double** Matrix::allocateMemory() {
     return data;
 }
 
-void Matrix::deallocateMemory() {
-    if (data != nullptr) {
+void Matrix::deallocateMatrix() {
+    if (data != nullptr) 
+    {
         for (int index = 0; index < rows; index++) 
         {
             delete[] data[index];
@@ -24,7 +25,7 @@ void Matrix::deallocateMemory() {
     }
 }
 
-void Matrix::copyDataFrom(const Matrix& sourceMatrix) {
+void Matrix::copyMatrixData(const Matrix& sourceMatrix) {
     for (int rowIndex = 0; rowIndex < rows; rowIndex++) 
     {
         for (int colIndex = 0; colIndex < cols; colIndex++) 
@@ -40,29 +41,17 @@ Matrix::Matrix()
 
 Matrix::Matrix(int currRows, int currCols)
     : rows{currRows}, cols{currCols} , data{nullptr} {
-    allocateMemory();
+    allocateMatrix();
 }
 
 Matrix::Matrix(const Matrix& sourceMatrix) 
     : rows{sourceMatrix.rows}, cols{sourceMatrix.cols}, data{nullptr} {
-    allocateMemory();
-    copyDataFrom(sourceMatrix);
+    allocateMatrix();
+    copyMatrixData(sourceMatrix);
 }
 
 Matrix::~Matrix() {
-    deallocateMemory();
-}
-
-int Matrix::getRows() {
-    return rows;
-}
-
-int Matrix::getCols() {
-    return cols;
-}
-
-void Matrix::setElementAt(double value, int row, int col) {
-    data[row][col] = value;
+    deallocateMatrix();
 }
 
 void Matrix::displayMatrix() {
@@ -113,12 +102,12 @@ Matrix& Matrix::operator=(const Matrix& sourceMatrix) {
         return *this;
     }
 
-    deallocateMemory();
+    deallocateMatrix();
 
     rows = sourceMatrix.rows;
     cols = sourceMatrix.cols;
-    allocateMemory();
-    copyDataFrom(sourceMatrix);
+    allocateMatrix();
+    copyMatrixData(sourceMatrix);
 
     return *this;
 }

@@ -18,6 +18,8 @@ public:
 
     static const char WHITE_SPACE = ' ';
     static const char NEWLINE_SPACE = '\n';
+    static const char OPEN_BRACKET = '[';
+    static const char CLOSE_BRACKET = ']';
 };
 
 #endif

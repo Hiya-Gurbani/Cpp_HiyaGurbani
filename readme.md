@@ -11,7 +11,6 @@ mkdir bin
 ```bash
 g++ -I./inc -fPIC -c src/Application.cpp -o bin/Application.o
 g++ -I./inc -fPIC -c src/InputHandler.cpp -o bin/InputHandler.o
-g++ -I./inc -fPIC -c src/Logger.cpp -o bin/Logger.o
 g++ -I./inc -fPIC -c src/Matrix.cpp -o bin/Matrix.o
 g++ -I./inc -fPIC -c src/MenuHandler.cpp -o bin/MenuHandler.o
 g++ -I./inc -fPIC -c src/Validator.cpp -o bin/Validator.o

@@ -14,7 +14,8 @@ void Application::execute() {
         std::cout << Logger::MSG_INPUT_CHOICE;
         choice = InputHandler::inputValue(CHOICE);
 
-        if (!MenuHandler::handleChoice(choice))
+        MenuHandler menuHandler;
+        if (!menuHandler.handleChoice(choice))
         {
             std::cout << Logger::MSG_PROGRAM_EXIT;
             return;

@@ -2,6 +2,7 @@
 #include <iostream>
 
 int main() {
-    Application::execute();
+    Application application;
+    application.execute();
     return 0;
 }

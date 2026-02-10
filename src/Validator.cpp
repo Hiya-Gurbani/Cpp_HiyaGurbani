@@ -32,7 +32,7 @@ bool Validator::isInputStreamValid() {
 }
 
 bool Validator::isValueInValidRange(InputType input, int value) {
-    bool isValid = true;
+    bool isValid = false;
     int minValue, maxValue;
 
     switch (input)
@@ -62,9 +62,9 @@ bool Validator::isValueInValidRange(InputType input, int value) {
         maxValue = INT_MAX;
     }
 
-    if (value < minValue || value > maxValue)
+    if (value >= minValue && value <= maxValue)
     {
-        isValid = false;
+        isValid = true;
     }
 
     return isValid;
