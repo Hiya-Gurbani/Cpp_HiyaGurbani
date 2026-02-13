@@ -27,7 +27,7 @@ void AdminController::registerCustomer() {
     Display::printMessage(Logger::MSG_CUSTOMER_REGISTERED_SUCCESS);
 }
 
-void AdminController::viewAllCustomers() {
+void AdminController::displayCustomersInformation() {
     std::vector<Customer>& customers = bank->getCustomers();
     
     if (customers.empty()) 
@@ -39,16 +39,18 @@ void AdminController::viewAllCustomers() {
     Display::printMessage(Logger::MSG_LIST_ALL_CUSTOMERS);
     Display::printWithNumber(Logger::MSG_TOTAL_CUSTOMERS, customers.size());
     
-    for (auto& customer : customers) {
+    for (Customer& customer : customers) 
+    {
         customer.displayInformation();
         Display::printMessage(Logger::MSG_SEPARATOR);
     }
 }
 
-void AdminController::viewAllAccounts() {
+void AdminController::displayAccountsInformation() {
     std::vector<Customer>& customers = bank->getCustomers();
     
-    if (customers.empty()) {
+    if (customers.empty()) 
+    {
         Display::printMessage(Logger::MSG_NO_ACCOUNTS_FOUND);
         return;
     }
@@ -56,7 +58,7 @@ void AdminController::viewAllAccounts() {
     Display::printMessage(Logger::MSG_LIST_ALL_ACCOUNTS);
     Display::printWithNumber(Logger::MSG_TOTAL_ACCOUNTS, customers.size());
     
-    for (auto& customer : customers) {
+    for (Customer& customer : customers) {
         customer.displayAccountDetails();
         Display::printMessage(Logger::MSG_SEPARATOR);
     }
@@ -102,7 +104,49 @@ void AdminController::searchAccountByNumber() {
     }
 }
 
-void AdminController::editCustomerAccountDetails() {
+bool AdminController::handleEditMenuChoice(int choice, Customer* customer) {
+    std::string newValue;
+    
+    switch (choice) {
+        case 1:
+            Display::printMessage(Logger::MSG_ENTER_NEW_NAME);
+            InputHandler::inputString(newValue, Constants::InputType::NAME);
+            customer->setName(newValue);
+            Display::printMessage(Logger::MSG_NAME_UPDATED);
+            return true;
+            
+        case 2:
+            Display::printMessage(Logger::MSG_ENTER_NEW_EMAIL);
+            InputHandler::inputString(newValue, Constants::InputType::EMAIL);
+            customer->setEmail(newValue);
+            Display::printMessage(Logger::MSG_EMAIL_UPDATED);
+            return true;
+            
+        case 3:
+            Display::printMessage(Logger::MSG_ENTER_NEW_PHONE);
+            InputHandler::inputString(newValue, Constants::InputType::PHONE);
+            customer->setPhone(newValue);
+            Display::printMessage(Logger::MSG_PHONE_UPDATED);
+            return true;
+            
+        case 4:
+            Display::printMessage(Logger::MSG_ENTER_NEW_PIN);
+            InputHandler::inputString(newValue, Constants::InputType::PIN);
+            customer->getAccount().setPin(newValue);
+            Display::printMessage(Logger::MSG_PIN_UPDATED);
+            return true;
+            
+        case 5:
+            Display::printMessage(Logger::MSG_EDIT_CANCELLED); 
+            return true;
+            
+        default:
+            Display::printMessage(Logger::MSG_INVALID_CHOICE); 
+            return false;
+    }
+}
+
+void AdminController::editCustomerDetails() {
     Display::printMessage(Logger::MSG_EDIT_CUSTOMER);
     
     std::string accountNumber;
@@ -114,56 +158,17 @@ void AdminController::editCustomerAccountDetails() {
     if (!customer) 
     {
         Display::printMessage(Logger::MSG_CUSTOMER_NOT_FOUND);
+        return;
     }
-    else
-    {
-        Display::printMessage(Logger::MSG_CURRENT_DETAILS);
-        customer->displayInformation();
+    
+    Display::printMessage(Logger::MSG_CURRENT_DETAILS);
+    customer->displayInformation();
+    Display::printMessage(Logger::MSG_EDIT_MENU);
 
-        Display::printMessage(Logger::MSG_EDIT_MENU);
-
-        int choice;
-        InputHandler::inputValue(choice);
-        
-        std::string newValue;
-        
-        switch (choice) {
-            case 1:
-                Display::printMessage(Logger::MSG_ENTER_NEW_NAME);
-                InputHandler::inputString(newValue, Constants::InputType::NAME);
-                customer->setName(newValue);
-                Display::printMessage(Logger::MSG_NAME_UPDATED);
-                break;
-                
-            case 2:
-                Display::printMessage(Logger::MSG_ENTER_NEW_EMAIL);
-                InputHandler::inputString(newValue, Constants::InputType::EMAIL);
-                customer->setEmail(newValue);
-                Display::printMessage(Logger::MSG_EMAIL_UPDATED);
-                break;
-                
-            case 3:
-                Display::printMessage(Logger::MSG_ENTER_NEW_PHONE);
-                InputHandler::inputString(newValue, Constants::InputType::PHONE);
-                customer->setPhone(newValue);
-                Display::printMessage(Logger::MSG_PHONE_UPDATED);
-                break;
-                
-            case 4:
-                Display::printMessage(Logger::MSG_ENTER_NEW_PIN);
-                InputHandler::inputString(newValue, Constants::InputType::PIN);
-                customer->getAccount().setPin(newValue);
-                Display::printMessage(Logger::MSG_PIN_UPDATED);
-                break;
-                
-            case 5:
-                Display::printMessage(Logger::MSG_INVALID_CHOICE);
-                break;
-                
-            default:
-                std::cout << "Invalid choice!\n";
-        }
-    }  
+    int choice;
+    InputHandler::inputValue(choice);
+    
+    handleEditMenuChoice(choice, customer);
 }
 
 void AdminController::deleteCustomer() {
@@ -195,7 +200,7 @@ void AdminController::deleteCustomer() {
     }
 }
 
-bool AdminController::handleChoice(int choice) {
+bool AdminController::handleMenuChoice(int choice) {
     bool continueProgram = true;
 
     switch (choice)
@@ -205,11 +210,11 @@ bool AdminController::handleChoice(int choice) {
         break;
 
         case 2:
-        viewAllCustomers();
+        displayCustomersInformation();
         break;
 
         case 3:
-        viewAllAccounts();
+        displayAccountsInformation();
         break;
 
         case 4:
@@ -221,7 +226,7 @@ bool AdminController::handleChoice(int choice) {
         break;
 
         case 6:
-        editCustomerAccountDetails();
+        editCustomerDetails();
         break;
 
         case 7:
@@ -235,6 +240,7 @@ bool AdminController::handleChoice(int choice) {
         break;
 
         case 9:
+        bank->logout();
         continueProgram = false;
         break;
 
@@ -245,19 +251,18 @@ bool AdminController::handleChoice(int choice) {
     return continueProgram;
 }
 
-void AdminController::handleMenu() {
+bool AdminController::handleMenu() {
     int choice;
+    bool continueProgram = true;
 
-    while (true)
+    while (continueProgram)
     {
         Display::printMessage(Logger::MSG_ADMIN_OPERATIONS_MENU);
         Display::printMessage(Logger::MSG_INPUT_CHOICE);
 
         InputHandler::inputValue(choice);
-        if (!handleChoice(choice))
-        {
-            std::cout << Logger::MSG_LOGOUT;
-            return;
-        }
+        continueProgram = handleMenuChoice(choice);
     }
+
+    return continueProgram;
 }

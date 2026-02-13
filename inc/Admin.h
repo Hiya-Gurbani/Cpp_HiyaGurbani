@@ -2,6 +2,8 @@
 #define ADMIN_H
 
 #include "Constants.h"
+#include "Display.h"
+#include "Logger.h"
 #include <string.h>
 #include <iostream>
 
@@ -22,8 +24,8 @@ public:
     }
 
     void displayInformation() {
-        std::cout << "\nAdmin Name: " << name << "\n";
-        std::cout << "Username: " << userName << "\n";
+        Display::printWithValue(Logger::MSG_DISPLAY_ADMIN_NAME, name);
+        Display::printWithValue(Logger::MSG_DISPLAY_USERNAME, userName);
     }
 };
 

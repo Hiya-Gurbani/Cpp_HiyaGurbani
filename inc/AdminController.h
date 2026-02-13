@@ -1,27 +1,29 @@
 #ifndef ADMIN_CONTROLLER_H
 #define ADMIN_CONTROLLER_H
 
+#include "Customer.h"
 class Bank; 
 
 class AdminController {
     Bank* bank;
 
-public:
-    AdminController(Bank* currentBank) {
-        bank = currentBank;
-    }
-
-    void handleMenu();
-    bool handleChoice(int choice);
+    bool handleMenuChoice(int choice);
+    bool handleEditMenuChoice(int choice, Customer* customer);
     
     void registerCustomer();
-    void viewAllCustomers();
-    void viewAllAccounts();
+    void editCustomerDetails();
+    void deleteCustomer();
+
+    void displayCustomersInformation();
+    void displayAccountsInformation();
+
     void searchCustomerByAccountNumber();
     void searchAccountByNumber();
-    void editCustomerAccountDetails();
-    void deleteCustomer();
-    void deleteAccount();
+
+public:
+    AdminController(Bank* currentBank) : bank{currentBank} {}
+
+    bool handleMenu();
 };
 
 #endif
