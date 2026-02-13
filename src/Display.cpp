@@ -1,5 +1,6 @@
 #include "Display.h"
 #include "Logger.h"
+#include "Constants.h"
 #include <cstdlib>
 #include <iomanip>
 
@@ -7,57 +8,38 @@ void Display::printMessage(const std::string& message) {
     std::cout << message;
 }
 
-void Display::printLine(const std::string& message) {
-    std::cout << message << std::endl;
-}
-
-void Display::printNewLine() {
-    std::cout << std::endl;
-}
-
-void Display::printInvalidLength(size_t expectedLength) {
-    std::cout << Logger::MSG_INVALID_LENGTH << expectedLength << Logger::MSG_DIGITS_SUFFIX;
-}
-
-void Display::printInvalidNameLength(size_t minLength) {
-    std::cout << Logger::MSG_INVALID_NAME_LENGTH << minLength << Logger::MSG_CHARACTERS_SUFFIX;
-}
-
-void Display::printInvalidPasswordLength(size_t minLength) {
-    std::cout << Logger::MSG_INVALID_PASSWORD_LENGTH << minLength << Logger::MSG_CHARACTERS_SUFFIX;
-}
-
-void Display::printAttemptsRemaining(int attempts) {
-    std::cout << Logger::MSG_LEFT_ATTEMPTS << attempts << "\n";
+void Display::printWithSuffix(const std::string& prefix, size_t value, const std::string& suffix) {
+    std::cout << prefix << value << suffix;
 }
 
 void Display::printWithValue(const std::string& message, const std::string& value) {
-    std::cout << message << value << "\n";
+    std::cout << message << value << Constants::NEW_LINE;
 }
 
 void Display::printWithNumber(const std::string& message, size_t number) {
-    std::cout << message << number << "\n\n";
+    std::cout << message << number << Constants::NEW_LINE;
 }
 
 void Display::printWithAmount(const std::string& message, double amount) {
-    std::cout << message << std::fixed << std::setprecision(2) << amount << "\n";
+    std::cout << message << std::setprecision(2) << amount << Constants::NEW_LINE;
 }
 
 void Display::printTransactionHeader() {
-    std::cout << std::setw(5) << "ID" 
-              << std::setw(12) << "Type" 
-              << std::setw(10) << "Amount" 
-              << std::setw(15) << "Post Balance" << "\n";
+    std::cout << std::setw(Constants::ID_WIDTH) << Logger::MSG_TRANSACTION_HEADER_ID
+              << std::setw(Constants::TYPE_WIDTH) << Logger::MSG_TRANSACTION_HEADER_TYPE
+              << std::setw(Constants::AMOUNT_WIDTH) << Logger::MSG_TRANSACTION_HEADER_AMOUNT
+              << std::setw(Constants::POSTBALANCE_WIDTH) << Logger::MSG_TRANSACTION_HEADER_POSTBAL
+              << Constants::NEW_LINE;
 }
+
 
 void Display::printTransactionRow(long id, const std::string& type, double amount, double postBalance) {
-    std::cout << std::setw(5) << id
-              << std::setw(12) << type
-              << std::setw(10) << std::fixed << std::setprecision(2) << amount
-              << std::setw(15) << std::fixed << std::setprecision(2) << postBalance << "\n";
+    std::cout << std::setw(Constants::ID_WIDTH) << id
+              << std::setw(Constants::TYPE_WIDTH) << type
+              << std::setw(Constants::AMOUNT_WIDTH) << std::setprecision(Constants::DECIMAL_PRECISION) << amount
+              << std::setw(Constants::POSTBALANCE_WIDTH) << std::setprecision(Constants::DECIMAL_PRECISION) << postBalance << Constants::NEW_LINE;
 }
 
-
 void Display::clearScreen() {
-    system("clear");
+    system(Logger::CLEAR_SCREEN.c_str());
 }

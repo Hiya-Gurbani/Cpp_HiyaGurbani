@@ -43,17 +43,9 @@ public:
          && this->account.verifyPin(accountPin);
     }
     
-    void displayInformation() {
-        std::cout << "\nCustomer Name: " << name << "\n";
-        std::cout << "Email: " << email << "\n";
-        std::cout << "Phone: " << phone << "\n";
-        std::cout << "Account Number: " << account.getAccountNumber() << "\n";
-    }
+    void displayInformation();
     
-    void displayAccountDetails() {
-        std::cout << "\nAccount Number: " << account.getAccountNumber() << "\n";
-        std::cout << "Balance: " << std::setprecision(2) << account.getBalance() << "\n";
-    }
+    void displayAccountDetails();
 };
 
 #endif

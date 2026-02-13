@@ -12,7 +12,7 @@ bool Validator::isValidDigitsOnly(std::string& input, size_t expectedLength) {
     
     if (input.size() != expectedLength)  
     {
-        Display::printInvalidLength(expectedLength);
+        Display::printWithSuffix(Logger::MSG_INVALID_LENGTH, expectedLength, Logger::MSG_DIGITS_SUFFIX);
         isValid = false;
     }
     else
@@ -36,7 +36,7 @@ bool Validator::isValidName(std::string& input) {
     
     if (input.size() < Constants::MIN_NAME_LENGTH)  
     {
-        Display::printInvalidNameLength(Constants::MIN_NAME_LENGTH);
+        Display::printWithSuffix(Logger::MSG_INVALID_NAME_LENGTH, Constants::MIN_NAME_LENGTH, Logger::MSG_CHARACTERS_SUFFIX);
         isValid = false;
     }
     else
@@ -58,14 +58,14 @@ bool Validator::isValidName(std::string& input) {
 bool Validator::isValidEmail(std::string& email) {
     bool isValid = false;
 
-    size_t atPosition = email.find('@');
+    size_t atPosition = email.find(Constants::AT_THE_RATE);
     if (atPosition == std::string::npos) 
     {
         Display::printMessage(Logger::MSG_EMAIL_NO_AT);
     }
     else
     {
-        size_t dotPosition = email.find('.', atPosition);
+        size_t dotPosition = email.find(Constants::FULL_STOP, atPosition);
         if (dotPosition == std::string::npos || dotPosition == email.length() - 1) 
         {
             Display::printMessage(Logger::MSG_EMAIL_NO_DOMAIN);
@@ -87,7 +87,7 @@ bool Validator::isInputStreamValid() {
     }
     else
     {
-        while (std::cin.peek() == ' ' || std::cin.peek() == '\t') 
+        while (std::cin.peek() == Constants::WHITESPACE || std::cin.peek() == Constants::TAB) 
         {
             std::cin.get();
         }
@@ -98,7 +98,7 @@ bool Validator::isInputStreamValid() {
         }
     }
     
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), Constants::NEW_LINE);
     return isValidStream;
 }
 
@@ -129,7 +129,7 @@ bool Validator::isValidInput(std::string& input, Constants::InputType type) {
         case Constants::InputType::PASSWORD:
             if (input.size() < Constants::MIN_PASSWORD_LENGTH) 
             {
-                Display::printInvalidPasswordLength(Constants::MIN_PASSWORD_LENGTH);
+                Display::printWithSuffix(Logger::MSG_INVALID_PASSWORD_LENGTH, Constants::MIN_PASSWORD_LENGTH, Logger::MSG_CHARACTERS_SUFFIX);
                 isValid = false;
             }
             isValid = true;

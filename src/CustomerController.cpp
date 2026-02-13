@@ -9,10 +9,11 @@
 
 void CustomerController::performDeposit(Customer& customer) {
     double amount;
+    Display::printMessage(Logger::MSG_TRANSACTION_RANGE);
     Display::printMessage(Logger::MSG_ENTER_DEPOSIT_AMOUNT);
     InputHandler::inputValue(amount);
-    customer.getAccount().setBalance(customer.getAccount().getBalance() + amount);
 
+    customer.getAccount().setBalance(customer.getAccount().getBalance() + amount);
     Transaction transaction(Constants::TransactionType::DEPOSIT, amount, customer.getAccount().getBalance());
     customer.getAccount().addTransaction(transaction);
 
@@ -21,6 +22,7 @@ void CustomerController::performDeposit(Customer& customer) {
 
 void CustomerController::performWithdrawal(Customer& customer) {
     double amount;
+    Display::printMessage(Logger::MSG_TRANSACTION_RANGE);
     Display::printMessage(Logger::MSG_ENTER_WITHDRAWAL_AMOUNT);
     InputHandler::inputValue(amount);
 
@@ -39,47 +41,56 @@ void CustomerController::performWithdrawal(Customer& customer) {
     }
 }
 
-bool CustomerController::changePin(Customer& customer) {
-    bool continueProgram = true;
-
+bool CustomerController::isOldPinCorrect(Account& account) {
     std::string pin;
     Display::printMessage(Logger::MSG_ENTER_OLD_PIN);
     InputHandler::inputString(pin, Constants::InputType::PIN);
-    if (customer.getAccount().verifyPin(pin))
-    {
-        std::string confirmPin;
-        Display::printMessage(Logger::MSG_ENTER_NEW_PIN_CHANGE);
-        InputHandler::inputString(pin, Constants::InputType::PIN);
 
-        Display::printMessage(Logger::MSG_REENTER_PIN);
-        InputHandler::inputString(confirmPin, Constants::InputType::PIN);
+    bool isCorrect = account.verifyPin(pin);
 
-        if (pin == confirmPin)
-        {
-            customer.getAccount().setPin(pin);
-            Display::printMessage(Logger::MSG_PIN_UPDATED_SUCCESS);
-            Display::printMessage(Logger::MSG_LOGGING_OUT);
-            continueProgram = false;
-        }
-        else
-        {
-            Display::printMessage(Logger::MSG_PINS_DO_NOT_MATCH);
-        } 
-    }
-    else
+    if (!isCorrect)
     {
         Display::printMessage(Logger::MSG_INCORRECT_PIN);
         Display::printMessage(Logger::MSG_FORGOT_PIN_CONTACT);
     }
 
-    return continueProgram;
+    return isCorrect; 
+}
+
+bool CustomerController::changePin(Customer& customer) {
+    bool continueProgram = true;
+
+    if (isOldPinCorrect(customer.getAccount()))
+    {
+        std::string newPin, confirmPin;
+        Display::printMessage(Logger::MSG_ENTER_NEW_PIN_CHANGE);
+        InputHandler::inputString(newPin, Constants::InputType::PIN);
+
+        Display::printMessage(Logger::MSG_REENTER_PIN);
+        InputHandler::inputString(confirmPin, Constants::InputType::PIN);
+
+        if (newPin == confirmPin)
+        {
+            customer.getAccount().setPin(newPin);
+            Display::printMessage(Logger::MSG_PIN_UPDATED_SUCCESS);
+            Display::printMessage(Logger::MSG_LOGGING_OUT);
+            continueProgram = false; 
+        }
+        else
+        {
+            Display::printMessage(Logger::MSG_PINS_DO_NOT_MATCH);
+        }
+    }
+
+    return continueProgram; 
 }
 
 void CustomerController::displayMiniStatement(Customer& customer) {
     std::vector<Transaction>& transactions = customer.getAccount().getTransactions();
     int size = transactions.size();
 
-    if (size == 0) {
+    if (size == 0) 
+    {
         Display::printMessage(Logger::MSG_NO_TRANSACTIONS);
         return;
     }
@@ -87,18 +98,16 @@ void CustomerController::displayMiniStatement(Customer& customer) {
     Display::printMessage(Logger::MSG_MINI_STATEMENT_HEADER);
     Display::printTransactionHeader();
 
-    int start = (size > 5) ? size - 5 : 0;
-
+    int start = (size > Constants::MINI_STATEMENT_MAX_TRANSACTIONS) 
+    ? size - Constants::MINI_STATEMENT_MAX_TRANSACTIONS : 0;
     for (int index = start; index < size; index++) 
     {
         Transaction& transaction = transactions[index];
         std::string type = (transaction.getType() == Constants::TransactionType::DEPOSIT) 
-                          ? Logger::MSG_TRANSACTION_TYPE_DEPOSIT 
-                          : Logger::MSG_TRANSACTION_TYPE_WITHDRAWAL;
+        ? Logger::MSG_TRANSACTION_TYPE_DEPOSIT : Logger::MSG_TRANSACTION_TYPE_WITHDRAWAL;
         
         Display::printTransactionRow(transaction.getId(), type, 
-                                     transaction.getAmount(), 
-                                     transaction.getPostBalance());
+                                     transaction.getAmount(), transaction.getPostBalance());
     }
 
     Display::printMessage(Logger::MSG_STATEMENT_FOOTER);
@@ -107,7 +116,8 @@ void CustomerController::displayMiniStatement(Customer& customer) {
 void CustomerController::displayBankStatement(Customer& customer) {
     std::vector<Transaction>& transactions = customer.getAccount().getTransactions();
 
-    if (transactions.empty()) {
+    if (transactions.empty()) 
+    {
         Display::printMessage(Logger::MSG_NO_TRANSACTIONS);
         return;
     }
@@ -161,6 +171,7 @@ bool CustomerController::handleChoice(int choice, Customer& customer) {
             break;
 
         case 7:
+            bank->logout();
             continueProgram = false;
             break;
 
@@ -171,19 +182,18 @@ bool CustomerController::handleChoice(int choice, Customer& customer) {
     return continueProgram;
 }
 
-void CustomerController::handleMenu(Customer& customer) {
+bool CustomerController::handleMenu(Customer& customer) {
     int choice;
+    bool continueProgram = true;
 
-    while (true)
+    while (continueProgram)
     {
         Display::printMessage(Logger::MSG_CUSTOMER_OPERATIONS_MENU);
         Display::printMessage(Logger::MSG_INPUT_CHOICE);
 
         InputHandler::inputValue(choice);
-        if (!handleChoice(choice, customer))
-        {
-            Display::printMessage(Logger::MSG_LOGOUT);
-            return;
-        }
+        continueProgram = handleChoice(choice, customer);
     }
+
+    return continueProgram;
 }

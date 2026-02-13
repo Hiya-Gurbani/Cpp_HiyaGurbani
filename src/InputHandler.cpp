@@ -49,7 +49,7 @@ void InputHandler::removeLeadingAndTrailingWhitespaces(std::string& input) {
 
     if (first == std::string::npos)
     {
-        input = "";
+        input = Constants::EMPTY_STRING;
     }
     else
     {

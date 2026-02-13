@@ -2,8 +2,8 @@
 #include "Bank.h"  
 
 Transaction::Transaction(Constants::TransactionType transactionType, 
-                        double amt, double postBalance)
-    : type(transactionType), amount(amt), 
+                        double amount, double postBalance)
+    : type(transactionType), amount(amount), 
       postTransactionBalance(postBalance) {
     id = Bank::generateTransactionId(); 
 }

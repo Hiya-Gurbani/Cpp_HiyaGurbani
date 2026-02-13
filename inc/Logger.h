@@ -36,9 +36,9 @@ public:
     inline static const std::string MSG_ENTER_PASSWORD = "Enter password: ";
     inline static const std::string MSG_ENTER_ACCOUNT_NUMBER = "Enter account number: ";
     inline static const std::string MSG_ENTER_ACCOUNT_PIN = "Enter PIN: ";
-    inline static const std::string MSG_LOGIN_SUCCESS = "\n✓ Login successful!\n";
-    inline static const std::string MSG_LOGIN_FAILED = "\n✗ Login failed! Incorrect credentials.";
-    inline static const std::string MSG_ACCESS_DENIED = "\n✗ Access denied! Maximum login attempts exceeded.\n";
+    inline static const std::string MSG_LOGIN_SUCCESS = "\nLogin successful!\n";
+    inline static const std::string MSG_LOGIN_FAILED = "\nLogin failed! Incorrect credentials.";
+    inline static const std::string MSG_ACCESS_DENIED = "\nAccess denied! Maximum login attempts exceeded.\n";
     inline static const std::string MSG_LEFT_ATTEMPTS = "Attempts remaining: ";
     inline static const std::string MSG_ACCOUNT_NUMBER = "\nAccount Number: ";
     inline static const std::string MSG_PIN = "PIN: ";
@@ -123,6 +123,7 @@ public:
     "6. Bank Statement\n"
     "7. Exit\n"
     "====================================================\n";
+    inline static const std::string MSG_TRANSACTION_RANGE = "Transaction amount must be between 100 and 10000.";
     inline static const std::string MSG_ENTER_DEPOSIT_AMOUNT = "Enter the amount you want to deposit: ";
     inline static const std::string MSG_DEPOSIT_SUCCESS = "Deposited Money! Balance after transaction: ";
     inline static const std::string MSG_ENTER_WITHDRAWAL_AMOUNT = "Enter the amount you want to withdraw: ";
@@ -151,6 +152,26 @@ public:
     inline static const std::string MSG_INPUT_CHOICE = "\nEnter your choice: ";
     inline static const std::string MSG_INVALID_CHOICE = "Invalid Choice! Please choose an option from menu.\n";
     inline static const std::string MSG_PROGRAM_EXIT = "\nThank you for banking with us!\n";
+
+    inline static const std::string CLEAR_SCREEN = "clear";
+
+    //Customer
+    inline static const std::string MSG_DISPLAY_CUSTOMER_NAME = "Customer Name: ";
+    inline static const std::string MSG_DISPLAY_EMAIL = "Email: ";
+    inline static const std::string MSG_DISPLAY_PHONE = "Phone: ";
+    inline static const std::string MSG_DISPLAY_ACCOUNT_NUMBER = "Account Number: ";
+    inline static const std::string MSG_DISPLAY_BALANCE = "Balance: ";
+
+    //Admin
+    inline static const std::string MSG_DISPLAY_ADMIN_NAME = "\nAdmin Name: ";
+    inline static const std::string MSG_DISPLAY_USERNAME = "Username: ";
+
+    // Transaction headers
+    inline static const std::string MSG_TRANSACTION_HEADER_ID = "ID";
+    inline static const std::string MSG_TRANSACTION_HEADER_TYPE = "Type";
+    inline static const std::string MSG_TRANSACTION_HEADER_AMOUNT = "Amount";
+    inline static const std::string MSG_TRANSACTION_HEADER_POSTBAL = "Post Balance";
+
 };
 
 #endif

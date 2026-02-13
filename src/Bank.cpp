@@ -7,13 +7,13 @@
 #include <random>
 #include <string>
 
-long Bank::accountNumberCounter = 10000000;
-long Bank::transactionIdCounter = 1;
+long Bank::accountNumberCounter = Constants::INITIAL_ACCOUNT_NUMBER;
+long Bank::transactionIdCounter = Constants::INITIAL_TRANSACTION_ID;
 
 std::string Bank::generateRandomPin() {
     static std::random_device randomDevice;     
     static std::mt19937 gen(randomDevice());     
-    static std::uniform_int_distribution<> distribution(1000, 9999);
+    static std::uniform_int_distribution<> distribution(Constants::MIN_PIN_VALUE, Constants::MAX_PIN_VALUE);
 
     return std::to_string(distribution(gen));
 }
@@ -49,7 +49,6 @@ Customer& Bank::createCustomer(const std::string& name,
     std::string pin = generateRandomPin();
     newCustomer.getAccount().setAccountNumber(accountNumber);
     newCustomer.getAccount().setPin(pin);
-    newCustomer.getAccount().setBalance(0.0);
     
     customers.push_back(newCustomer);
     Display::printWithValue(Logger::MSG_ACCOUNT_NUMBER, accountNumber);
@@ -136,7 +135,7 @@ bool Bank::login(Constants::UserRole role) {
         if (!isLoginSuccessful && attempts < Constants::MAX_LOGIN_ATTEMPTS) 
         {
             Display::printMessage(Logger::MSG_LOGIN_FAILED);
-            Display::printAttemptsRemaining(Constants::MAX_LOGIN_ATTEMPTS - attempts);
+            Display::printWithNumber(Logger::MSG_LEFT_ATTEMPTS, Constants::MAX_LOGIN_ATTEMPTS - attempts);
         }
     }
 
@@ -149,7 +148,8 @@ bool Bank::login(Constants::UserRole role) {
 }
 
 void Bank::logout() {
-
+    Display::clearScreen();
+    Display::printMessage(Logger::MSG_LOGOUT);
 }
 
 bool Bank::handleChoice(int choice) {
@@ -203,4 +203,3 @@ void Bank::handleMenu() {
         }
     }
 }
-
