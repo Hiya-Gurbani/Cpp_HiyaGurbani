@@ -2,7 +2,7 @@
 #include "Logger.h"
 #include "InputHandler.h"
 #include "Constants.h"
-
+#include "Display.h"
 #include <iostream>
 #include <random>
 #include <string>
@@ -52,6 +52,8 @@ Customer& Bank::createCustomer(const std::string& name,
     newCustomer.getAccount().setBalance(0.0);
     
     customers.push_back(newCustomer);
+    Display::printWithValue(Logger::MSG_ACCOUNT_NUMBER, accountNumber);
+    Display::printWithValue(Logger::MSG_PIN, pin);
     
     return customers.back();
 }
@@ -74,20 +76,20 @@ bool Bank::deleteCustomerFromBank(const std::string& accountNumber) {
 bool Bank::adminLogin() {
     bool isLoginSuccessful = false;
 
-    std::cout << Logger::MSG_ADMIN_LOGIN;
+    Display::printMessage(Logger::MSG_ADMIN_LOGIN);
 
     std::string userName;
-    std::cout << Logger::MSG_ENTER_USERNAME;
-    InputHandler::inputString(userName);
+    Display::printMessage(Logger::MSG_ENTER_USERNAME);
+    InputHandler::inputString(userName, Constants::InputType::USERNAME);
 
     std::string password;
-    std::cout << Logger::MSG_ENTER_PASSWORD;
-    InputHandler::inputString(password);
+    Display::printMessage(Logger::MSG_ENTER_PASSWORD);
+    InputHandler::inputString(password, Constants::InputType::PASSWORD);
 
     if (admin.authenticate(userName, password))
     {
         isLoginSuccessful = true;
-        std::cout << Logger::MSG_LOGIN_SUCCESS;
+        Display::printMessage(Logger::MSG_LOGIN_SUCCESS);
         adminController->handleMenu();
     } 
     
@@ -97,21 +99,21 @@ bool Bank::adminLogin() {
 bool Bank::customerLogin() {
     bool isLoginSuccessful = false;
 
-    std::cout << Logger::MSG_CUSTOMER_LOGIN;
+    Display::printMessage(Logger::MSG_CUSTOMER_LOGIN);
     std::string accountNumber;
-    std::cout << Logger::MSG_ENTER_ACCOUNT_NUMBER;
-    InputHandler::inputString(accountNumber);
+    Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
+    InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
 
     std::string pin;
-    std::cout << Logger::MSG_ENTER_ACCOUNT_PIN;
-    InputHandler::inputString(pin);
+    Display::printMessage(Logger::MSG_ENTER_ACCOUNT_PIN);
+    InputHandler::inputString(pin, Constants::InputType::PIN);
 
     for (auto& customer: customers)
     {
         if (customer.authenticate(accountNumber, pin))
         {
             isLoginSuccessful = true;
-            std::cout << Logger::MSG_LOGIN_SUCCESS;
+            Display::printMessage(Logger::MSG_LOGIN_SUCCESS);
             customerController->handleMenu(customer);
             break;
         }
@@ -133,15 +135,14 @@ bool Bank::login(Constants::UserRole role) {
 
         if (!isLoginSuccessful && attempts < Constants::MAX_LOGIN_ATTEMPTS) 
         {
-            std::cout << "\n" << Logger::MSG_LOGIN_FAILED;
-            std::cout << Logger::MSG_LEFT_ATTEMPTS << 
-            (Constants::MAX_LOGIN_ATTEMPTS - attempts) << "\n";
+            Display::printMessage(Logger::MSG_LOGIN_FAILED);
+            Display::printAttemptsRemaining(Constants::MAX_LOGIN_ATTEMPTS - attempts);
         }
     }
 
     if (!isLoginSuccessful) 
     {
-        std::cout << Logger::MSG_ACCESS_DENIED;
+        Display::printMessage(Logger::MSG_ACCESS_DENIED);
     }
 
     return isLoginSuccessful;
@@ -159,20 +160,20 @@ bool Bank::handleChoice(int choice) {
     switch (choice)
     {
         case 1:
-        role = Constants::UserRole::ADMIN;
-        break;
+            role = Constants::UserRole::ADMIN;
+            break;
 
         case 2:
-        role = Constants::UserRole::CUSTOMER;
-        break;
+            role = Constants::UserRole::CUSTOMER;
+            break;
 
         case 3:
-        continueProgram = false;
-        break;
+            continueProgram = false;
+            break;
 
         default:
-        std::cout << Logger::MSG_INVALID_CHOICE;
-        validChoice = false;
+            Display::printMessage(Logger::MSG_INVALID_CHOICE);
+            validChoice = false;
     }
 
     if (continueProgram && validChoice)  
@@ -191,13 +192,13 @@ void Bank::handleMenu() {
 
     while (true) 
     {
-        std::cout << Logger::MSG_BANK_MENU;
-        std::cout << Logger::MSG_INPUT_CHOICE;
+        Display::printMessage(Logger::MSG_BANK_MENU);
+        Display::printMessage(Logger::MSG_INPUT_CHOICE);
 
         InputHandler::inputValue(choice);
         if (!handleChoice(choice))
         {
-            std::cout << Logger::MSG_PROGRAM_EXIT;
+            Display::printMessage(Logger::MSG_PROGRAM_EXIT);
             return;
         }
     }

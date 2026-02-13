@@ -2,19 +2,24 @@
 #include "Constants.h"
 #include "Logger.h"
 #include "Validator.h"
+#include "Display.h"
 #include <iostream>
 
 double& InputHandler::inputValue(double& value) {
     while (true) 
     {
         std::cin >> value;
-        if (Validator::isInputStreamValid())
+        if (!Validator::isInputStreamValid())
         {
-            break;
+            Display::printMessage(Logger::MSG_INVALID_NUMBER);
+        }
+        else if (value < Constants::MIN_TRANSACTION_AMOUNT || value > Constants::MAX_TRANSACTION_AMOUNT)
+        {
+            Display::printMessage(Logger::MSG_OUT_OF_RANGE);
         }
         else
         {
-            std::cout << Logger::MSG_INVALID_NUMBER;
+            break;
         }
     }
     
@@ -27,7 +32,7 @@ int& InputHandler::inputValue(int& value) {
         std::cin >> value;
         if (!Validator::isInputStreamValid())
         {
-            std::cout << Logger::MSG_INVALID_INTEGER;
+            Display::printMessage(Logger::MSG_INVALID_INTEGER);
         }
         else
         {
@@ -46,18 +51,24 @@ void InputHandler::removeLeadingAndTrailingWhitespaces(std::string& input) {
     {
         input = "";
     }
-
-    input = input.substr(first, (last - first + 1));
+    else
+    {
+        input = input.substr(first, (last - first + 1));
+    }
 }
 
-void InputHandler::inputString(std::string& input) {
+void InputHandler::inputString(std::string& input, Constants::InputType type) {
     while (true) 
     {
         std::getline(std::cin, input);
         removeLeadingAndTrailingWhitespaces(input);
-        if (input == "")
+        if (input == Constants::EMPTY_STRING)
         {
-            std::cout << "Input cannot be empty! Enter again: ";
+            Display::printMessage(Logger::MSG_EMPTY_INPUT);
+        }
+        else if (!Validator::isValidInput(input, type))
+        {
+            Display::printMessage(Logger::MSG_ENTER_AGAIN);
         }
         else
         {

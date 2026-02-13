@@ -3,44 +3,45 @@
 #include "InputHandler.h"
 #include "Customer.h"
 #include "Bank.h"
+#include "Display.h"
+#include "Constants.h"
 #include <iostream>
 #include <iomanip>
 
 void AdminController::registerCustomer() {
-    std::cout << "===== REGISTER NEW CUSTOMER =====\n";
+    Display::printMessage(Logger::MSG_REGISTER_CUSTOMER);
 
     std::string name, phone, email;
     
-    std::cout << "Customer Name: ";
-    InputHandler::inputString(name);
+    Display::printMessage(Logger::MSG_CUSTOMER_NAME);
+    InputHandler::inputString(name, Constants::InputType::NAME);
 
-    std::cout << "Customer Email: ";
-    InputHandler::inputString(email);
+    Display::printMessage(Logger::MSG_CUSTOMER_EMAIL);
+    InputHandler::inputString(email, Constants::InputType::EMAIL);
     
-    std::cout << "Customer Phone Number: ";
-    InputHandler::inputString(phone);
+    Display::printMessage(Logger::MSG_CUSTOMER_PHONE);
+    InputHandler::inputString(phone, Constants::InputType::PHONE);
     
     Customer& newCustomer = bank->createCustomer(name, email, phone);
     
-    std::cout << "\nCustomer registered successfully!\n";
-    std::cout << "Account Number: " << newCustomer.getAccount().getAccountNumber() << "\n";
-    // std::cout << "PIN: " << newCustomer.getAccount().getPin() << "\n";
+    Display::printMessage(Logger::MSG_CUSTOMER_REGISTERED_SUCCESS);
 }
 
 void AdminController::viewAllCustomers() {
     std::vector<Customer>& customers = bank->getCustomers();
     
-    if (customers.empty()) {
-        std::cout << "\nNo customers found.\n";
+    if (customers.empty()) 
+    {
+        Display::printMessage(Logger::MSG_NO_CUSTOMERS_FOUND);
         return;
     }
     
-    std::cout << "\n===== LIST OF ALL CUSTOMERS =====\n";
-    std::cout << "Total Customers: " << customers.size() << "\n\n";
+    Display::printMessage(Logger::MSG_LIST_ALL_CUSTOMERS);
+    Display::printWithNumber(Logger::MSG_TOTAL_CUSTOMERS, customers.size());
     
     for (auto& customer : customers) {
         customer.displayInformation();
-        std::cout << "----------------------------\n";
+        Display::printMessage(Logger::MSG_SEPARATOR);
     }
 }
 
@@ -48,85 +49,78 @@ void AdminController::viewAllAccounts() {
     std::vector<Customer>& customers = bank->getCustomers();
     
     if (customers.empty()) {
-        std::cout << "\nNo accounts found.\n";
+        Display::printMessage(Logger::MSG_NO_ACCOUNTS_FOUND);
         return;
     }
     
-    std::cout << "\n===== LIST OF ALL ACCOUNTS =====\n";
-    std::cout << "Total Accounts: " << customers.size() << "\n\n";
+    Display::printMessage(Logger::MSG_LIST_ALL_ACCOUNTS);
+    Display::printWithNumber(Logger::MSG_TOTAL_ACCOUNTS, customers.size());
     
     for (auto& customer : customers) {
         customer.displayAccountDetails();
-        std::cout << "----------------------------\n";
+        Display::printMessage(Logger::MSG_SEPARATOR);
     }
 }
 
 void AdminController::searchCustomerByAccountNumber() {
-    std::cout << "\n===== SEARCH CUSTOMER BY ACCOUNT =====\n";
+    Display::printMessage(Logger::MSG_SEARCH_CUSTOMER_HEADER);
     
     std::string accountNumber;
-    std::cout << "Enter Account Number: ";
-    InputHandler::inputString(accountNumber);
+    Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
+    InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
     Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
     
     if (customer) 
     {
-        std::cout << "\nCustomer Found!\n";
+        Display::printMessage(Logger::MSG_CUSTOMER_FOUND);
         customer->displayInformation();
     } 
     else 
     {
-        std::cout << "\nNo customer found with account number: " << accountNumber << "\n";
+        Display::printWithValue(Logger::MSG_CUSTOMER_NOT_FOUND_WITH_ACCOUNT, accountNumber);
     }
 }
 
 void AdminController::searchAccountByNumber() {
-    std::cout << "\n===== SEARCH ACCOUNT BY NUMBER =====\n";
+    Display::printMessage(Logger::MSG_SEARCH_ACCOUNT_HEADER);
     
     std::string accountNumber;
-    std::cout << "Enter Account Number: ";
-    InputHandler::inputString(accountNumber);
+    Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
+    InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
     Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
     
     if (customer) 
     {
-        std::cout << "\nAccount Found!\n";
+        Display::printMessage(Logger::MSG_ACCOUNT_FOUND);
         customer->displayAccountDetails();
     } 
     else 
     {
-        std::cout << "\nNo account found with account number: " << accountNumber << "\n";
+        Display::printWithValue(Logger::MSG_ACCOUNT_NOT_FOUND_WITH_NUMBER, accountNumber);
     }
 }
 
-//Break this function
 void AdminController::editCustomerAccountDetails() {
-    std::cout << "\n===== EDIT CUSTOMER DETAILS =====\n";
+    Display::printMessage(Logger::MSG_EDIT_CUSTOMER);
     
     std::string accountNumber;
-    std::cout << "Enter Account Number: ";
-    InputHandler::inputString(accountNumber);
+    Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
+    InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
     Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
     
     if (!customer) 
     {
-        std::cout << "\nCustomer not found!\n";
+        Display::printMessage(Logger::MSG_CUSTOMER_NOT_FOUND);
     }
     else
     {
-        std::cout << "\nCurrent Details:\n";
+        Display::printMessage(Logger::MSG_CURRENT_DETAILS);
         customer->displayInformation();
 
-        std::cout << "\n--- What would you like to edit? ---\n";
-        std::cout << "1. Name\n";
-        std::cout << "2. Email\n";
-        std::cout << "3. Phone\n";
-        std::cout << "4. PIN\n";
-        std::cout << "5. Cancel\n";
-        std::cout << "Enter choice: ";
+        Display::printMessage(Logger::MSG_EDIT_MENU);
 
         int choice;
         InputHandler::inputValue(choice);
@@ -135,82 +129,68 @@ void AdminController::editCustomerAccountDetails() {
         
         switch (choice) {
             case 1:
-                std::cout << "Enter new name: ";
-                InputHandler::inputString(newValue);
+                Display::printMessage(Logger::MSG_ENTER_NEW_NAME);
+                InputHandler::inputString(newValue, Constants::InputType::NAME);
                 customer->setName(newValue);
-                std::cout << "Name updated!\n";
+                Display::printMessage(Logger::MSG_NAME_UPDATED);
                 break;
                 
             case 2:
-                std::cout << "Enter new email: ";
-                InputHandler::inputString(newValue);
+                Display::printMessage(Logger::MSG_ENTER_NEW_EMAIL);
+                InputHandler::inputString(newValue, Constants::InputType::EMAIL);
                 customer->setEmail(newValue);
-                std::cout << "Email updated!\n";
+                Display::printMessage(Logger::MSG_EMAIL_UPDATED);
                 break;
                 
             case 3:
-                std::cout << "Enter new phone: ";
-                InputHandler::inputString(newValue);
+                Display::printMessage(Logger::MSG_ENTER_NEW_PHONE);
+                InputHandler::inputString(newValue, Constants::InputType::PHONE);
                 customer->setPhone(newValue);
-                std::cout << "Phone updated!\n";
+                Display::printMessage(Logger::MSG_PHONE_UPDATED);
                 break;
                 
-                //VALIDATION--------
             case 4:
-                std::cout << "Enter new PIN (4 digits): ";
-                InputHandler::inputString(newValue);
+                Display::printMessage(Logger::MSG_ENTER_NEW_PIN);
+                InputHandler::inputString(newValue, Constants::InputType::PIN);
                 customer->getAccount().setPin(newValue);
-                std::cout << "PIN updated!\n";
-
-                //Validate in validator
-                // if (newValue.length() == 4 && std::all_of(newValue.begin(), newValue.end(), ::isdigit)) 
-                // {
-                //     customer->getAccount().setPin(newValue);
-                //     std::cout << "PIN updated!\n";
-                // } 
-                // else 
-                // {
-                //     std::cout << "Invalid PIN! Must be 4 digits.\n";
-                // }
+                Display::printMessage(Logger::MSG_PIN_UPDATED);
                 break;
                 
             case 5:
-                std::cout << "Edit cancelled.\n";
+                Display::printMessage(Logger::MSG_INVALID_CHOICE);
                 break;
                 
             default:
                 std::cout << "Invalid choice!\n";
         }
-    }
-    
+    }  
 }
 
 void AdminController::deleteCustomer() {
-    std::cout << "\n===== DELETE CUSTOMER =====\n";
+    Display::printMessage(Logger::MSG_DELETE_CUSTOMER_HEADER);
     
     std::string accountNumber;
-    std::cout << "Enter Account Number of customer to delete: ";
-    InputHandler::inputString(accountNumber);
+    Display::printMessage(Logger::MSG_ENTER_ACCOUNT_TO_DELETE);
+    InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
     Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
     
     if (!customer) 
     {
-        std::cout << "\nCustomer not found!\n";
+        Display::printMessage(Logger::MSG_CUSTOMER_NOT_FOUND);
     }
     else
     {
         double balance = customer->getAccount().getBalance();
         if (balance > 0) 
         {
-            std::cout << "\nCannot delete customer with remaining balance: " 
-                    << std::setprecision(2) << balance << "\n";
-            std::cout << "Please withdraw all funds before deletion.\n";
+            Display::printWithAmount(Logger::MSG_CANNOT_DELETE_WITH_BALANCE, balance);
+            Display::printMessage(Logger::MSG_WITHDRAW_FUNDS_FIRST);
         }
         else
         {
             bank->deleteCustomerFromBank(accountNumber);
-            std::cout << "Customer Deleted Successfully!\n";
+            Display::printMessage(Logger::MSG_CUSTOMER_DELETED_SUCCESS);
         }
     }
 }
@@ -249,8 +229,8 @@ bool AdminController::handleChoice(int choice) {
         break;
 
         case 8:
-        std::cout << "\n===== DELETE ACCOUNT =====\n";
-        std::cout << "Note: Deleting an account will also remove the customer.\n";
+        Display::printMessage(Logger::MSG_DELETE_ACCOUNT_HEADER);
+        Display::printMessage(Logger::MSG_DELETE_ACCOUNT_NOTE);
         deleteCustomer(); 
         break;
 
@@ -259,7 +239,7 @@ bool AdminController::handleChoice(int choice) {
         break;
 
         default:
-        std::cout << Logger::MSG_INVALID_CHOICE;
+        Display::printMessage(Logger::MSG_INVALID_CHOICE);
     }
     
     return continueProgram;
@@ -270,8 +250,8 @@ void AdminController::handleMenu() {
 
     while (true)
     {
-        std::cout << Logger::MSG_ADMIN_OPERATIONS_MENU;
-        std::cout << Logger::MSG_INPUT_CHOICE;
+        Display::printMessage(Logger::MSG_ADMIN_OPERATIONS_MENU);
+        Display::printMessage(Logger::MSG_INPUT_CHOICE);
 
         InputHandler::inputValue(choice);
         if (!handleChoice(choice))

@@ -16,6 +16,8 @@ public:
     void performDeposit(Customer& customer);
     void performWithdrawal(Customer& customer);
 
+    bool changePin(Customer& customer);
+
     void displayMiniStatement(Customer& customer);
     void displayBankStatement(Customer& customer);
     
