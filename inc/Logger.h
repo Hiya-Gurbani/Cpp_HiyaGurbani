@@ -39,7 +39,7 @@ public:
     inline static const std::string MSG_LOGIN_SUCCESS = "\nLogin successful!\n";
     inline static const std::string MSG_LOGIN_FAILED = "\nLogin failed! Incorrect credentials.";
     inline static const std::string MSG_ACCESS_DENIED = "\nAccess denied! Maximum login attempts exceeded.\n";
-    inline static const std::string MSG_LEFT_ATTEMPTS = "Attempts remaining: ";
+    inline static const std::string MSG_LEFT_ATTEMPTS = "\nAttempts remaining: ";
     inline static const std::string MSG_ACCOUNT_NUMBER = "\nAccount Number: ";
     inline static const std::string MSG_PIN = "PIN: ";
 
@@ -110,7 +110,7 @@ public:
     inline static const std::string MSG_DELETE_ACCOUNT_HEADER = "\n===== DELETE ACCOUNT =====\n";
     inline static const std::string MSG_DELETE_ACCOUNT_NOTE = "Note: Deleting an account will also remove the customer.\n";
 
-    inline static const std::string MSG_LOGOUT = "\n✓ Logged out successfully!\n";
+    inline static const std::string MSG_LOGOUT = "\nLogged out successfully!\n";
 
     //Customer Controller
     inline static const std::string MSG_CUSTOMER_OPERATIONS_MENU = 
@@ -121,13 +121,13 @@ public:
     "4. Change Pin\n"
     "5. Mini Statement\n"
     "6. Bank Statement\n"
-    "7. Exit\n"
+    "7. Logout\n"
     "====================================================\n";
-    inline static const std::string MSG_TRANSACTION_RANGE = "Transaction amount must be between 100 and 10000.";
+    inline static const std::string MSG_TRANSACTION_RANGE = "Transaction amount must be between ";
     inline static const std::string MSG_ENTER_DEPOSIT_AMOUNT = "Enter the amount you want to deposit: ";
-    inline static const std::string MSG_DEPOSIT_SUCCESS = "Deposited Money! Balance after transaction: ";
+    inline static const std::string MSG_DEPOSIT_SUCCESS = "\nDeposited Money! Balance after transaction: ";
     inline static const std::string MSG_ENTER_WITHDRAWAL_AMOUNT = "Enter the amount you want to withdraw: ";
-    inline static const std::string MSG_WITHDRAWAL_SUCCESS = "Withdrawed Money! Balance after transaction: ";
+    inline static const std::string MSG_WITHDRAWAL_SUCCESS = "\nWithdrawed Money! Balance after transaction: ";
     inline static const std::string MSG_INSUFFICIENT_BALANCE = "You do not have enough balance for this!\n";
 
     inline static const std::string MSG_CURRENT_BALANCE = "Your current balance is: ";

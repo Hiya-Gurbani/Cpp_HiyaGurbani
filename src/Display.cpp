@@ -21,7 +21,8 @@ void Display::printWithNumber(const std::string& message, size_t number) {
 }
 
 void Display::printWithAmount(const std::string& message, double amount) {
-    std::cout << message << std::setprecision(2) << amount << Constants::NEW_LINE;
+    std::cout << message << std::fixed << std::setprecision(2) 
+    << amount << Constants::NEW_LINE;
 }
 
 void Display::printTransactionHeader() {
@@ -38,6 +39,13 @@ void Display::printTransactionRow(long id, const std::string& type, double amoun
               << std::setw(Constants::TYPE_WIDTH) << type
               << std::setw(Constants::AMOUNT_WIDTH) << std::setprecision(Constants::DECIMAL_PRECISION) << amount
               << std::setw(Constants::POSTBALANCE_WIDTH) << std::setprecision(Constants::DECIMAL_PRECISION) << postBalance << Constants::NEW_LINE;
+}
+
+void Display::printTransactionRange() {
+    std::cout << Logger::MSG_TRANSACTION_RANGE
+              << Constants::MIN_TRANSACTION_AMOUNT << Constants::HYPHEN
+              << Constants::MAX_TRANSACTION_AMOUNT << Constants::FULL_STOP
+              << Constants::NEW_LINE;
 }
 
 void Display::clearScreen() {

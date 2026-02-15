@@ -9,7 +9,7 @@
 
 void CustomerController::performDeposit(Customer& customer) {
     double amount;
-    Display::printMessage(Logger::MSG_TRANSACTION_RANGE);
+    Display::printTransactionRange();
     Display::printMessage(Logger::MSG_ENTER_DEPOSIT_AMOUNT);
     InputHandler::inputValue(amount);
 
@@ -22,7 +22,7 @@ void CustomerController::performDeposit(Customer& customer) {
 
 void CustomerController::performWithdrawal(Customer& customer) {
     double amount;
-    Display::printMessage(Logger::MSG_TRANSACTION_RANGE);
+    Display::printTransactionRange();
     Display::printMessage(Logger::MSG_ENTER_WITHDRAWAL_AMOUNT);
     InputHandler::inputValue(amount);
 
