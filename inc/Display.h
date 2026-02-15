@@ -15,7 +15,8 @@ public:
 
     static void printTransactionHeader();
     static void printTransactionRow(long id, const std::string& type, double amount, double postBalance);
-    static void clearScreen();
+    static void printTransactionRange();
+    static void clearScreen();  
 };
 
 #endif

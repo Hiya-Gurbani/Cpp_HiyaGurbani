@@ -52,14 +52,13 @@ public:
     static const char AT_THE_RATE = '@';
     static const char FULL_STOP = '.';
     static const char WHITESPACE = ' ';
+    static const char HYPHEN = '-';
     static const char TAB = '\t';
 
     inline static const std::string EMPTY_STRING = "";
     inline static const std::string ADMIN_NAME = "Hiya";
     inline static const std::string ADMIN_USERNAME = "hiya";
-    inline static const std::string ADMIN_PASSWORD = "system";
-
-    
+    inline static const std::string ADMIN_PASSWORD = "system"; 
 };
 
 #endif

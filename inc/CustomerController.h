@@ -7,7 +7,6 @@ class Bank;
 class CustomerController {
     Bank* bank;
 
-
     void performDeposit(Customer& customer);
     void performWithdrawal(Customer& customer);
 
