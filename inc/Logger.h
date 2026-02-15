@@ -52,9 +52,10 @@ public:
     "4. Search Customer via Account\n"
     "5. Search Account via Number\n"
     "6. Edit User Details\n"
-    "7. Delete Customer\n"
-    "8. Delete Account\n"
-    "9. Logout\n"
+    "7. Manage Customer Account\n"
+    "8. Delete Customer\n"
+    "9. Delete Account\n"
+    "10. Logout\n"
     "================================================\n";
     
     inline static const std::string MSG_REGISTER_CUSTOMER = "===== REGISTER NEW CUSTOMER =====\n";
@@ -101,6 +102,15 @@ public:
     inline static const std::string MSG_EDIT_CANCELLED = "Edit cancelled.\n";
     inline static const std::string MSG_CUSTOMER_NOT_FOUND = "\nCustomer not found!\n";
 
+    inline static const std::string MSG_MANAGE_ACCOUNT_HEADER = "\n===== MANAGE CUSTOMER ACCOUNT =====\n";
+    inline static const std::string MSG_ACCOUNT_MANAGEMENT_MENU = 
+        "\n1. Deposit\n"
+        "2. Withdraw\n"
+        "3. Check Balance\n"
+        "4. Cancel\n"
+        "Enter choice: ";
+    inline static const std::string MSG_OPERATION_CANCELLED = "\nOperation cancelled.\n";
+
     inline static const std::string MSG_DELETE_CUSTOMER_HEADER = "\n===== DELETE CUSTOMER =====\n";
     inline static const std::string MSG_ENTER_ACCOUNT_TO_DELETE = "Enter Account Number of customer to delete: ";
     inline static const std::string MSG_CANNOT_DELETE_WITH_BALANCE = "\nCannot delete customer with remaining balance: ";
@@ -123,6 +133,7 @@ public:
     "6. Bank Statement\n"
     "7. Logout\n"
     "====================================================\n";
+    inline static const std::string MSG_DEPOSIT_FAILED = "Deposit failed.\n";
     inline static const std::string MSG_TRANSACTION_RANGE = "Transaction amount must be between ";
     inline static const std::string MSG_ENTER_DEPOSIT_AMOUNT = "Enter the amount you want to deposit: ";
     inline static const std::string MSG_DEPOSIT_SUCCESS = "\nDeposited Money! Balance after transaction: ";
@@ -142,7 +153,7 @@ public:
     inline static const std::string MSG_ENTER_NEW_PIN_CHANGE = "Enter new PIN (4 digits): ";
     inline static const std::string MSG_REENTER_PIN = "Re-enter your PIN: ";
     inline static const std::string MSG_PIN_UPDATED_SUCCESS = "PIN updated!.\n";
-    inline static const std::string MSG_LOGGING_OUT = "You are getting logged out. Kindly login again!";
+    inline static const std::string MSG_LOGGING_OUT = "You are getting logged out. Kindly login again!\n";
     inline static const std::string MSG_PINS_DO_NOT_MATCH = "PINS do not match. Try again!\n";
     inline static const std::string MSG_INCORRECT_PIN = "Entered PIN is incorrect.\n";
     inline static const std::string MSG_FORGOT_PIN_CONTACT = "If you have forgot the pin, kindly contact your bank\n";
@@ -156,10 +167,10 @@ public:
     inline static const std::string CLEAR_SCREEN = "clear";
 
     //Customer
-    inline static const std::string MSG_DISPLAY_CUSTOMER_NAME = "Customer Name: ";
+    inline static const std::string MSG_DISPLAY_CUSTOMER_NAME = "\nCustomer Name: ";
     inline static const std::string MSG_DISPLAY_EMAIL = "Email: ";
     inline static const std::string MSG_DISPLAY_PHONE = "Phone: ";
-    inline static const std::string MSG_DISPLAY_ACCOUNT_NUMBER = "Account Number: ";
+    inline static const std::string MSG_DISPLAY_ACCOUNT_NUMBER = "\nAccount Number: ";
     inline static const std::string MSG_DISPLAY_BALANCE = "Balance: ";
 
     //Admin

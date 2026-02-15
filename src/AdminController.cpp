@@ -5,6 +5,7 @@
 #include "Bank.h"
 #include "Display.h"
 #include "Constants.h"
+#include "CustomerController.h"
 #include <iostream>
 #include <iomanip>
 
@@ -64,7 +65,7 @@ void AdminController::displayAccountsInformation() {
     }
 }
 
-void AdminController::searchCustomerByAccountNumber() {
+void AdminController::displayCustomerByAccountNumber() {
     Display::printMessage(Logger::MSG_SEARCH_CUSTOMER_HEADER);
     
     std::string accountNumber;
@@ -84,7 +85,7 @@ void AdminController::searchCustomerByAccountNumber() {
     }
 }
 
-void AdminController::searchAccountByNumber() {
+void AdminController::displayAccountByNumber() {
     Display::printMessage(Logger::MSG_SEARCH_ACCOUNT_HEADER);
     
     std::string accountNumber;
@@ -104,46 +105,68 @@ void AdminController::searchAccountByNumber() {
     }
 }
 
-bool AdminController::handleEditMenuChoice(int choice, Customer* customer) {
+void AdminController::updateCustomerName(Customer* customer) {
     std::string newValue;
-    
+    Display::printMessage(Logger::MSG_ENTER_NEW_NAME);
+    InputHandler::inputString(newValue, Constants::InputType::NAME);
+    customer->setName(newValue);
+    Display::printMessage(Logger::MSG_NAME_UPDATED);
+}
+
+void AdminController::updateCustomerEmail(Customer* customer) {
+    std::string newValue;
+    Display::printMessage(Logger::MSG_ENTER_NEW_EMAIL);
+    InputHandler::inputString(newValue, Constants::InputType::EMAIL);
+    customer->setEmail(newValue);
+    Display::printMessage(Logger::MSG_EMAIL_UPDATED);
+}
+
+void AdminController::updateCustomerPhone(Customer* customer) {
+    std::string newValue;
+    Display::printMessage(Logger::MSG_ENTER_NEW_PHONE);
+    InputHandler::inputString(newValue, Constants::InputType::PHONE);
+    customer->setPhone(newValue);
+    Display::printMessage(Logger::MSG_PHONE_UPDATED);
+}
+
+void AdminController::updateCustomerPin(Customer* customer) {
+    std::string newValue;
+    Display::printMessage(Logger::MSG_ENTER_NEW_PIN);
+    InputHandler::inputString(newValue, Constants::InputType::PIN);
+    customer->getAccount().setPin(newValue);
+    Display::printMessage(Logger::MSG_PIN_UPDATED);
+}
+
+bool AdminController::handleEditMenuChoice(int choice, Customer* customer) {
+    bool isValidChoice = true;
+
     switch (choice) {
         case 1:
-            Display::printMessage(Logger::MSG_ENTER_NEW_NAME);
-            InputHandler::inputString(newValue, Constants::InputType::NAME);
-            customer->setName(newValue);
-            Display::printMessage(Logger::MSG_NAME_UPDATED);
-            return true;
+            updateCustomerName(customer);
+            break;
             
         case 2:
-            Display::printMessage(Logger::MSG_ENTER_NEW_EMAIL);
-            InputHandler::inputString(newValue, Constants::InputType::EMAIL);
-            customer->setEmail(newValue);
-            Display::printMessage(Logger::MSG_EMAIL_UPDATED);
-            return true;
+            updateCustomerEmail(customer);
+            break;
             
         case 3:
-            Display::printMessage(Logger::MSG_ENTER_NEW_PHONE);
-            InputHandler::inputString(newValue, Constants::InputType::PHONE);
-            customer->setPhone(newValue);
-            Display::printMessage(Logger::MSG_PHONE_UPDATED);
-            return true;
+            updateCustomerPhone(customer);
+            break;
             
         case 4:
-            Display::printMessage(Logger::MSG_ENTER_NEW_PIN);
-            InputHandler::inputString(newValue, Constants::InputType::PIN);
-            customer->getAccount().setPin(newValue);
-            Display::printMessage(Logger::MSG_PIN_UPDATED);
-            return true;
+            updateCustomerPin(customer);
+            break;
             
         case 5:
-            Display::printMessage(Logger::MSG_EDIT_CANCELLED); 
-            return true;
+            Display::printMessage(Logger::MSG_EDIT_CANCELLED);
+            break;
             
         default:
-            Display::printMessage(Logger::MSG_INVALID_CHOICE); 
-            return false;
+            Display::printMessage(Logger::MSG_INVALID_CHOICE);
+            isValidChoice = false;
     }
+
+    return isValidChoice;
 }
 
 void AdminController::editCustomerDetails() {
@@ -171,7 +194,50 @@ void AdminController::editCustomerDetails() {
     handleEditMenuChoice(choice, customer);
 }
 
-void AdminController::deleteCustomer() {
+void AdminController::performAccountOperation(Customer* customer) {
+    Display::printMessage(Logger::MSG_ACCOUNT_MANAGEMENT_MENU);
+    
+    int choice;
+    InputHandler::inputValue(choice);
+    
+    switch (choice) {
+        case 1:
+            customerController->performDeposit(*customer); 
+            break;
+        case 2:
+            customerController->performWithdrawal(*customer);
+            break;
+        case 3:
+            Display::printWithAmount(Logger::MSG_CURRENT_BALANCE, 
+                customer->getAccount().getBalance());
+            break;
+        case 4:
+            Display::printMessage(Logger::MSG_OPERATION_CANCELLED);
+            break;
+        default:
+            Display::printMessage(Logger::MSG_INVALID_CHOICE);
+    }
+}
+
+void AdminController::manageCustomerAccount() {
+    Display::printMessage(Logger::MSG_MANAGE_ACCOUNT_HEADER);
+    
+    std::string accountNumber;
+    Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
+    InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
+    
+    Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
+    
+    if (!customer) 
+    {
+        Display::printMessage(Logger::MSG_CUSTOMER_NOT_FOUND);
+        return;
+    }
+    
+    performAccountOperation(customer);
+}
+
+void AdminController::handleCustomerDeletion() {
     Display::printMessage(Logger::MSG_DELETE_CUSTOMER_HEADER);
     
     std::string accountNumber;
@@ -218,11 +284,11 @@ bool AdminController::handleMenuChoice(int choice) {
         break;
 
         case 4:
-        searchCustomerByAccountNumber();
+        displayCustomerByAccountNumber();
         break;
 
         case 5:
-        searchAccountByNumber();
+        displayAccountByNumber();
         break;
 
         case 6:
@@ -230,16 +296,20 @@ bool AdminController::handleMenuChoice(int choice) {
         break;
 
         case 7:
-        deleteCustomer();
+        manageCustomerAccount();
         break;
 
         case 8:
-        Display::printMessage(Logger::MSG_DELETE_ACCOUNT_HEADER);
-        Display::printMessage(Logger::MSG_DELETE_ACCOUNT_NOTE);
-        deleteCustomer(); 
+        handleCustomerDeletion();
         break;
 
         case 9:
+        Display::printMessage(Logger::MSG_DELETE_ACCOUNT_HEADER);
+        Display::printMessage(Logger::MSG_DELETE_ACCOUNT_NOTE);
+        handleCustomerDeletion(); 
+        break;
+
+        case 10:
         bank->logout();
         continueProgram = false;
         break;

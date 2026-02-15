@@ -9,6 +9,7 @@ mkdir bin
 2. **Compile the source files into position-independent code (`.o` files):**
 
 ```bash
+g++ -I./inc -fPIC -c src/Account.cpp -o bin/Account.o
 g++ -I./inc -fPIC -c src/AdminController.cpp -o bin/AdminController.o
 g++ -I./inc -fPIC -c src/Bank.cpp -o bin/Bank.o
 g++ -I./inc -fPIC -c src/Customer.cpp -o bin/Customer.o

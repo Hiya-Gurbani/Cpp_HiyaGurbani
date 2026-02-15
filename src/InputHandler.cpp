@@ -44,8 +44,8 @@ int& InputHandler::inputValue(int& value) {
 }
 
 void InputHandler::removeLeadingAndTrailingWhitespaces(std::string& input) {
-    size_t first = input.find_first_not_of(" \t\n\r");
-    size_t last  = input.find_last_not_of(" \t\n\r");
+    size_t first = input.find_first_not_of(Constants::WHITESPACE_CHARS);
+    size_t last  = input.find_last_not_of(Constants::WHITESPACE_CHARS);
 
     if (first == std::string::npos)
     {

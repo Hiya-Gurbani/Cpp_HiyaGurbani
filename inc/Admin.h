@@ -12,14 +12,12 @@ class Admin : public User {
     std::string password;
 
 public:
-    Admin() : userName{Constants::ADMIN_USERNAME}, password{Constants::ADMIN_PASSWORD}
-    {
+    Admin() : userName{Constants::ADMIN_USERNAME}, password{Constants::ADMIN_PASSWORD} {
         this->name = Constants::ADMIN_NAME;
         this->role = Constants::UserRole::ADMIN;
     }
 
-    bool authenticate(const std::string& userName, const std::string& password)
-    {
+    bool authenticate(const std::string& userName, const std::string& password) {
         return (this->userName == userName) && (this->password == password);
     }
 

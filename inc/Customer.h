@@ -37,8 +37,7 @@ public:
         this->phone = phone; 
     }
 
-    bool authenticate(const std::string& accountNumber, const std::string& accountPin)
-    {
+    bool authenticate(const std::string& accountNumber, const std::string& accountPin) {
         return (this->account.getAccountNumber() == accountNumber)
          && this->account.verifyPin(accountPin);
     }

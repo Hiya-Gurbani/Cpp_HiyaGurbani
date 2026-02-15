@@ -59,6 +59,7 @@ public:
     inline static const std::string ADMIN_NAME = "Hiya";
     inline static const std::string ADMIN_USERNAME = "hiya";
     inline static const std::string ADMIN_PASSWORD = "system"; 
+    inline static const std::string WHITESPACE_CHARS = " \t\n\r";
 };
 
 #endif

@@ -14,7 +14,7 @@ public:
     Transaction(Constants::TransactionType transactionType, 
         double amount, double postBalance);
 
-    long getId(){ 
+    long getId() { 
         return id; 
     }
 

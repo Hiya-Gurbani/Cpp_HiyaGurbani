@@ -32,7 +32,6 @@ public:
     ~Bank() {
         delete adminController;
         delete customerController;
-        //delete vector clean
     }
 
     Customer& createCustomer(const std::string& name, 
@@ -54,7 +53,6 @@ public:
     static std::string generateAccountNumber();
     static std::string generateRandomPin();
     static long generateTransactionId();
-
 };
 
 #endif
