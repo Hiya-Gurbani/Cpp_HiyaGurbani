@@ -1,10 +1,9 @@
 #include "CustomerController.h"
 #include "Bank.h"
-#include "Logger.h"
 #include "Constants.h"
 #include "Display.h"
 #include "InputHandler.h"
-#include <iostream>
+#include "Logger.h"
 #include <iomanip>
 
 void CustomerController::performDeposit(Customer& customer) {
@@ -12,12 +11,15 @@ void CustomerController::performDeposit(Customer& customer) {
     Display::printTransactionRange();
     Display::printMessage(Logger::MSG_ENTER_DEPOSIT_AMOUNT);
     InputHandler::inputValue(amount);
-
-    customer.getAccount().setBalance(customer.getAccount().getBalance() + amount);
-    Transaction transaction(Constants::TransactionType::DEPOSIT, amount, customer.getAccount().getBalance());
-    customer.getAccount().addTransaction(transaction);
-
-    Display::printWithAmount(Logger::MSG_DEPOSIT_SUCCESS, customer.getAccount().getBalance());
+    if (customer.getAccount().deposit(amount)) 
+    {
+        Display::printWithAmount(Logger::MSG_DEPOSIT_SUCCESS, 
+                                customer.getAccount().getBalance());
+    } 
+    else 
+    {
+        Display::printMessage(Logger::MSG_DEPOSIT_FAILED);
+    }
 }
 
 void CustomerController::performWithdrawal(Customer& customer) {
@@ -26,16 +28,12 @@ void CustomerController::performWithdrawal(Customer& customer) {
     Display::printMessage(Logger::MSG_ENTER_WITHDRAWAL_AMOUNT);
     InputHandler::inputValue(amount);
 
-    if (customer.getAccount().getBalance() >= amount)
+    if (customer.getAccount().withdrawal(amount)) 
     {
-        customer.getAccount().setBalance(customer.getAccount().getBalance() - amount);
-        
-        Transaction transaction(Constants::TransactionType::WITHDRAWAL, amount, customer.getAccount().getBalance());
-        customer.getAccount().addTransaction(transaction);
-
-        Display::printWithAmount(Logger::MSG_WITHDRAWAL_SUCCESS, customer.getAccount().getBalance());
-    }
-    else
+        Display::printWithAmount(Logger::MSG_WITHDRAWAL_SUCCESS, 
+                                customer.getAccount().getBalance());
+    } 
+    else 
     {
         Display::printMessage(Logger::MSG_INSUFFICIENT_BALANCE);
     }

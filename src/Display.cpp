@@ -21,7 +21,7 @@ void Display::printWithNumber(const std::string& message, size_t number) {
 }
 
 void Display::printWithAmount(const std::string& message, double amount) {
-    std::cout << message << std::fixed << std::setprecision(2) 
+    std::cout << message << std::fixed << std::setprecision(Constants::DECIMAL_PRECISION) 
     << amount << Constants::NEW_LINE;
 }
 
@@ -37,8 +37,10 @@ void Display::printTransactionHeader() {
 void Display::printTransactionRow(long id, const std::string& type, double amount, double postBalance) {
     std::cout << std::setw(Constants::ID_WIDTH) << id
               << std::setw(Constants::TYPE_WIDTH) << type
-              << std::setw(Constants::AMOUNT_WIDTH) << std::setprecision(Constants::DECIMAL_PRECISION) << amount
-              << std::setw(Constants::POSTBALANCE_WIDTH) << std::setprecision(Constants::DECIMAL_PRECISION) << postBalance << Constants::NEW_LINE;
+              << std::setw(Constants::AMOUNT_WIDTH) << std::fixed 
+              << std::setprecision(Constants::DECIMAL_PRECISION) << amount
+              << std::setw(Constants::POSTBALANCE_WIDTH) << std::fixed 
+              << std::setprecision(Constants::DECIMAL_PRECISION) << postBalance << Constants::NEW_LINE;
 }
 
 void Display::printTransactionRange() {

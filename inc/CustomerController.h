@@ -2,13 +2,10 @@
 #define Customer_CONTROLLER_H
 
 #include "Customer.h"
-class Bank;
+class IBank;
 
 class CustomerController {
-    Bank* bank;
-
-    void performDeposit(Customer& customer);
-    void performWithdrawal(Customer& customer);
+    IBank* bank;
 
     bool changePin(Customer& customer);
     bool isOldPinCorrect(Account& account);
@@ -19,9 +16,10 @@ class CustomerController {
     bool handleChoice(int choice, Customer& customer);
 
 public:
-    CustomerController() {}
+    CustomerController(IBank* currentBank) : bank{currentBank} {}
 
-    CustomerController(Bank* currentBank) : bank{currentBank} {}
+    void performDeposit(Customer& customer);
+    void performWithdrawal(Customer& customer);
 
     bool handleMenu(Customer& customer);
 };

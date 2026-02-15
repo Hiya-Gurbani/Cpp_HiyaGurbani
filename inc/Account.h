@@ -49,6 +49,9 @@ public:
     bool verifyPin(const std::string& inputPin) {
         return (pin == inputPin);
     }
+
+    bool deposit(double amount);
+    bool withdrawal(double amount);
 };
 
 #endif
