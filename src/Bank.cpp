@@ -72,8 +72,8 @@ bool Bank::deleteCustomerFromBank(const std::string& accountNumber) {
     return isCustomerDeleted;
 }
 
-bool Bank::adminLogin() {
-    bool isLoginSuccessful = false;
+Constants::LoginResult Bank::adminLogin() {
+    Constants::LoginResult result = Constants::LoginResult::FAILED;
 
     Display::printMessage(Logger::MSG_ADMIN_LOGIN);
 
@@ -87,64 +87,81 @@ bool Bank::adminLogin() {
 
     if (admin.authenticate(userName, password))
     {
-        isLoginSuccessful = true;
+        result = Constants::LoginResult::SUCCESS;
         Display::printMessage(Logger::MSG_LOGIN_SUCCESS);
         adminController->handleMenu();
     } 
     
-    return isLoginSuccessful;
+    return result;
 }
 
-bool Bank::customerLogin() {
-    bool isLoginSuccessful = false;
+Constants::LoginResult Bank::customerLogin() {
+    Constants::LoginResult result = Constants::LoginResult::FAILED;
 
     Display::printMessage(Logger::MSG_CUSTOMER_LOGIN);
     std::string accountNumber;
     Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
     InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
 
-    std::string pin;
-    Display::printMessage(Logger::MSG_ENTER_ACCOUNT_PIN);
-    InputHandler::inputString(pin, Constants::InputType::PIN);
-
-    for (auto& customer: customers)
+    Customer* customer = findCustomerByAccountNumber(accountNumber);
+    if (!customer)
     {
-        if (customer.authenticate(accountNumber, pin))
+        Display::printMessage(Logger::MSG_ACCOUNT_DOES_NOT_EXIST);
+        result = Constants::LoginResult::ACCOUNT_NOT_FOUND;
+    }
+    else
+    {
+        std::string pin;
+        Display::printMessage(Logger::MSG_ENTER_ACCOUNT_PIN);
+        InputHandler::inputString(pin, Constants::InputType::PIN);
+
+        if (customer->authenticate(accountNumber, pin))
         {
-            isLoginSuccessful = true;
+            result = Constants::LoginResult::SUCCESS;
             Display::printMessage(Logger::MSG_LOGIN_SUCCESS);
-            customerController->handleMenu(customer);
-            break;
+            customerController->handleMenu(*customer);
         }
     }
 
-    return isLoginSuccessful;
+    return result;
 }
 
 bool Bank::login(Constants::UserRole role) {
     int attempts = 0;
-    bool isLoginSuccessful = false;
+    bool isSuccessful = false;
 
-    while (!isLoginSuccessful && attempts < Constants::MAX_LOGIN_ATTEMPTS) 
+    while (!isSuccessful && attempts < Constants::MAX_LOGIN_ATTEMPTS) 
     {
-        isLoginSuccessful = 
+        Constants::LoginResult loginResult = 
         (role == Constants::UserRole::ADMIN) ? adminLogin() : customerLogin();
 
-        attempts++;
-
-        if (!isLoginSuccessful && attempts < Constants::MAX_LOGIN_ATTEMPTS) 
+        if (loginResult == Constants::LoginResult::ACCOUNT_NOT_FOUND) 
         {
-            Display::printMessage(Logger::MSG_LOGIN_FAILED);
-            Display::printWithNumber(Logger::MSG_LEFT_ATTEMPTS, Constants::MAX_LOGIN_ATTEMPTS - attempts);
+            isSuccessful = true;
+            break; 
+        }
+
+        if (loginResult == Constants::LoginResult::SUCCESS)
+        {
+            isSuccessful = true;
+        }
+        else
+        {
+            attempts++;
+            if (attempts < Constants::MAX_LOGIN_ATTEMPTS) 
+            {
+                Display::printMessage(Logger::MSG_LOGIN_FAILED);
+                Display::printWithNumber(Logger::MSG_LEFT_ATTEMPTS, Constants::MAX_LOGIN_ATTEMPTS - attempts);
+            }
         }
     }
 
-    if (!isLoginSuccessful) 
+    if (!isSuccessful && attempts >= Constants::MAX_LOGIN_ATTEMPTS) 
     {
         Display::printMessage(Logger::MSG_ACCESS_DENIED);
     }
 
-    return isLoginSuccessful;
+    return isSuccessful;
 }
 
 void Bank::logout() {

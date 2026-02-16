@@ -20,8 +20,8 @@ class Bank : public IBank {
     static long accountNumberCounter;
     static long transactionIdCounter;
 
-    bool adminLogin();
-    bool customerLogin();
+    Constants::LoginResult adminLogin();
+    Constants::LoginResult customerLogin();
 
 public:
     Bank() {
