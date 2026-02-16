@@ -3,74 +3,8 @@
 #include "InputHandler.h"
 #include "Constants.h"
 #include "Display.h"
-#include <iostream>
 #include <random>
 #include <string>
-
-long Bank::accountNumberCounter = Constants::INITIAL_ACCOUNT_NUMBER;
-long Bank::transactionIdCounter = Constants::INITIAL_TRANSACTION_ID;
-
-std::string Bank::generateRandomPin() {
-    static std::random_device randomDevice;     
-    static std::mt19937 gen(randomDevice());     
-    static std::uniform_int_distribution<> distribution(Constants::MIN_PIN_VALUE, Constants::MAX_PIN_VALUE);
-
-    return std::to_string(distribution(gen));
-}
-
-std::string Bank::generateAccountNumber() {
-    std::string accountNumber = std::to_string(accountNumberCounter);
-    accountNumberCounter++;
-    return accountNumber;
-}
-
-long Bank::generateTransactionId() {
-    return transactionIdCounter++;
-}
-
-Customer* Bank::findCustomerByAccountNumber(const std::string& accountNumber) {
-    for (auto& customer : customers) 
-    {
-        if (customer.getAccount().getAccountNumber() == accountNumber) 
-        {
-            return &customer;
-        }
-    }
-    return nullptr;
-}
-
-Customer& Bank::createCustomer(const std::string& name, 
-                               const std::string& email, 
-                               const std::string& phone) {
-    
-    Customer newCustomer(name, email, phone);
-    
-    std::string accountNumber = generateAccountNumber();
-    std::string pin = generateRandomPin();
-    newCustomer.getAccount().setAccountNumber(accountNumber);
-    newCustomer.getAccount().setPin(pin);
-    
-    customers.push_back(newCustomer);
-    Display::printWithValue(Logger::MSG_ACCOUNT_NUMBER, accountNumber);
-    Display::printWithValue(Logger::MSG_PIN, pin);
-    
-    return customers.back();
-}
-
-bool Bank::deleteCustomerFromBank(const std::string& accountNumber) {
-    bool isCustomerDeleted = false;
-
-    for (size_t index = 0; index < customers.size(); index++)
-    {
-        if (customers[index].getAccount().getAccountNumber() == accountNumber)
-        {
-            customers.erase(customers.begin() + index);
-            isCustomerDeleted = true;
-        }
-    }
-    
-    return isCustomerDeleted;
-}
 
 Constants::LoginResult Bank::adminLogin() {
     Constants::LoginResult result = Constants::LoginResult::FAILED;
@@ -89,7 +23,10 @@ Constants::LoginResult Bank::adminLogin() {
     {
         result = Constants::LoginResult::SUCCESS;
         Display::printMessage(Logger::MSG_LOGIN_SUCCESS);
-        adminController->handleMenu();
+        if (!adminController->handleMenu())
+        {
+            logout();
+        }
     } 
     
     return result;
@@ -103,7 +40,7 @@ Constants::LoginResult Bank::customerLogin() {
     Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
     InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
 
-    Customer* customer = findCustomerByAccountNumber(accountNumber);
+    Customer* customer = customerService.findCustomerByAccountNumber(accountNumber);
     if (!customer)
     {
         Display::printMessage(Logger::MSG_ACCOUNT_DOES_NOT_EXIST);
@@ -119,7 +56,10 @@ Constants::LoginResult Bank::customerLogin() {
         {
             result = Constants::LoginResult::SUCCESS;
             Display::printMessage(Logger::MSG_LOGIN_SUCCESS);
-            customerController->handleMenu(*customer);
+            if (!customerController->handleMenu(*customer))
+            {
+                logout();
+            }
         }
     }
 

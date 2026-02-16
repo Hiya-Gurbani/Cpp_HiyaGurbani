@@ -23,13 +23,13 @@ void AdminController::registerCustomer() {
     Display::printMessage(Logger::MSG_CUSTOMER_PHONE);
     InputHandler::inputString(phone, Constants::InputType::PHONE);
     
-    Customer& newCustomer = bank->createCustomer(name, email, phone);
+    Customer& newCustomer = customerService->createCustomer(name, email, phone);
     
     Display::printMessage(Logger::MSG_CUSTOMER_REGISTERED_SUCCESS);
 }
 
 void AdminController::displayCustomersInformation() {
-    std::vector<Customer>& customers = bank->getCustomers();
+    std::vector<Customer>& customers = customerService->getCustomers();
     
     if (customers.empty()) 
     {
@@ -48,7 +48,7 @@ void AdminController::displayCustomersInformation() {
 }
 
 void AdminController::displayAccountsInformation() {
-    std::vector<Customer>& customers = bank->getCustomers();
+    std::vector<Customer>& customers = customerService->getCustomers();
     
     if (customers.empty()) 
     {
@@ -72,7 +72,7 @@ void AdminController::displayCustomerByAccountNumber() {
     Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
     InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
-    Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
+    Customer* customer = customerService->findCustomerByAccountNumber(accountNumber);
     
     if (customer) 
     {
@@ -92,7 +92,7 @@ void AdminController::displayAccountByNumber() {
     Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
     InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
-    Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
+    Customer* customer = customerService->findCustomerByAccountNumber(accountNumber);
     
     if (customer) 
     {
@@ -176,7 +176,7 @@ void AdminController::editCustomerDetails() {
     Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
     InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
-    Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
+    Customer* customer = customerService->findCustomerByAccountNumber(accountNumber);
     
     if (!customer) 
     {
@@ -226,7 +226,7 @@ void AdminController::manageCustomerAccount() {
     Display::printMessage(Logger::MSG_ENTER_ACCOUNT_NUMBER);
     InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
-    Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
+    Customer* customer = customerService->findCustomerByAccountNumber(accountNumber);
     
     if (!customer) 
     {
@@ -244,7 +244,7 @@ void AdminController::handleCustomerDeletion() {
     Display::printMessage(Logger::MSG_ENTER_ACCOUNT_TO_DELETE);
     InputHandler::inputString(accountNumber, Constants::InputType::ACCOUNT_NUMBER);
     
-    Customer* customer = bank->findCustomerByAccountNumber(accountNumber);
+    Customer* customer = customerService->findCustomerByAccountNumber(accountNumber);
     
     if (!customer) 
     {
@@ -260,7 +260,7 @@ void AdminController::handleCustomerDeletion() {
         }
         else
         {
-            bank->deleteCustomerFromBank(accountNumber);
+            customerService->deleteCustomerFromBank(accountNumber);
             Display::printMessage(Logger::MSG_CUSTOMER_DELETED_SUCCESS);
         }
     }
@@ -310,7 +310,6 @@ bool AdminController::handleMenuChoice(int choice) {
         break;
 
         case 10:
-        bank->logout();
         continueProgram = false;
         break;
 
