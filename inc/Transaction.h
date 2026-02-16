@@ -10,6 +10,8 @@ class Transaction {
     double postTransactionBalance;
     double amount;
 
+    static long transactionIdCounter;
+
 public:
     Transaction(Constants::TransactionType transactionType, 
         double amount, double postBalance);

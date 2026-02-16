@@ -6,7 +6,7 @@
 class IBank; 
 
 class AdminController {
-    IBank* bank;
+    CustomerService* customerService;
     CustomerController* customerController;
 
     bool handleMenuChoice(int choice);
@@ -31,7 +31,7 @@ class AdminController {
     void performAccountOperation(Customer* customer);
 
 public:
-    AdminController(IBank* currentBank) : bank{currentBank} {}
+    AdminController(CustomerService* service) : customerService{service} {}
 
     bool handleMenu();
 };

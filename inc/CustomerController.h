@@ -2,11 +2,9 @@
 #define Customer_CONTROLLER_H
 
 #include "Customer.h"
-class IBank;
+#include "CustomerService.h"
 
 class CustomerController {
-    IBank* bank;
-
     bool changePin(Customer& customer);
     bool isOldPinCorrect(Account& account);
 
@@ -16,7 +14,6 @@ class CustomerController {
     bool handleChoice(int choice, Customer& customer);
 
 public:
-    CustomerController(IBank* currentBank) : bank{currentBank} {}
 
     void performDeposit(Customer& customer);
     void performWithdrawal(Customer& customer);

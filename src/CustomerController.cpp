@@ -169,7 +169,6 @@ bool CustomerController::handleChoice(int choice, Customer& customer) {
             break;
 
         case 7:
-            bank->logout();
             continueProgram = false;
             break;
 

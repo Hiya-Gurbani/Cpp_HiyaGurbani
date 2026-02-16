@@ -132,7 +132,10 @@ bool Validator::isValidInput(std::string& input, Constants::InputType type) {
                 Display::printWithSuffix(Logger::MSG_INVALID_PASSWORD_LENGTH, Constants::MIN_PASSWORD_LENGTH, Logger::MSG_CHARACTERS_SUFFIX);
                 isValid = false;
             }
-            isValid = true;
+            else
+            {
+                isValid = true;
+            }
             break;
 
         default:
