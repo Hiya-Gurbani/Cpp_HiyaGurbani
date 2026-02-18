@@ -1,0 +1,47 @@
+Starting program: /home/hiya/Cpp_HiyaGurbani/Week 6/Day3/a.out 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555551ba in segmentationFaultExample () at SegmentationFault.cpp:6
+6	    *ptr = 42;  //Segmentation fault
+$1 = (int *) 0x0
+Cannot access memory at address 0x0
+#0  0x00005555555551ba in segmentationFaultExample () at SegmentationFault.cpp:6
+#1  0x00005555555551d0 in main () at SegmentationFault.cpp:10
+Function "s" not defined.
+Breakpoint 1 at 0x555555555195: file SegmentationFault.cpp, line 4.
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+Starting program: /home/hiya/Cpp_HiyaGurbani/Week 6/Day3/a.out 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, segmentationFaultExample () at SegmentationFault.cpp:4
+4	    int* ptr = nullptr;
+5	    std::cout << "Attempting to write to null pointer...\n";
+6	    *ptr = 42;  //Segmentation fault
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555551ba in segmentationFaultExample () at SegmentationFault.cpp:6
+6	    *ptr = 42;  //Segmentation fault
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+You can't do that without a process to debug.
+Breakpoint 2 at 0x5555555551cb: file SegmentationFault.cpp, line 10.
+Starting program: /home/hiya/Cpp_HiyaGurbani/Week 6/Day3/a.out 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 2, main () at SegmentationFault.cpp:10
+10	    segmentationFaultExample();
+
+Breakpoint 1, segmentationFaultExample () at SegmentationFault.cpp:4
+4	    int* ptr = nullptr;
+The program being debugged stopped while in a function called from GDB.
+Evaluation of the expression containing the function
+(segmentationFaultExample()) will be abandoned.
+When the function is done executing, GDB will silently stop.
