@@ -1,0 +1,35 @@
+Breakpoint 1 at 0x1335: file Logging.cpp, line 18.
+Breakpoint 2 at 0x12d1: file Logging.cpp, line 9.
+Starting program: /home/hiya/Cpp_HiyaGurbani/Week 6/Day3/a.out 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, main () at Logging.cpp:18
+18	int main() {
+Continuing.
+
+Breakpoint 2, sumVector (v=std::vector of length 3, capacity 3 = {...}) at Logging.cpp:9
+9	    int total = 0;
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+Undefined info command: "total".  Try "help info".
+index = 32767
+total = 0
+12	        total += v[index];
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+index = 0
+total = 10
+12	        total += v[index];
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+12	        total += v[index];
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+index = 2
+total = 60
+12	        total += v[index];
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+index = 3
+total = 60
+15	    return total;
+Continuing.
+[Inferior 1 (process 58977) exited normally]
+warning: Error detected on fd 0
+error detected on stdin

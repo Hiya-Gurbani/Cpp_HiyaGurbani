@@ -1,0 +1,31 @@
+Breakpoint 1 at 0x12d1: file Logging.cpp, line 9.
+Starting program: /home/hiya/Cpp_HiyaGurbani/Week 6/Day3/a.out 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, sumVector (v=std::vector of length 3, capacity 3 = {...}) at Logging.cpp:9
+9	    int total = 0;
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+index = 32767
+total = 0
+No symbol "toal" in current context.
+$1 = 0
+12	        total += v[index];
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+12	        total += v[index];
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+12	        total += v[index];
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+$2 = 60
+12	        total += v[index];
+10	    for (int index = 0; index <= v.size(); index++) //Bug 2: Out-of-bounds
+15	    return total;
+16	}
+main () at Logging.cpp:25
+25	    std::cout << "Sum Result: " << result2 << "\n";
+Continuing.
+[Inferior 1 (process 58079) exited normally]
+No stack.
+Warning: 'set logging off', an alias for the command 'set logging enabled', is deprecated.
+Use 'set logging enabled off'.
+
