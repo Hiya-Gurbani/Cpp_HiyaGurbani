@@ -1,0 +1,14 @@
+Catchpoint 1 (throw)
+Starting program: /home/hiya/Cpp_HiyaGurbani/Week 6/Day4/a.out 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Catchpoint 1 (exception thrown), 0x00007ffff7cae4a1 in __cxa_throw () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#0  0x00007ffff7cae4a1 in __cxa_throw () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#1  0x00005555555552de in mayThrow (flag=true) at Catchpoints.cpp:6
+#2  0x0000555555555319 in main () at Catchpoints.cpp:11
+No symbol table info available.
+$1 = {i = {0, 1127522290}, x = 5805361265115136, d = 5805361265115136}
+There is no member named what.
+Continuing.
+[Inferior 1 (process 69345) exited normally]
