@@ -21,16 +21,21 @@ namespace Constants {
         }
     };
 
+    // Format Messages
+    inline const std::string FORMAT_JSON = "JSON";
+    inline const std::string FORMAT_CSV  = "CSV";
+    inline const std::string FORMAT_XML  = "XML";
+
     // Welcome Message
     inline const std::string MSG_WELCOME = 
-    "========================================"
-    "       Welcome to File Parser App       "
-    "========================================"
+    "========================================\n"
+    "       Welcome to File Parser App       \n"
+    "========================================\n"
     "This app can parse the following formats:\n"
-    "  1. JSON (.json)"
-    "  2. CSV  (.csv)"
-    "  3. XML  (.xml)"
-    "\n----------------------------------------\n";
+    "  1. JSON (.json)\n"
+    "  2. CSV  (.csv)\n"
+    "  3. XML  (.xml)\n"
+    "\n----------------------------------------\n\n";
 
     // Input Messages
     inline const std::string MSG_ENTER_FILE_PATH   = "Enter the full file path: ";

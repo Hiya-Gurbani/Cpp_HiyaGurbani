@@ -36,10 +36,6 @@ Constants::ParsedData CsvParser::convert(rapidcsv::Document& document, const std
     return result;
 }
 
-std::string CsvParser::getFormat() {
-    return "CSV";
-}
-
 Constants::ParsedData CsvParser::parse(std::string& filePath) {
     rapidcsv::Document document;
 

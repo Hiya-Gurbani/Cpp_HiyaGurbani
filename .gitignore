@@ -11,3 +11,13 @@ bin/
 
 # Ignore vs code files
 .vscode/
+
+# Ignore 3rd Party Libraries
+inc/nlohmann/
+inc/rapidcsv.h
+
+# Ignore Extra Files
+*.csv
+*.json
+*.xml
+

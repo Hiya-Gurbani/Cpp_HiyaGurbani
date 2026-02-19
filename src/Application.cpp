@@ -16,16 +16,13 @@ void Application::execute() {
 
         Constants::ParsedData data = parser->parse(filePath);
 
-        Logger::printResults(data);
-
-        delete parser;
-        parser = nullptr;
+        Utility::displayResults(data);
     }
     catch (const std::exception& error) 
     {
-        Logger::printMessage(Constants::MSG_ERROR_PREFIX + std::string(error.what()));
-
-        delete parser;
-        parser = nullptr;
+        Logger::printMessage(Constants::MSG_ERROR_PREFIX + std::string(error.what()));        
     }
+
+    delete parser;
+    parser = nullptr;
 }

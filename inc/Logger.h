@@ -7,7 +7,6 @@
 class Logger {
 public:
     static void printMessage(const std::string& message);
-    static void printResults(Constants::ParsedData& data);
 };
 
 #endif

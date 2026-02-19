@@ -44,10 +44,6 @@ Constants::ParsedData XmlParser::convert(const pugi::xml_document& document, con
     return result;
 }
 
-std::string XmlParser::getFormat() {
-    return "XML";
-}
-
 Constants::ParsedData XmlParser::parse(std::string& filePath) {
     pugi::xml_document document;
     pugi::xml_parse_result parseResult = document.load_file(filePath.c_str());
