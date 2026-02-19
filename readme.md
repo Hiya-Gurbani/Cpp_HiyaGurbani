@@ -33,10 +33,33 @@ Download the following headers and place them in `inc/` before building:
 ---
 
 ## Build and Run
+
+**Step 1 — Create a `bin` directory to store object files:**
 ```bash
-g++ -I./inc main/main.cpp src/*.cpp -lpugixml -o parser.out
+mkdir bin
+```
+
+**Step 2 — Compile to object files**
+```bash
+cd bin && g++ -I../inc -c ../src/*.cpp && cd ..
+```
+
+**Step 3 — Create static library**
+```bash
+ar rcs libparser.a bin/*.o
+```
+
+**Step 4 — Build executable**
+```bash
+g++ -I./inc main/main.cpp -L. -lparser -lpugixml -o parser.out
+```
+
+**Step 5 — Run**
+```bash
 ./parser.out
 ```
+
+---
 
 ## Supported Formats
 

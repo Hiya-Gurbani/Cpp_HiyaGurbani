@@ -8,6 +8,7 @@ bin/
 
 # Ignore Libraries
 *.so
+*.a
 
 # Ignore vs code files
 .vscode/
