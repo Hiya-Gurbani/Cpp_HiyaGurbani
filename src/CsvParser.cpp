@@ -21,7 +21,7 @@ Constants::ParsedData CsvParser::convert(rapidcsv::Document& document, const std
         for (size_t rowIndex = 0; rowIndex < rowCount; rowIndex++) 
         {
             std::map<std::string, std::string> row;
-            for (const auto& header : headers) 
+            for (const std::string& header : headers) 
             {
                 row[header] = document.GetCell<std::string>(header, rowIndex);
             }

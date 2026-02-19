@@ -16,16 +16,16 @@ Constants::ParsedData XmlParser::convert(const pugi::xml_document& document, con
             throw std::runtime_error(Constants::MSG_XML_NO_ROOT);
         }
             
-        for (const auto& child : root.children()) 
+        for (pugi::xml_node child = root.first_child(); child; child = child.next_sibling())
         {
             std::map<std::string, std::string> row;
 
-            for (const auto& attribute : child.attributes()) 
+            for (pugi::xml_attribute attribute = child.first_attribute(); attribute; attribute = attribute.next_attribute())
             {
                 row[attribute.name()] = attribute.value();
             }
 
-            for (const auto& subchild : child.children()) 
+            for (pugi::xml_node subchild = child.first_child(); subchild; subchild = subchild.next_sibling()) 
             {
                 row[subchild.name()] = subchild.child_value();
             }

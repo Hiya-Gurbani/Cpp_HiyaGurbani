@@ -4,10 +4,10 @@
 #include <string>
 
 class Validator {
-    static bool fileExists(std::string& path);
     static bool isSupportedExtension(std::string& path);
     
 public:
+    static bool isValidChoice(std::string& choice);
     static bool isValidFilePath(std::string& path);    
 };
 

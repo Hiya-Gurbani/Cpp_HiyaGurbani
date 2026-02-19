@@ -6,6 +6,7 @@
 
 class Utility {
 public: 
+    static char getUserChoice();
     static std::string getFilePath();
     static void displayResults(Constants::ParsedData& data);
 };

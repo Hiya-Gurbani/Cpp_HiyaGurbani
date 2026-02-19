@@ -21,6 +21,13 @@ namespace Constants {
         }
     };
 
+    //Constants
+    inline constexpr char FULL_STOP = '.';
+    inline constexpr char CHOICE_YES       = 'y';
+    inline constexpr char CHOICE_YES_UPPER = 'Y';
+    inline constexpr char CHOICE_NO        = 'n';
+    inline constexpr char CHOICE_NO_UPPER  = 'N';
+
     // Format Messages
     inline const std::string FORMAT_JSON = "JSON";
     inline const std::string FORMAT_CSV  = "CSV";
@@ -28,7 +35,7 @@ namespace Constants {
 
     // Welcome Message
     inline const std::string MSG_WELCOME = 
-    "========================================\n"
+    "\n========================================\n"
     "       Welcome to File Parser App       \n"
     "========================================\n"
     "This app can parse the following formats:\n"
@@ -39,20 +46,25 @@ namespace Constants {
 
     // Input Messages
     inline const std::string MSG_ENTER_FILE_PATH   = "Enter the full file path: ";
+    inline const std::string MSG_CONTINUE = "\nParse another file? (y/n): ";
+    inline const std::string MSG_INVALID_CHOICE = "\nInvalid input. Please enter y or n: ";
+    
+    inline const std::string MSG_EXITING_PROGRAM = "\nThank you for using the parser!\n";
 
     // Validation Messages
     inline const std::string MSG_EMPTY_PATH        = "File path cannot be empty. Try again.\n";
-    inline const std::string MSG_UNSUPPORTED_TYPE  = "Unsupported file type. Supported: .json, .csv, .xml\n";
+    inline const std::string MSG_UNSUPPORTED_TYPE  = "Unsupported file type. Supported: .json, .csv, .xml\n\n";
     inline const std::string MSG_FILE_NOT_FOUND    = "File not found: ";
-    inline const std::string MSG_CHECK_PATH        = "Please check the path and try again.\n";
+    inline const std::string MSG_CHECK_PATH        = " Please check the path and try again.\n";
 
     // Result Messages
-    inline const std::string MSG_RESULT_BORDER     = "========================================";
+    inline const std::string MSG_RESULT_BORDER     = "\n========================================\n";
     inline const std::string MSG_RESULT_FILE       = "  File   : ";
-    inline const std::string MSG_RESULT_FORMAT     = "  Format : ";
-    inline const std::string MSG_RESULT_RECORDS    = "  Records: ";
-    inline const std::string MSG_RESULT_DIVIDER    = "--- Record ";
-    inline const std::string MSG_NO_RECORDS        = "  No records found.";
+    inline const std::string MSG_RESULT_FORMAT     = "\n  Format : ";
+    inline const std::string MSG_RESULT_RECORDS    = "\n  Records: ";
+    inline const std::string MSG_RESULT_DIVIDER    = "\n--- Record ";
+    inline const std::string MSG_RECORD_SUFFIX = " ---\n";
+    inline const std::string MSG_NO_RECORDS        = "  No records found.\n";
     inline const std::string MSG_PARSE_COMPLETE    = "  Parsing complete.";
 
     // Error Messages

@@ -2,7 +2,23 @@
 #include "Logger.h"
 #include "Validator.h"
 #include <iostream>
-#include <iomanip>
+
+char Utility::getUserChoice() {
+    std::string choice;
+
+    while (true)
+    {
+        Logger::printMessage(Constants::MSG_CONTINUE); 
+        std::getline(std::cin, choice);
+
+        if (Validator::isValidChoice(choice))
+        {
+            break;
+        }     
+    }
+
+    return choice[0];
+}
 
 std::string Utility::getFilePath() {
     std::string path;
@@ -34,15 +50,16 @@ void Utility::displayResults(Constants::ParsedData& data) {
         return;
     }
 
-    int recordNum = 1;
-    for (const auto& row : data.rows)
+    int recordNumber = 1;
+    for (const std::map<std::string, std::string>& row : data.rows)
     {
-        Logger::printMessage(Constants::MSG_RESULT_DIVIDER + std::to_string(recordNum++) + " ---");
-        for (const auto& [key, value] : row)
+        Logger::printMessage(Constants::MSG_RESULT_DIVIDER + std::to_string(recordNumber++) 
+        + Constants::MSG_RECORD_SUFFIX);
+        for (const std::pair<const std::string, std::string>& field : row)
         {
-            std::cout << "  " << std::left << std::setw(15) << key << " : " << value << "\n";
+            Logger::printField(field.first, field.second);
         }
-        std::cout << "\n";
+        Logger::printNewLine();
     }
 
     Logger::printMessage(Constants::MSG_RESULT_BORDER);

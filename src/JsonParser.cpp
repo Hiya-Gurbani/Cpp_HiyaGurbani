@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 void JsonParser::processArray(const nlohmann::json& jsonObject, Constants::ParsedData& result) {
-    for (const auto& element : jsonObject)
+    for (const nlohmann::json& element : jsonObject)
     {
         std::map<std::string, std::string> row;
         for (const auto& [key, value] : element.items())
@@ -18,7 +18,7 @@ void JsonParser::processArray(const nlohmann::json& jsonObject, Constants::Parse
 Constants::ParsedData JsonParser::convert(const nlohmann::json& jsonObject, const std::string& filePath) {
     Constants::ParsedData result;
     result.sourceFile = filePath;
-    result.format     = getFormat();
+    result.format = getFormat();
 
     try
     {
