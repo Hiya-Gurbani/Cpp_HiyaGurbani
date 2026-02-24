@@ -6,6 +6,7 @@
 #include "nlohmann/json.hpp"
 
 class JsonParser : public IParser {
+    void flattenJson(const std::string& prefix, const nlohmann::ordered_json& jsonObject, std::vector<std::pair<std::string, std::string>>& row);
     void processArray(const nlohmann::ordered_json& jsonObject, Constants::ParsedData& result);
     Constants::ParsedData convert(const nlohmann::ordered_json& jsonObject, const std::string& filePath);
 

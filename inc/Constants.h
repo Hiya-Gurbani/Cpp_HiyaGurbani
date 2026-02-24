@@ -23,6 +23,8 @@ namespace Constants {
 
     //Constants
     inline constexpr char FULL_STOP = '.';
+    inline constexpr char OPEN_BRACKET  = '[';
+    inline constexpr char CLOSE_BRACKET = ']';
     inline constexpr char CHOICE_YES = 'y';
     inline constexpr char CHOICE_YES_UPPER = 'Y';
     inline constexpr char CHOICE_NO = 'n';
@@ -32,6 +34,9 @@ namespace Constants {
     inline const std::string FORMAT_JSON = "JSON";
     inline const std::string FORMAT_CSV = "CSV";
     inline const std::string FORMAT_XML = "XML";
+
+    inline const std::string MSG_NULL = "null";
+    inline const std::string EMPTY_STRING = "";
 
     // Welcome Message
     inline const std::string MSG_WELCOME = 
