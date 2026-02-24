@@ -9,7 +9,7 @@ class CsvParser : public IParser {
     Constants::ParsedData convert(rapidcsv::Document& doc, const std::string& filePath);
 
 public:
-    Constants::ParsedData parse(std::string& filePath) override;
+    Constants::ParsedData parse(const std::string& filePath) override;
     
     std::string getFormat() override {
         return Constants::FORMAT_CSV;

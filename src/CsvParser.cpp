@@ -20,10 +20,10 @@ Constants::ParsedData CsvParser::convert(rapidcsv::Document& document, const std
 
         for (size_t rowIndex = 0; rowIndex < rowCount; rowIndex++) 
         {
-            std::map<std::string, std::string> row;
+            std::vector<std::pair<std::string, std::string>> row;
             for (const std::string& header : headers) 
             {
-                row[header] = document.GetCell<std::string>(header, rowIndex);
+                row.push_back(std::make_pair(header, document.GetCell<std::string>(header, rowIndex)));
             }
             result.rows.push_back(row);
         }
@@ -36,7 +36,7 @@ Constants::ParsedData CsvParser::convert(rapidcsv::Document& document, const std
     return result;
 }
 
-Constants::ParsedData CsvParser::parse(std::string& filePath) {
+Constants::ParsedData CsvParser::parse(const std::string& filePath) {
     rapidcsv::Document document;
 
     try 

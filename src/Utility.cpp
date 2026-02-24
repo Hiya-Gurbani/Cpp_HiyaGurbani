@@ -51,14 +51,16 @@ void Utility::displayResults(Constants::ParsedData& data) {
     }
 
     int recordNumber = 1;
-    for (const std::map<std::string, std::string>& row : data.rows)
+    for (const std::vector<std::pair<std::string, std::string>>& row : data.rows)
     {
         Logger::printMessage(Constants::MSG_RESULT_DIVIDER + std::to_string(recordNumber++) 
         + Constants::MSG_RECORD_SUFFIX);
-        for (const std::pair<const std::string, std::string>& field : row)
+
+        for (const std::pair<std::string, std::string>& field : row)
         {
             Logger::printField(field.first, field.second);
         }
+
         Logger::printNewLine();
     }
 

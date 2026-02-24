@@ -35,7 +35,7 @@ bool Validator::isSupportedExtension(std::string& path) {
         isValidExtension = (extension == Constants::FORMAT_JSON 
         || extension == Constants::FORMAT_CSV || extension == Constants::FORMAT_XML);
     }
-
+    
     return isValidExtension;
 }
 
@@ -45,6 +45,10 @@ bool Validator::isValidFilePath(std::string& path) {
     if (path.empty()) 
     {
         Logger::printMessage(Constants::MSG_EMPTY_PATH);
+    }
+    else if (path.rfind(Constants::FULL_STOP) == std::string::npos)
+    {
+        Logger::printMessage(Constants::MSG_NO_EXTENSION);
     }
     else if (!isSupportedExtension(path))
     {

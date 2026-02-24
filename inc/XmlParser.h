@@ -9,7 +9,7 @@ class XmlParser : public IParser {
     Constants::ParsedData convert(const pugi::xml_document& document, const std::string& filePath);
 
 public:
-    Constants::ParsedData parse(std::string& filePath) override;
+    Constants::ParsedData parse(const std::string& filePath) override;
 
     std::string getFormat() override {
         return Constants::FORMAT_XML;

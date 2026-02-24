@@ -6,7 +6,7 @@
 
 class IParser {
 public:
-    virtual Constants::ParsedData parse(std::string& filename) = 0;
+    virtual Constants::ParsedData parse(const std::string& filename) = 0;
     virtual std::string getFormat() = 0;
     virtual ~IParser() {}
 };

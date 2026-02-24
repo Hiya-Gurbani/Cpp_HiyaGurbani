@@ -18,16 +18,16 @@ Constants::ParsedData XmlParser::convert(const pugi::xml_document& document, con
             
         for (pugi::xml_node child = root.first_child(); child; child = child.next_sibling())
         {
-            std::map<std::string, std::string> row;
+            std::vector<std::pair<std::string, std::string>> row;
 
             for (pugi::xml_attribute attribute = child.first_attribute(); attribute; attribute = attribute.next_attribute())
             {
-                row[attribute.name()] = attribute.value();
+                row.push_back(std::make_pair(std::string(attribute.name()), std::string(attribute.value())));
             }
 
             for (pugi::xml_node subchild = child.first_child(); subchild; subchild = subchild.next_sibling()) 
             {
-                row[subchild.name()] = subchild.child_value();
+                row.push_back(std::make_pair(std::string(subchild.name()), std::string(subchild.child_value())));
             }
 
             if (!row.empty())
@@ -44,7 +44,7 @@ Constants::ParsedData XmlParser::convert(const pugi::xml_document& document, con
     return result;
 }
 
-Constants::ParsedData XmlParser::parse(std::string& filePath) {
+Constants::ParsedData XmlParser::parse(const std::string& filePath) {
     pugi::xml_document document;
     pugi::xml_parse_result parseResult = document.load_file(filePath.c_str());
 

@@ -3,14 +3,14 @@
 
 #include <string>
 #include <vector>
-#include <map>
+#include <utility>
 
 namespace Constants {
 
     struct ParsedData {
         std::string sourceFile;
         std::string format;
-        std::vector<std::map<std::string, std::string>> rows;
+        std::vector<std::vector<std::pair<std::string, std::string>>> rows;
 
         size_t size() { 
             return rows.size(); 
@@ -52,10 +52,11 @@ namespace Constants {
     inline const std::string MSG_EXITING_PROGRAM = "\nThank you for using the parser!\n";
 
     // Validation Messages
-    inline const std::string MSG_EMPTY_PATH = "File path cannot be empty. Try again.\n";
+    inline const std::string MSG_EMPTY_PATH = "File path cannot be empty. Try again.\n\n";
+    inline const std::string MSG_NO_EXTENSION = "No file extension found. Please provide a file with extension.\n\n";
     inline const std::string MSG_UNSUPPORTED_TYPE  = "Unsupported file type. Supported: .json, .csv, .xml\n\n";
     inline const std::string MSG_FILE_NOT_FOUND = "File not found: ";
-    inline const std::string MSG_CHECK_PATH = " Please check the path and try again.\n";
+    inline const std::string MSG_CHECK_PATH = " Please check the path and try again.\n\n";
 
     // Result Messages
     inline const std::string MSG_RESULT_BORDER = "\n========================================\n";

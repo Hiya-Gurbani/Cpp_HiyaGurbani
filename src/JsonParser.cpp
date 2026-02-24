@@ -3,19 +3,21 @@
 #include <fstream>
 #include <stdexcept>
 
-void JsonParser::processArray(const nlohmann::json& jsonObject, Constants::ParsedData& result) {
-    for (const nlohmann::json& element : jsonObject)
+void JsonParser::processArray(const nlohmann::ordered_json& jsonObject, Constants::ParsedData& result) {
+    for (const nlohmann::ordered_json& element : jsonObject)
     {
-        std::map<std::string, std::string> row;
-        for (const auto& [key, value] : element.items())
+        std::vector<std::pair<std::string, std::string>> row;
+        for (nlohmann::ordered_json::const_iterator field = element.begin(); field != element.end(); field++)
         {
-            row[key] = value.is_string() ? value.get<std::string>() : value.dump();
+            std::string value = field.value().is_string() ? field.value().get<std::string>() : field.value().dump();
+            row.push_back(std::make_pair(field.key(), value));
         }
+        
         result.rows.push_back(row);
     }
 }
 
-Constants::ParsedData JsonParser::convert(const nlohmann::json& jsonObject, const std::string& filePath) {
+Constants::ParsedData JsonParser::convert(const nlohmann::ordered_json& jsonObject, const std::string& filePath) {
     Constants::ParsedData result;
     result.sourceFile = filePath;
     result.format = getFormat();
@@ -29,11 +31,11 @@ Constants::ParsedData JsonParser::convert(const nlohmann::json& jsonObject, cons
 
         processArray(jsonObject, result);
     }
-    catch (const nlohmann::json::type_error& error)
+    catch (const nlohmann::ordered_json::type_error& error)
     {
         throw std::runtime_error(Constants::MSG_JSON_TYPE_ERROR + std::string(error.what()));
     }
-    catch (const nlohmann::json::out_of_range& error)
+    catch (const nlohmann::ordered_json::out_of_range& error)
     {
         throw std::runtime_error(Constants::MSG_JSON_KEY_ERROR + std::string(error.what()));
     }
@@ -41,15 +43,15 @@ Constants::ParsedData JsonParser::convert(const nlohmann::json& jsonObject, cons
     return result;
 }
 
-Constants::ParsedData JsonParser::parse(std::string& filePath) {
+Constants::ParsedData JsonParser::parse(const std::string& filePath) {
     std::ifstream file(filePath);
 
-    nlohmann::json jsonObject;
+    nlohmann::ordered_json jsonObject;
     try 
     {
         file >> jsonObject;
     }
-    catch (const nlohmann::json::parse_error& error) 
+    catch (const nlohmann::ordered_json::parse_error& error) 
     {
         throw std::runtime_error(Constants::MSG_JSON_SYNTAX_ERROR + std::string(error.what()));
     }
