@@ -26,7 +26,6 @@ public:
         return transactions;
     }
 
-
     void setPin(const std::string& pin) { 
         this->pin = pin;
     }

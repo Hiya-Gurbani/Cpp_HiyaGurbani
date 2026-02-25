@@ -1,0 +1,102 @@
+#include "CustomerService.h"
+#include <gtest/gtest.h>
+
+class CustomerServiceTest : public ::testing::Test {
+protected:
+    CustomerService service;
+    Customer* customer;
+    
+    void SetUp() override {
+        customer = service.createCustomer("Daksh Sharma", "daksh@gmail.com", "1234567890");
+    }
+};
+
+// Create Customer Test
+
+TEST_F(CustomerServiceTest, CreateCustomer_NameSetCorrectly) {
+    EXPECT_EQ(customer.getName(), "Daksh Sharma");
+}
+
+TEST_F(CustomerServiceTest, CreateCustomer_EmailSetCorrectly) {
+    EXPECT_EQ(customer.getEmail(), "daksh@gmail.com");
+}
+
+TEST_F(CustomerServiceTest, CreateCustomer_PhoneSetCorrectly) {
+    EXPECT_EQ(customer.getPhone(), "1234567890");
+}
+
+TEST_F(CustomerServiceTest, CreateCustomer_InitialBalanceZero) {
+    EXPECT_EQ(customer.getAccount().getBalance(), 0.0);
+}
+
+TEST_F(CustomerServiceTest, CreateCustomer_AddsToCustomers) {
+    EXPECT_EQ(service.getCustomers().size(), 1);
+}
+
+TEST_F(CustomerServiceTest, CreateMultipleCustomers_AllAdded) {
+    service.createCustomer("Disha Jain", "jain@email.com", "0987654321");
+    EXPECT_EQ(service.getCustomers().size(), 2);
+}
+
+TEST_F(CustomerServiceTest, CreateMultipleCustomers_AccountNumbersIncrement) {
+    Customer& nextCustomer = service.createCustomer("Disha Jain", "jain@email.com", "0987654321");
+    long accountNumber1 = std::stol(customer.getAccount().getAccountNumber());
+    long accountNumber2 = std::stol(nextCustomer.getAccount().getAccountNumber());
+    EXPECT_EQ(accountNumber2, accountNumber1 + 1);
+}
+
+// Find Customer Test
+
+TEST_F(CustomerServiceTest, FindExistingAccountNumber_ReturnsNonNullptr) {
+    const std::string accountNumber = customer.getAccount().getAccountNumber();
+    EXPECT_NE(service.findCustomerByAccountNumber(accountNumber), nullptr);
+}
+
+TEST_F(CustomerServiceTest, FindExistingAccountNumber_ReturnsCorrectCustomer) {
+    const std::string accountNumber = customer.getAccount().getAccountNumber();
+    Customer* found = service.findCustomerByAccountNumber(accountNumber);
+    ASSERT_NE(found, nullptr);
+    EXPECT_EQ(found->getName(), "Daksh Sharma");
+}
+
+TEST_F(CustomerServiceTest, FindNonExistingAccountNumber_ReturnsNullptr) {
+    EXPECT_EQ(service.findCustomerByAccountNumber("0000000"), nullptr);
+}
+
+TEST_F(CustomerServiceTest, FindAmongMultipleCustomers_FindsCorrectOne) {
+    service.createCustomer("Disha Jain", "jain@email.com", "0987654321");
+    const std::string accountNumber = customer.getAccount().getAccountNumber();
+    Customer* found = service.findCustomerByAccountNumber(accountNumber);
+    ASSERT_NE(found, nullptr);
+    EXPECT_EQ(found->getName(), "Daksh Sharma");
+}
+
+// Delete Customer
+TEST_F(CustomerServiceTest, DeleteExistingCustomer_ReturnsTrue) {
+    const std::string accountNumber = customer.getAccount().getAccountNumber();
+    EXPECT_TRUE(service.deleteCustomerFromBank(accountNumber));
+}
+
+TEST_F(CustomerServiceTest, DeleteExistingCustomer_RemovesFromList) {
+    const std::string accountNumber = customer.getAccount().getAccountNumber();
+    service.deleteCustomerFromBank(accountNumber);
+    EXPECT_EQ(service.getCustomers().size(), 0);
+}
+
+TEST_F(CustomerServiceTest, DeleteExistingCustomer_CanNoLongerBeFound) {
+    const std::string accountNumber = customer.getAccount().getAccountNumber();
+    service.deleteCustomerFromBank(accountNumber);
+    EXPECT_EQ(service.findCustomerByAccountNumber(accountNumber), nullptr);
+}
+
+TEST_F(CustomerServiceTest, DeleteNonExistingCustomer_ReturnsFalse) {
+    EXPECT_FALSE(service.deleteCustomerFromBank("0000000"));
+}
+
+TEST_F(CustomerServiceTest, DeleteAmongMultipleCustomers_OnlyTargetRemoved) {
+    service.createCustomer("Disha Jain", "jain@email.com", "0987654321");
+    const std::string accountNumber = customer.getAccount().getAccountNumber();
+    service.deleteCustomerFromBank(accountNumber);
+    EXPECT_EQ(service.getCustomers().size(), 1);
+    EXPECT_EQ(service.getCustomers()[0].getName(), "Daksh Sharma");
+}
