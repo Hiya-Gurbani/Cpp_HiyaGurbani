@@ -39,12 +39,12 @@ g++ -I./inc main/main.cpp -L. -lbank -Wl,-rpath=. -o BankAppSimulator.out
 ### Compile all tests in single test file
 
 ```bash
-g++ -I../src -I../inc ../src/*.cpp src/*.cpp main/main.cpp -lgtest -lpthread -o run_tests.out
+cd Test && g++ -I../src -I../inc ../src/*.cpp src/*.cpp main/main.cpp -lgtest -lpthread -o BankTests.out
 
 ### Compile a single test file
 
 ```bash
-g++ -I../src -I../inc ../src/*.cpp src/ValidatorTest.cpp main/main.cpp -lgtest -lpthread -o run_tests.out
+cd Test && g++ -I../src -I../inc -I./inc ../src/*.cpp src/ValidatorTest.cpp main/main.cpp -lgtest -lgmock -lpthread -o BankTests.out
 ```
 
 Replace `ValidatorTest.cpp` with any other test file to compile that file instead.
@@ -52,7 +52,7 @@ Replace `ValidatorTest.cpp` with any other test file to compile that file instea
 ### Run the tests
 
 ```bash
-./run_tests.out
+./BankTests.out
 ```
 
 ---
@@ -61,27 +61,27 @@ Replace `ValidatorTest.cpp` with any other test file to compile that file instea
 
 **Run a single test:**
 ```bash
-./run_tests --gtest_filter=ValidatorNameTest.ExactMinLength_AllAlpha_ReturnsTrue
+./BankTests.out --gtest_filter=ValidatorNameTest.ExactMinLength_AllAlpha_ReturnsTrue
 ```
 
 **Run all tests in a fixture or suite:**
 ```bash
-./run_tests --gtest_filter=ValidatorNameTest.*
+./BankTests.out --gtest_filter=ValidatorNameTest.*
 ```
 
 **Run all parameterized tests:**
 ```bash
-./run_tests --gtest_filter=InvalidChars/*
+./BankTests.out --gtest_filter=InvalidChars/*
 ```
 
 **Run a specific parameterized fixture:**
 ```bash
-./run_tests --gtest_filter=InvalidChars/ValidatorDigitsInvalidCharTest.*
+./BankTests.out --gtest_filter=InvalidChars/ValidatorDigitsInvalidCharTest.*
 ```
 
 **Run multiple suites:**
 ```bash
-./run_tests --gtest_filter=ValidatorNameTest.*:ValidatorEmailTest.*
+./BankTests.out --gtest_filter=ValidatorNameTest.*:ValidatorEmailTest.*
 ```
 
 ---
@@ -90,17 +90,17 @@ Replace `ValidatorTest.cpp` with any other test file to compile that file instea
 
 **Skip a suite:**
 ```bash
-./run_tests --gtest_filter=-ValidatorNameTest.*
+./BankTests.out --gtest_filter=-ValidatorNameTest.*
 ```
 
 **Skip a single test:**
 ```bash
-./run_tests --gtest_filter=-ValidatorNameTest.ExactMinLength_AllAlpha_ReturnsTrue
+./BankTests.out --gtest_filter=-ValidatorNameTest.ExactMinLength_AllAlpha_ReturnsTrue
 ```
 
 **Skip multiple suites:**
 ```bash
-./run_tests --gtest_filter=-ValidatorNameTest.*:-ValidatorEmailTest.*
+./BankTests.out --gtest_filter=-ValidatorNameTest.*:-ValidatorEmailTest.*
 ```
 
 ---
@@ -117,7 +117,7 @@ TEST(ValidatorNameTest, DISABLED_ExactMinLength_AllAlpha_ReturnsTrue) {
 
 To explicitly run disabled tests:
 ```bash
-./run_tests --gtest_filter=*DISABLED_*
+./BankTests.out --gtest_filter=*DISABLED_*
 ```
 
 ---
@@ -126,10 +126,10 @@ To explicitly run disabled tests:
 
 **List all tests without running them:**
 ```bash
-./run_tests --gtest_list_tests
+./BankTests.out --gtest_list_tests
 ```
 
 **Repeat tests multiple times** (useful for catching flaky tests):
 ```bash
-./run_tests --gtest_repeat=3 --gtest_filter=ValidatorNameTest.*
+./BankTests.out --gtest_repeat=3 --gtest_filter=ValidatorNameTest.*
 ```

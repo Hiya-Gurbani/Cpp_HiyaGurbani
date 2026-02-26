@@ -63,12 +63,20 @@ bool Validator::isValidEmail(std::string& email) {
     {
         Display::printMessage(Logger::MSG_EMAIL_NO_AT);
     }
+    else if (email.find(Constants::AT_THE_RATE, atPosition + 1) != std::string::npos)
+    {
+        Display::printMessage(Logger::MSG_EMAIL_MULTIPLE_AT);
+    }
     else
     {
         size_t dotPosition = email.find(Constants::FULL_STOP, atPosition);
         if (dotPosition == std::string::npos || dotPosition == email.length() - 1) 
         {
             Display::printMessage(Logger::MSG_EMAIL_NO_DOMAIN);
+        }
+        else if (email.find(Constants::FULL_STOP, dotPosition + 1) == dotPosition + 1)
+        {
+            Display::printMessage(Logger::MSG_EMAIL_CONSECUTIVE_DOTS);
         }
         else
         {
@@ -130,6 +138,18 @@ bool Validator::isValidInput(std::string& input, Constants::InputType type) {
             if (input.size() < Constants::MIN_PASSWORD_LENGTH) 
             {
                 Display::printWithSuffix(Logger::MSG_INVALID_PASSWORD_LENGTH, Constants::MIN_PASSWORD_LENGTH, Logger::MSG_CHARACTERS_SUFFIX);
+                isValid = false;
+            }
+            else
+            {
+                isValid = true;
+            }
+            break;
+        
+        case Constants::InputType::USERNAME:
+            if (input.size() < Constants::MIN_USERNAME_LENGTH)
+            {
+                Display::printWithSuffix(Logger::MSG_INVALID_USERNAME_LENGTH, Constants::MIN_USERNAME_LENGTH, Logger::MSG_CHARACTERS_SUFFIX);
                 isValid = false;
             }
             else

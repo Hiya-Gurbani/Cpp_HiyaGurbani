@@ -2,7 +2,6 @@
 #define Customer_CONTROLLER_H
 
 #include "Customer.h"
-#include "CustomerService.h"
 
 class CustomerController {
     bool changePin(Customer& customer);

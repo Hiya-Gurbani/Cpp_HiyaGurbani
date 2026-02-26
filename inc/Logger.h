@@ -17,10 +17,13 @@ namespace Logger {
     inline const std::string MSG_INVALID_LENGTH = "Invalid Input. Input should be exactly ";
     inline const std::string MSG_DIGITS_SUFFIX = " digits!\n";
     inline const std::string MSG_INVALID_NAME_LENGTH = "Invalid Input. Name should be at least ";
+    inline const std::string MSG_INVALID_USERNAME_LENGTH = "Invalid Input. UserName should be at least ";
     inline const std::string MSG_CHARACTERS_SUFFIX = " characters!\n";
     inline const std::string MSG_INVALID_NAME_CHARS = "Invalid Input. Only alphabets and spaces expected!\nEnter again: ";
     inline const std::string MSG_EMAIL_NO_AT = "Email must contain '@'.\n";
     inline const std::string MSG_EMAIL_NO_DOMAIN = "Email must have a domain (e.g., @gmail.com).\n";
+    inline const std::string MSG_EMAIL_MULTIPLE_AT = "Email cannot contain multiple '@' symbols.\n";
+    inline const std::string MSG_EMAIL_CONSECUTIVE_DOTS = "Email cannot contain consecutive dots.\n";
     inline const std::string MSG_INVALID_PASSWORD_LENGTH = "Invalid Input. Password should be at least ";
     
     //Bank
@@ -134,8 +137,8 @@ namespace Logger {
     "6. Bank Statement\n"
     "7. Logout\n"
     "====================================================\n";
-    inline const std::string MSG_DEPOSIT_FAILED = "Deposit failed. Entered amount is out of range.\n";
-    inline const std::string MSG_WITHDRAWAL_FAILED = "Withdrawal failed. Entered amount is out of range.\n";
+    inline const std::string MSG_DEPOSIT_FAILED = "Deposit failed. Entered amount is not in range.\n";
+    inline const std::string MSG_WITHDRAWAL_FAILED = "Withdrawal failed. Entered amount is not in range.\n";
     inline const std::string MSG_TRANSACTION_RANGE = "Transaction amount must be between ";
     inline const std::string MSG_ENTER_DEPOSIT_AMOUNT = "Enter the amount you want to deposit: ";
     inline const std::string MSG_DEPOSIT_SUCCESS = "\nDeposited Money! Balance after transaction: ";

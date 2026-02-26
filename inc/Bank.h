@@ -23,8 +23,8 @@ class Bank : public IBank {
 
 public:
     Bank() {
-        adminController = new AdminController(&customerService);
         customerController = new CustomerController();
+        adminController = new AdminController(&customerService, customerController);
     }
 
     ~Bank() {

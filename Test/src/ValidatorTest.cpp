@@ -47,7 +47,8 @@ TEST_P(ValidatorEmailInvalidFormatTest, InvalidFormat_ReturnsFalse) {
 }
 
 INSTANTIATE_TEST_SUITE_P(InvalidEmails, ValidatorEmailInvalidFormatTest,
-    ::testing::Values("hiyagmail.com", "hiya@gmailcom", "hiya@gmail.")
+    ::testing::Values("hiyagmail.com", "jain@gmailcom", "hiya@gmail.", 
+                      "hiya@gmail@a.com", "daksh@@hoor.org", "daksh@hoor..g")
 );
 
 // Phone Number Tests
@@ -149,3 +150,26 @@ TEST(ValidatorPasswordTest, ContainsSpecialChar_ReturnsTrue) {
     EXPECT_TRUE(Validator::isValidInput(input, Constants::InputType::PASSWORD));
 }
 
+// Username Tests
+
+TEST(ValidatorUsernameTest, ExactMinLength_AllAplha_ReturnsTrue) {
+    std::string input(Constants::MIN_USERNAME_LENGTH, 'x');
+    EXPECT_TRUE(Validator::isValidInput(input, Constants::InputType::USERNAME));
+}
+
+TEST(ValidatorUsernameTest, BelowMinLength_ReturnsFalse) {
+    std::string input(Constants::MIN_USERNAME_LENGTH - 1, 'x');
+    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::USERNAME));
+}
+
+TEST(ValidatorUsernameTest, ContainsDigit_ReturnsTrue) {
+    std::string input(Constants::MIN_USERNAME_LENGTH + 1, 'x');
+    input[Constants::MIN_USERNAME_LENGTH - 1] = '1';
+    EXPECT_TRUE(Validator::isValidInput(input, Constants::InputType::USERNAME));
+}
+
+TEST(ValidatorUsernameTest, ContainsSpecialChar_ReturnsTrue) {
+    std::string input(Constants::MIN_USERNAME_LENGTH + 1, 'A');
+    input[Constants::MIN_USERNAME_LENGTH - 1] = '@';
+    EXPECT_TRUE(Validator::isValidInput(input, Constants::InputType::USERNAME));
+}

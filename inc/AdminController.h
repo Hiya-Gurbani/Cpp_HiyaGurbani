@@ -1,9 +1,8 @@
 #ifndef ADMIN_CONTROLLER_H
 #define ADMIN_CONTROLLER_H
 
-#include "Customer.h"
+#include "CustomerService.h"
 #include "CustomerController.h"
-class IBank; 
 
 class AdminController {
     CustomerService* customerService;
@@ -31,7 +30,8 @@ class AdminController {
     void performAccountOperation(Customer* customer);
 
 public:
-    AdminController(CustomerService* service) : customerService{service} {}
+    AdminController(CustomerService* service, CustomerController* controller) : 
+    customerService{service}, customerController{controller} {}
 
     bool handleMenu();
 };
