@@ -31,11 +31,12 @@ void CustomerController::performWithdrawal(Customer& customer) {
     double balance = customer.getAccount().getBalance();
     if (customer.getAccount().withdrawal(amount)) 
     {
-        Display::printWithAmount(Logger::MSG_WITHDRAWAL_SUCCESS, balance);
+        Display::printWithAmount(Logger::MSG_WITHDRAWAL_SUCCESS, 
+        customer.getAccount().getBalance());
     } 
     else 
     {
-        if (balance < amount)
+        if (customer.getAccount().getBalance() < amount)
         {
             Display::printMessage(Logger::MSG_INSUFFICIENT_BALANCE);
         }

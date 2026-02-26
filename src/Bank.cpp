@@ -6,6 +6,30 @@
 #include <random>
 #include <string>
 
+Bank::Bank() : ownsHandlers{true}{
+    customerController = new CustomerController();
+    adminController = new AdminController(&customerService, customerController);
+    adminLoginHandler = new AdminLoginHandler(admin, adminController);
+    customerLoginHandler = new CustomerLoginHandler(customerService, customerController);
+}
+
+Bank::Bank(ILoginHandler* adminHandler, ILoginHandler* customerHandler)
+    : adminLoginHandler{adminHandler},
+      customerLoginHandler{customerHandler},
+      adminController{nullptr},
+      customerController{nullptr},
+      ownsHandlers{false} {}
+
+Bank::~Bank() {
+    delete adminController;
+    delete customerController;
+    if (ownsHandlers)
+    {
+        delete adminLoginHandler;
+        delete customerLoginHandler;
+    }
+}
+
 bool Bank::login(Constants::UserRole role) {
     int attempts = 0;
     bool isSuccessful = false;

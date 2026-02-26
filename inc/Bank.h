@@ -26,29 +26,10 @@ class Bank : public IBank {
     bool handleChoice(int choice);
 
 public:
-    Bank() : ownsHandlers{true}{
-        customerController = new CustomerController();
-        adminController = new AdminController(&customerService, customerController);
-        adminLoginHandler = new AdminLoginHandler(admin, adminController);
-        customerLoginHandler = new CustomerLoginHandler(customerService, customerController);
-    }
+    Bank();
+    Bank(ILoginHandler* adminHandler, ILoginHandler* customerHandler);
 
-    Bank(ILoginHandler* adminHandler, ILoginHandler* customerHandler)
-        : adminLoginHandler{adminHandler},
-          customerLoginHandler{customerHandler},
-          adminController{nullptr},
-          customerController{nullptr},
-          ownsHandlers{false} {}
-
-    ~Bank() {
-        delete adminController;
-        delete customerController;
-        if (ownsHandlers)
-        {
-            delete adminLoginHandler;
-            delete customerLoginHandler;
-        }
-    }
+    ~Bank();
 
     void handleMenu() override;
     bool login(Constants::UserRole role) override;

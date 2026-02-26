@@ -19,12 +19,12 @@ TEST_F(CustomerServiceTest, CreateCustomer_InitialBalanceZero) {
 }
 
 TEST_F(CustomerServiceTest, CreateCustomer_AddsToCustomers) {
-    EXPECT_EQ(service.getCustomers().size(), 1);
+    EXPECT_THAT(service.getCustomers(), ::testing::SizeIs(1));
 }
 
 TEST_F(CustomerServiceTest, CreateMultipleCustomers_AllAdded) {
     service.createCustomer("Disha Jain", "jain@email.com", "0987654321");
-    EXPECT_EQ(service.getCustomers().size(), 2);
+    EXPECT_THAT(service.getCustomers(), ::testing::SizeIs(2));
 }
 
 TEST_F(CustomerServiceTest, CreateMultipleCustomers_AccountNumbersIncrement) {
@@ -71,7 +71,7 @@ TEST_F(CustomerServiceTest, DeleteExistingCustomer_ReturnsTrue) {
 TEST_F(CustomerServiceTest, DeleteExistingCustomer_RemovesFromList) {
     std::string accountNumber = customer->getAccount().getAccountNumber();
     service.deleteCustomerFromBank(accountNumber);
-    EXPECT_EQ(service.getCustomers().size(), 0);
+    EXPECT_THAT(service.getCustomers(), ::testing::IsEmpty());
 }
 
 TEST_F(CustomerServiceTest, DeleteExistingCustomer_CanNoLongerBeFound) {
@@ -88,7 +88,7 @@ TEST_F(CustomerServiceTest, DeleteAmongMultipleCustomers_OnlyTargetRemoved) {
     std::string accountNumber = customer->getAccount().getAccountNumber();
     service.createCustomer("Disha Jain", "jain@email.com", "0987654321");
     service.deleteCustomerFromBank(accountNumber);
-    EXPECT_EQ(service.getCustomers().size(), 1);
+    EXPECT_THAT(service.getCustomers(), ::testing::SizeIs(1));
     EXPECT_EQ(service.getCustomers()[0].getName(), "Disha Jain");
 }
 

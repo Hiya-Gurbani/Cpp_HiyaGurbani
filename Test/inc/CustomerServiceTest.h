@@ -3,6 +3,7 @@
 
 #include "CustomerService.h"
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 class CustomerServiceTest : public ::testing::Test {
 protected:

@@ -1,8 +1,8 @@
 #ifndef MOCK_LOGIN_HANDLER_H
 #define MOCK_LOGIN_HANDLER_H
 
-#include <gmock/gmock.h>
 #include "ILoginHandler.h"
+#include <gmock/gmock.h>
 
 class MockLoginHandler : public ILoginHandler {
 public:

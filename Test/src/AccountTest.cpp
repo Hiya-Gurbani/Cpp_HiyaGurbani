@@ -57,7 +57,7 @@ TEST_F(AccountTest, WithdrawalValidAmount_BalanceDecreases) {
     EXPECT_EQ(account.getBalance(), 800.0);
 }
 
-TEST_F(AccountTest, Withdrawal_ValidAmount_TransactionRecorded) {
+TEST_F(AccountTest, WithdrawalValidAmount_TransactionRecorded) {
     account.withdrawal(200.0);
     ASSERT_EQ(account.getTransactions().size(), 1);
     EXPECT_EQ(account.getTransactions().back().getType(), Constants::TransactionType::WITHDRAWAL);
@@ -81,7 +81,7 @@ TEST_F(AccountTest, WithdrawalInsufficientBalance_BalanceUnchanged) {
 
 TEST_F(AccountTest, WithdrawalInsufficientBalance_NoTransactionRecorded) {
     account.withdrawal(1500.0);
-    EXPECT_TRUE(account.getTransactions().empty());
+    EXPECT_THAT(account.getTransactions(), ::testing::IsEmpty());
 }
 
 // Invalid Transaction Limits for Deposit and Withdraw
@@ -104,7 +104,7 @@ TEST_P(AccountInvalidAmountTest, Deposit_InvalidAmount_BalanceUnchanged) {
 
 TEST_P(AccountInvalidAmountTest, Deposit_InvalidAmount_NoTransactionRecorded) {
     account.deposit(GetParam());
-    EXPECT_TRUE(account.getTransactions().empty());
+    EXPECT_THAT(account.getTransactions(), ::testing::IsEmpty());
 }
 
 TEST_P(AccountInvalidAmountTest, Withdrawal_InvalidAmount_ReturnsFalse) {
@@ -118,7 +118,7 @@ TEST_P(AccountInvalidAmountTest, Withdrawal_InvalidAmount_BalanceUnchanged) {
 
 TEST_P(AccountInvalidAmountTest, Withdrawal_InvalidAmount_NoTransactionRecorded) {
     account.withdrawal(GetParam());
-    EXPECT_TRUE(account.getTransactions().empty());
+    EXPECT_THAT(account.getTransactions(), ::testing::IsEmpty());
 }
 
 // Get Last Transactions
