@@ -1,17 +1,4 @@
-#include "Account.h"
-#include <gtest/gtest.h>
-
-class AccountTest : public ::testing::Test {
-protected:
-    Account account;
-
-    void SetUp() override {
-        std::string accountNumber = "12345678";
-        account.setAccountNumber(accountNumber);
-        account.setPin("4321");
-        account.setBalance(1000.0);
-    }
-};
+#include "AccountTest.h"
 
 // Constructor Test
 
@@ -98,9 +85,6 @@ TEST_F(AccountTest, WithdrawalInsufficientBalance_NoTransactionRecorded) {
 }
 
 // Invalid Transaction Limits for Deposit and Withdraw
-
-class AccountInvalidAmountTest : public AccountTest, 
-    public ::testing::WithParamInterface<double> {};
 
 INSTANTIATE_TEST_SUITE_P(InvalidAmounts, AccountInvalidAmountTest,
     ::testing::Values(

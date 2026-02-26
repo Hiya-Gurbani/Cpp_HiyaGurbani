@@ -1,15 +1,4 @@
-#include "CustomerService.h"
-#include <gtest/gtest.h>
-
-class CustomerServiceTest : public ::testing::Test {
-protected:
-    CustomerService service;
-    Customer* customer;
-    
-    void SetUp() override {
-        customer = &service.createCustomer("Daksh Sharma", "daksh@gmail.com", "1234567890");
-    }
-};
+#include "CustomerServiceTest.h"
 
 // Create Customer Test
 

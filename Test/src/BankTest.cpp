@@ -1,25 +1,15 @@
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
-#include "Bank.h"
-#include "MockLoginHandler.h"
-
-class BankLoginTest : public ::testing::Test {
-protected:
-    MockLoginHandler mockAdminLogin;
-    MockLoginHandler mockCustomerLogin;
-    Bank bank{&mockAdminLogin, &mockCustomerLogin};
-};
+#include "BankTest.h"
 
 // Admin Login
 
-TEST_F(BankLoginTest, AdminLogin_SuccessOnFirstAttempt_ReturnsTrue) {
+TEST_F(BankLoginTest, AdminLoginSuccessOnFirstAttempt_ReturnsTrue) {
     EXPECT_CALL(mockAdminLogin, login())
         .WillOnce(::testing::Return(Constants::LoginResult::SUCCESS));
 
     EXPECT_TRUE(bank.login(Constants::UserRole::ADMIN));
 }
 
-TEST_F(BankLoginTest, AdminLogin_FailsThenSucceeds_ReturnsTrue) {
+TEST_F(BankLoginTest, AdminLoginFailsThenSucceeds_ReturnsTrue) {
     EXPECT_CALL(mockAdminLogin, login())
         .WillOnce(::testing::Return(Constants::LoginResult::FAILED))
         .WillOnce(::testing::Return(Constants::LoginResult::SUCCESS));
@@ -27,7 +17,7 @@ TEST_F(BankLoginTest, AdminLogin_FailsThenSucceeds_ReturnsTrue) {
     EXPECT_TRUE(bank.login(Constants::UserRole::ADMIN));
 }
 
-TEST_F(BankLoginTest, AdminLogin_ExhaustsAllAttempts_ReturnsFalse) {
+TEST_F(BankLoginTest, AdminLoginExhaustsAllAttempts_ReturnsFalse) {
     EXPECT_CALL(mockAdminLogin, login())
         .Times(Constants::MAX_LOGIN_ATTEMPTS)
         .WillRepeatedly(::testing::Return(Constants::LoginResult::FAILED));
@@ -37,14 +27,14 @@ TEST_F(BankLoginTest, AdminLogin_ExhaustsAllAttempts_ReturnsFalse) {
 
 // Customer Login
 
-TEST_F(BankLoginTest, CustomerLogin_SuccessOnFirstAttempt_ReturnsTrue) {
+TEST_F(BankLoginTest, CustomerLoginSuccessOnFirstAttempt_ReturnsTrue) {
     EXPECT_CALL(mockCustomerLogin, login())
         .WillOnce(::testing::Return(Constants::LoginResult::SUCCESS));
 
     EXPECT_TRUE(bank.login(Constants::UserRole::CUSTOMER));
 }
 
-TEST_F(BankLoginTest, CustomerLogin_AccountNotFound_ReturnsTrueImmediately) {
+TEST_F(BankLoginTest, CustomerLoginAccountNotFound_ReturnsTrueImmediately) {
     EXPECT_CALL(mockCustomerLogin, login())
         .Times(1)
         .WillOnce(::testing::Return(Constants::LoginResult::ACCOUNT_NOT_FOUND));
@@ -52,7 +42,7 @@ TEST_F(BankLoginTest, CustomerLogin_AccountNotFound_ReturnsTrueImmediately) {
     EXPECT_TRUE(bank.login(Constants::UserRole::CUSTOMER));
 }
 
-TEST_F(BankLoginTest, CustomerLogin_ExhaustsAllAttempts_ReturnsFalse) {
+TEST_F(BankLoginTest, CustomerLoginExhaustsAllAttempts_ReturnsFalse) {
     EXPECT_CALL(mockCustomerLogin, login())
         .Times(Constants::MAX_LOGIN_ATTEMPTS)
         .WillRepeatedly(::testing::Return(Constants::LoginResult::FAILED));
@@ -62,7 +52,7 @@ TEST_F(BankLoginTest, CustomerLogin_ExhaustsAllAttempts_ReturnsFalse) {
 
 // Role Setup
 
-TEST_F(BankLoginTest, AdminRole_UsesAdminHandler_NotCustomerHandler) {
+TEST_F(BankLoginTest, AdminRoleUsesAdminHandler_NotCustomerHandler) {
     EXPECT_CALL(mockAdminLogin, login())
         .WillOnce(::testing::Return(Constants::LoginResult::SUCCESS));
     EXPECT_CALL(mockCustomerLogin, login())
@@ -71,7 +61,7 @@ TEST_F(BankLoginTest, AdminRole_UsesAdminHandler_NotCustomerHandler) {
     bank.login(Constants::UserRole::ADMIN);
 }
 
-TEST_F(BankLoginTest, CustomerRole_UsesCustomerHandler_NotAdminHandler) {
+TEST_F(BankLoginTest, CustomerRoleUsesCustomerHandler_NotAdminHandler) {
     EXPECT_CALL(mockCustomerLogin, login())
         .WillOnce(::testing::Return(Constants::LoginResult::SUCCESS));
     EXPECT_CALL(mockAdminLogin, login())

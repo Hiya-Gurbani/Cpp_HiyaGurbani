@@ -1,16 +1,4 @@
-#include "Customer.h"
-#include <gtest/gtest.h>
-
-class CustomerTest : public ::testing::Test {
-protected:
-    Customer customer{"Daksh Sharma", "daksh@gmail.com", "6789543210"};
-
-    void SetUp() {
-        std::string accountNumber = "12345678";
-        customer.getAccount().setAccountNumber(accountNumber);
-        customer.getAccount().setPin("4321");
-    }
-};
+#include "CustomerTest.h"
 
 // Getters Test
 

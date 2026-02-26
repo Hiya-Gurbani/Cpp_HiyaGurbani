@@ -1,11 +1,5 @@
-#include "Admin.h"
+#include "AdminTest.h"
 #include "Constants.h"
-#include <gtest/gtest.h>
-
-class AdminTest : public ::testing::Test {
-protected:
-    Admin admin;
-};
 
 // Constructor Tests
 

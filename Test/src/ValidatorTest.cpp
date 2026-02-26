@@ -1,6 +1,5 @@
-#include "Validator.h"
+#include "ValidatorTest.h"
 #include "Constants.h"
-#include <gtest/gtest.h>
 
 // Name Tests
 
@@ -20,8 +19,6 @@ TEST(ValidatorNameTest, BelowMinLength_ReturnsFalse) {
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::NAME));
 }
 
-class ValidatorNameInvalidCharTest : public ::testing::TestWithParam<char> {};
-
 TEST_P(ValidatorNameInvalidCharTest, ContainsInvalidChar_ReturnsFalse) {
     std::string input(Constants::MIN_NAME_LENGTH + 1, 'A');
     input[Constants::MIN_NAME_LENGTH - 1] = GetParam();
@@ -38,8 +35,6 @@ TEST(ValidatorEmailTest, CorrectEmailFormat_ReturnsTrue) {
     std::string input = "hiya@gmail.com";
     EXPECT_TRUE(Validator::isValidInput(input, Constants::InputType::EMAIL));
 }
-
-class ValidatorEmailInvalidFormatTest : public ::testing::TestWithParam<std::string> {};
 
 TEST_P(ValidatorEmailInvalidFormatTest, InvalidFormat_ReturnsFalse) {
     std::string input = GetParam();
@@ -101,8 +96,6 @@ TEST(ValidatorAccountNumberTest, AboveLength_ReturnsFalse) {
     std::string input(Constants::ACCOUNT_NUMBER_LENGTH + 1, '5');
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::ACCOUNT_NUMBER));
 }
-
-class ValidatorInvalidCharTest : public ::testing::TestWithParam<char> {};
 
 TEST_P(ValidatorInvalidCharTest, PhoneContainsInvalidChar_ReturnsFalse) {
     std::string input(Constants::PHONE_LENGTH, '5');
