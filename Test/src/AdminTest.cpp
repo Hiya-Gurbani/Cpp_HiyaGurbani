@@ -9,11 +9,11 @@ protected:
 
 // Constructor Tests
 
-Test_F(AdminTest, Constructor_NameSetCorrectly) {
+TEST_F(AdminTest, Constructor_NameSetCorrectly) {
     EXPECT_EQ(admin.getName(), Constants::ADMIN_NAME);
 }
 
-Test_F(AdminTest, Constructor_RoleSetCorrectly) {
+TEST_F(AdminTest, Constructor_RoleSetCorrectly) {
     EXPECT_EQ(admin.getRole(), Constants::UserRole::ADMIN);
 }
 

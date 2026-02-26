@@ -134,7 +134,8 @@ namespace Logger {
     "6. Bank Statement\n"
     "7. Logout\n"
     "====================================================\n";
-    inline const std::string MSG_DEPOSIT_FAILED = "Deposit failed.\n";
+    inline const std::string MSG_DEPOSIT_FAILED = "Deposit failed. Entered amount is out of range.\n";
+    inline const std::string MSG_WITHDRAWAL_FAILED = "Withdrawal failed. Entered amount is out of range.\n";
     inline const std::string MSG_TRANSACTION_RANGE = "Transaction amount must be between ";
     inline const std::string MSG_ENTER_DEPOSIT_AMOUNT = "Enter the amount you want to deposit: ";
     inline const std::string MSG_DEPOSIT_SUCCESS = "\nDeposited Money! Balance after transaction: ";

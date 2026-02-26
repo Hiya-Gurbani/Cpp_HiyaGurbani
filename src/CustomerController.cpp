@@ -28,14 +28,21 @@ void CustomerController::performWithdrawal(Customer& customer) {
     Display::printMessage(Logger::MSG_ENTER_WITHDRAWAL_AMOUNT);
     InputHandler::inputValue(amount);
 
+    double balance = customer.getAccount().getBalance();
     if (customer.getAccount().withdrawal(amount)) 
     {
-        Display::printWithAmount(Logger::MSG_WITHDRAWAL_SUCCESS, 
-                                customer.getAccount().getBalance());
+        Display::printWithAmount(Logger::MSG_WITHDRAWAL_SUCCESS, balance);
     } 
     else 
     {
-        Display::printMessage(Logger::MSG_INSUFFICIENT_BALANCE);
+        if (balance < amount)
+        {
+            Display::printMessage(Logger::MSG_INSUFFICIENT_BALANCE);
+        }
+        else
+        {
+            Display::printMessage(Logger::MSG_WITHDRAWAL_FAILED);
+        }
     }
 }
 
@@ -84,10 +91,10 @@ bool CustomerController::changePin(Customer& customer) {
 }
 
 void CustomerController::displayMiniStatement(Customer& customer) {
-    std::vector<Transaction>& transactions = customer.getAccount().getTransactions();
-    int size = transactions.size();
+    std::vector<Transaction> transactions = 
+        customer.getAccount().getLastTransactions(Constants::MINI_STATEMENT_MAX_TRANSACTIONS);
 
-    if (size == 0) 
+    if (transactions.empty()) 
     {
         Display::printMessage(Logger::MSG_NO_TRANSACTIONS);
         return;
@@ -96,11 +103,8 @@ void CustomerController::displayMiniStatement(Customer& customer) {
     Display::printMessage(Logger::MSG_MINI_STATEMENT_HEADER);
     Display::printTransactionHeader();
 
-    int start = (size > Constants::MINI_STATEMENT_MAX_TRANSACTIONS) 
-    ? size - Constants::MINI_STATEMENT_MAX_TRANSACTIONS : 0;
-    for (int index = start; index < size; index++) 
+    for (Transaction& transaction : transactions) 
     {
-        Transaction& transaction = transactions[index];
         std::string type = (transaction.getType() == Constants::TransactionType::DEPOSIT) 
         ? Logger::MSG_TRANSACTION_TYPE_DEPOSIT : Logger::MSG_TRANSACTION_TYPE_WITHDRAWAL;
         

@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Display.h"
 #include "Logger.h"
+#include "User.h"
 #include <string.h>
 #include <iostream>
 

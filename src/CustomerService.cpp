@@ -51,8 +51,11 @@ bool CustomerService::deleteCustomerFromBank(const std::string& accountNumber) {
     {
         if (customers[index].getAccount().getAccountNumber() == accountNumber)
         {
-            customers.erase(customers.begin() + index);
-            isCustomerDeleted = true;
+            if (customers[index].getAccount().getBalance() == 0)
+            {
+                customers.erase(customers.begin() + index);
+                isCustomerDeleted = true;
+            }
             break;
         }
     }

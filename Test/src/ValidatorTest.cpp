@@ -20,17 +20,17 @@ TEST(ValidatorNameTest, BelowMinLength_ReturnsFalse) {
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::NAME));
 }
 
-TEST(ValidatorNameTest, ContainsDigit_ReturnsFalse) {
+class ValidatorNameInvalidCharTest : public ::testing::TestWithParam<char> {};
+
+TEST_P(ValidatorNameInvalidCharTest, ContainsInvalidChar_ReturnsFalse) {
     std::string input(Constants::MIN_NAME_LENGTH + 1, 'A');
-    input[Constants::MIN_NAME_LENGTH - 1] = '1';
+    input[Constants::MIN_NAME_LENGTH - 1] = GetParam();
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::NAME));
 }
 
-TEST(ValidatorNameTest, ContainsSpecialChar_ReturnsFalse) {
-    std::string input(Constants::MIN_NAME_LENGTH + 1, 'A');
-    input[Constants::MIN_NAME_LENGTH - 1] = '@';
-    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::NAME));
-}
+INSTANTIATE_TEST_SUITE_P(InvalidChars, ValidatorNameInvalidCharTest,
+    ::testing::Values('1', '@', '3', '#')
+);
 
 // Email Tests
 
@@ -39,22 +39,16 @@ TEST(ValidatorEmailTest, CorrectEmailFormat_ReturnsTrue) {
     EXPECT_TRUE(Validator::isValidInput(input, Constants::InputType::EMAIL));
 }
 
-TEST(ValidatorEmailTest, NoAtSign_ReturnsFalse) {
-    std::string input = "hiyagmail.com";
+class ValidatorEmailInvalidFormatTest : public ::testing::TestWithParam<std::string> {};
+
+TEST_P(ValidatorEmailInvalidFormatTest, InvalidFormat_ReturnsFalse) {
+    std::string input = GetParam();
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::EMAIL));
 }
 
-TEST(ValidatorEmailTest, NoDotAfterAt_ReturnsFalse) {
-    std::string input = "hiya@gmailcom";
-    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::EMAIL));
-}
-
-TEST(ValidatorEmailTest, NoCharAfterDot_ReturnsFalse) {
-    std::string input = "hiya@gmail.";
-    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::EMAIL));
-}
-
-//add another for @@
+INSTANTIATE_TEST_SUITE_P(InvalidEmails, ValidatorEmailInvalidFormatTest,
+    ::testing::Values("hiyagmail.com", "hiya@gmailcom", "hiya@gmail.")
+);
 
 // Phone Number Tests
 
@@ -70,18 +64,6 @@ TEST(ValidatorPhoneTest, BelowLength_ReturnsFalse) {
 
 TEST(ValidatorPhoneTest, AboveLength_ReturnsFalse) {
     std::string input(Constants::PHONE_LENGTH + 1, '5');
-    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::PHONE));
-}
-
-TEST(ValidatorPhoneTest, ContainsLetter_ReturnsFalse) {
-    std::string input(Constants::PHONE_LENGTH, '5');
-    input[Constants::PHONE_LENGTH - 1] = 'A';
-    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::PHONE));
-}
-
-TEST(ValidatorPhoneTest, ContainsSpecialChar_ReturnsFalse) {
-    std::string input(Constants::PHONE_LENGTH, '5');
-    input[Constants::PHONE_LENGTH - 1] = '@';
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::PHONE));
 }
 
@@ -102,18 +84,6 @@ TEST(ValidatorPinTest, AboveLength_ReturnsFalse) {
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::PIN));
 }
 
-TEST(ValidatorPinTest, ContainsLetter_ReturnsFalse) {
-    std::string input(Constants::PIN_LENGTH, '5');
-    input[Constants::PIN_LENGTH - 1] = 'A';
-    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::PIN));
-}
-
-TEST(ValidatorPinTest, ContainsSpecialChar_ReturnsFalse) {
-    std::string input(Constants::PIN_LENGTH, '5');
-    input[Constants::PIN_LENGTH - 1] = '@';
-    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::PIN));
-}
-
 // Account Number Tests
 
 TEST(ValidatorAccountNumberTest, CorrectAccountNumber_ReturnsTrue) {
@@ -131,17 +101,29 @@ TEST(ValidatorAccountNumberTest, AboveLength_ReturnsFalse) {
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::ACCOUNT_NUMBER));
 }
 
-TEST(ValidatorAccountNumberTest, ContainsLetter_ReturnsFalse) {
+class ValidatorInvalidCharTest : public ::testing::TestWithParam<char> {};
+
+TEST_P(ValidatorInvalidCharTest, PhoneContainsInvalidChar_ReturnsFalse) {
+    std::string input(Constants::PHONE_LENGTH, '5');
+    input[Constants::PHONE_LENGTH - 1] = GetParam();
+    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::PHONE));
+}
+
+TEST_P(ValidatorInvalidCharTest, PinContainsInvalidChar_ReturnsFalse) {
+    std::string input(Constants::PIN_LENGTH, '5');
+    input[Constants::PIN_LENGTH - 1] = GetParam();
+    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::PIN));
+}
+
+TEST_P(ValidatorInvalidCharTest, AccountNumberContainsInvalidChar_ReturnsFalse) {
     std::string input(Constants::ACCOUNT_NUMBER_LENGTH, '5');
-    input[Constants::ACCOUNT_NUMBER_LENGTH - 1] = 'A';
+    input[Constants::ACCOUNT_NUMBER_LENGTH - 1] = GetParam();
     EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::ACCOUNT_NUMBER));
 }
 
-TEST(ValidatorAccountNumberTest, ContainsSpecialChar_ReturnsFalse) {
-    std::string input(Constants::ACCOUNT_NUMBER_LENGTH, '5');
-    input[Constants::ACCOUNT_NUMBER_LENGTH - 1] = '@';
-    EXPECT_FALSE(Validator::isValidInput(input, Constants::InputType::ACCOUNT_NUMBER));
-}
+INSTANTIATE_TEST_SUITE_P(InvalidChars, ValidatorInvalidCharTest,
+    ::testing::Values('A', '@', 'b', '#')
+);
 
 // Password Tests
 

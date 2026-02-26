@@ -2,6 +2,7 @@
 #define ACCOUNT_H
 
 #include "Transaction.h"
+#include "Constants.h"
 #include <string>
 #include <vector>
 
@@ -10,6 +11,11 @@ class Account {
     std::string pin;
     double balance;
     std::vector<Transaction> transactions;
+
+    bool isValidAmount(double amount) {
+        return amount >= Constants::MIN_TRANSACTION_AMOUNT 
+            && amount <= Constants::MAX_TRANSACTION_AMOUNT;
+    }
 
 public:
     Account() : balance{0.0} {}
@@ -51,6 +57,8 @@ public:
 
     bool deposit(double amount);
     bool withdrawal(double amount);
+
+    std::vector<Transaction> getLastTransactions(int count);
 };
 
 #endif

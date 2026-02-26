@@ -252,15 +252,14 @@ void AdminController::handleCustomerDeletion() {
     }
     else
     {
-        double balance = customer->getAccount().getBalance();
-        if (balance > 0) 
+        if (!customerService->deleteCustomerFromBank(accountNumber)) 
         {
-            Display::printWithAmount(Logger::MSG_CANNOT_DELETE_WITH_BALANCE, balance);
+            Display::printWithAmount(Logger::MSG_CANNOT_DELETE_WITH_BALANCE, 
+            customer->getAccount().getBalance());
             Display::printMessage(Logger::MSG_WITHDRAW_FUNDS_FIRST);
         }
         else
         {
-            customerService->deleteCustomerFromBank(accountNumber);
             Display::printMessage(Logger::MSG_CUSTOMER_DELETED_SUCCESS);
         }
     }

@@ -13,10 +13,6 @@ double& InputHandler::inputValue(double& value) {
         {
             Display::printMessage(Logger::MSG_INVALID_NUMBER);
         }
-        else if (value < Constants::MIN_TRANSACTION_AMOUNT || value > Constants::MAX_TRANSACTION_AMOUNT)
-        {
-            Display::printMessage(Logger::MSG_OUT_OF_RANGE);
-        }
         else
         {
             break;

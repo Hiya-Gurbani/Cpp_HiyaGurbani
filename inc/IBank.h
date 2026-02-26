@@ -9,7 +9,7 @@ class Customer;
 
 class IBank {
 public:
-    virtual ~IBank();
+    virtual ~IBank() {};
     
     virtual void handleMenu() = 0;
     virtual bool login(Constants::UserRole role) = 0;

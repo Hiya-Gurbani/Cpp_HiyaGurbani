@@ -4,7 +4,7 @@
 bool Account::deposit(double amount) {
     bool isSuccessful = true;
 
-    if (amount <= 0) 
+    if (!isValidAmount(amount)) 
     {
         isSuccessful = false;
     }
@@ -22,7 +22,7 @@ bool Account::deposit(double amount) {
 bool Account::withdrawal(double amount) {
     bool isSuccessful = true;
 
-    if (amount <= 0 || balance < amount) 
+    if (!isValidAmount(amount) || balance < amount) 
     {
         isSuccessful = false;
     }
@@ -35,4 +35,10 @@ bool Account::withdrawal(double amount) {
     }
     
     return isSuccessful;
+}
+
+std::vector<Transaction> Account::getLastTransactions(int count) {
+    int size = transactions.size();
+    int start = (size > count) ? size - count : 0;
+    return std::vector<Transaction>(transactions.begin() + start, transactions.end());
 }
