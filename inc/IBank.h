@@ -13,7 +13,6 @@ public:
     
     virtual void handleMenu() = 0;
     virtual bool login(Constants::UserRole role) = 0;
-    virtual void logout() = 0;
 };
 
 #endif

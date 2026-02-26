@@ -43,7 +43,7 @@ namespace Constants {
     inline constexpr int MAX_LOGIN_ATTEMPTS = 3;
     inline constexpr int MIN_NAME_LENGTH = 3;
     inline constexpr int MIN_PASSWORD_LENGTH = 6;
-    inline constexpr int MIN_USERNAME_LENGTH = 6;
+    inline constexpr int MIN_USERNAME_LENGTH = 4;
     inline constexpr int MINI_STATEMENT_MAX_TRANSACTIONS = 5;
 
     inline constexpr int MIN_TRANSACTION_AMOUNT = 100;

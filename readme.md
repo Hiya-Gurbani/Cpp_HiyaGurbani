@@ -39,7 +39,7 @@ g++ -I./inc main/main.cpp -L. -lbank -Wl,-rpath=. -o BankAppSimulator.out
 ### Compile all tests in single test file
 
 ```bash
-cd Test && g++ -I../src -I../inc ../src/*.cpp src/*.cpp main/main.cpp -lgtest -lpthread -o BankTests.out
+cd Test && g++ -I../src -I../inc -I./inc ../src/*.cpp src/*.cpp main/main.cpp -lgtest -lpthread -o BankTests.out
 
 ### Compile a single test file
 

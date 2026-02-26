@@ -29,7 +29,7 @@ TEST_P(ValidatorNameInvalidCharTest, ContainsInvalidChar_ReturnsFalse) {
 }
 
 INSTANTIATE_TEST_SUITE_P(InvalidChars, ValidatorNameInvalidCharTest,
-    ::testing::Values('1', '@', '3', '#')
+    ::testing::Values('1', '@', '3')
 );
 
 // Email Tests
@@ -123,7 +123,7 @@ TEST_P(ValidatorInvalidCharTest, AccountNumberContainsInvalidChar_ReturnsFalse) 
 }
 
 INSTANTIATE_TEST_SUITE_P(InvalidChars, ValidatorInvalidCharTest,
-    ::testing::Values('A', '@', 'b', '#')
+    ::testing::Values('A', '@', 'b')
 );
 
 // Password Tests

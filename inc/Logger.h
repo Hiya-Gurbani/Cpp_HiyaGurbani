@@ -62,7 +62,7 @@ namespace Logger {
     "10. Logout\n"
     "================================================\n";
     
-    inline const std::string MSG_REGISTER_CUSTOMER = "===== REGISTER NEW CUSTOMER =====\n";
+    inline const std::string MSG_REGISTER_CUSTOMER = "\n===== REGISTER NEW CUSTOMER =====\n";
     inline const std::string MSG_CUSTOMER_NAME = "Customer Name: ";
     inline const std::string MSG_CUSTOMER_EMAIL = "Customer Email: ";
     inline const std::string MSG_CUSTOMER_PHONE = "Customer Phone Number: ";
