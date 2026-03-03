@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-class AccountTest : public ::testing::Test {
+class GivenAccountTest : public ::testing::Test {
 protected:
     Account account;
 
@@ -17,7 +17,7 @@ protected:
     }
 };
 
-class AccountInvalidAmountTest : public AccountTest,
+class GivenAccountInvalidAmountTest : public GivenAccountTest,
     public ::testing::WithParamInterface<double> {};
 
 #endif

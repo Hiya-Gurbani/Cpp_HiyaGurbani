@@ -1,6 +1,6 @@
 #include "BankingSystemTest.h"
 
-TEST_F(BankingSystemTest, Execute_CallsHandleMenuOnce) {
+TEST_F(GivenBankingSystemTest, WhenExecute_ThenCallsHandleMenuOnce) {
     EXPECT_CALL(mockBank, handleMenu())
         .Times(1);
 

@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-class BankingSystemTest : public ::testing::Test {
+class GivenBankingSystemTest : public ::testing::Test {
 protected:
     MockBank mockBank;
     BankingSystem system{&mockBank};

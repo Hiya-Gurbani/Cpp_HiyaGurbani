@@ -4,7 +4,7 @@
 #include "Admin.h"
 #include <gtest/gtest.h>
 
-class AdminTest : public ::testing::Test {
+class GivenAdminTest : public ::testing::Test {
 protected:
     Admin admin;
 };

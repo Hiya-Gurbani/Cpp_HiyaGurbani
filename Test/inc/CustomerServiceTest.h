@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-class CustomerServiceTest : public ::testing::Test {
+class GivenCustomerServiceTest : public ::testing::Test {
 protected:
     CustomerService service;
     Customer* customer;

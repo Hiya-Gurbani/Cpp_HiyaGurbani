@@ -3,37 +3,37 @@
 
 // Whitespace Tests
 
-TEST(RemovesWhitespaceTest, NoWhitespace_StringUnchanged) {
+TEST(GivenRemovesWhitespaceTest, WhenNoWhitespace_ThenStringUnchanged) {
     std::string input = "Hello";
     InputHandler::removeLeadingAndTrailingWhitespaces(input);
     EXPECT_EQ(input, "Hello");
 }
 
-TEST(RemovesWhitespaceTest, LeadingWhitespace_Removed) {
+TEST(GivenRemovesWhitespaceTest, WhenLeadingWhitespace_ThenSpacesRemoved) {
     std::string input = "  Hello";
     InputHandler::removeLeadingAndTrailingWhitespaces(input);
     EXPECT_EQ(input, "Hello");
 }
 
-TEST(RemovesWhitespaceTest, TrailingWhitespace_Removed) {
+TEST(GivenRemovesWhitespaceTest, WhenTrailingWhitespace_ThenSpacesRemoved) {
     std::string input = "Hello  ";
     InputHandler::removeLeadingAndTrailingWhitespaces(input);
     EXPECT_EQ(input, "Hello");
 }
 
-TEST(RemovesWhitespaceTest, BothSidesWhitespace_Removed) {
+TEST(GivenRemovesWhitespaceTest, WhenBothSidesWhitespace_ThenSpacesRemoved) {
     std::string input = "  Hello   ";
     InputHandler::removeLeadingAndTrailingWhitespaces(input);
     EXPECT_EQ(input, "Hello");
 }
 
-TEST(RemovesWhitespaceTest, InnerSpaces_Unchanged) {
+TEST(GivenRemovesWhitespaceTest, WhenInnerSpaces_ThenSpacesUnchanged) {
     std::string input = "  Hello World  ";
     InputHandler::removeLeadingAndTrailingWhitespaces(input);
     EXPECT_EQ(input, "Hello World");
 }
 
-TEST(RemovesWhitespaceTest, OnlyWhitespace_StringEmpty) {
+TEST(GivenRemovesWhitespaceTest, WhenOnlyWhitespace_ThenStringEmpty) {
     std::string input = "   ";
     InputHandler::removeLeadingAndTrailingWhitespaces(input);
     EXPECT_EQ(input, "");

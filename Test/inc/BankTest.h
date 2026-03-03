@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-class BankLoginTest : public ::testing::Test {
+class GivenBankTest : public ::testing::Test {
 protected:
     MockLoginHandler mockAdminLogin;
     MockLoginHandler mockCustomerLogin;

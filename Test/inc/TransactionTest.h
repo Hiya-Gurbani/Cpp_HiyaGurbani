@@ -4,7 +4,7 @@
 #include "Transaction.h"
 #include <gtest/gtest.h>
 
-class TransactionTest : public ::testing::Test {
+class GivenTransactionTest : public ::testing::Test {
 protected:
     Transaction deposit{Constants::TransactionType::DEPOSIT, 500.0, 1500.0};
     Transaction withdrawal{Constants::TransactionType::WITHDRAWAL, 200.0, 800.0};

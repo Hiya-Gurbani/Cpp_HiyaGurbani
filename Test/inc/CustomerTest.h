@@ -4,7 +4,7 @@
 #include "Customer.h"
 #include <gtest/gtest.h>
 
-class CustomerTest : public ::testing::Test {
+class GivenCustomerTest : public ::testing::Test {
 protected:
     Customer customer{"Daksh Sharma", "daksh@gmail.com", "6789543210"};
 

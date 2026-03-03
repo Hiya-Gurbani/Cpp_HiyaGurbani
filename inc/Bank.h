@@ -23,14 +23,13 @@ class Bank : public IBank {
     ILoginHandler* customerLoginHandler;
     bool ownsHandlers;
 
-    bool handleChoice(int choice);
-
 public:
     Bank();
     Bank(ILoginHandler* adminHandler, ILoginHandler* customerHandler);
 
     ~Bank();
 
+    bool handleChoice(int choice);
     void handleMenu() override;
     bool login(Constants::UserRole role) override;
 };
