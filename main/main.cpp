@@ -1,11 +1,11 @@
-#include "MusicPlayerFactory.h"
-#include "MusicPlayer.h"
+#include "MusicApplicationFactory.h"
+#include "MusicApplication.h"
 
 int main() {
-    MusicPlayerFactory factory;
-    MusicPlayer* player = factory.create();
+    MusicApplicationFactory factory;
+    MusicApplication* musicApp = factory.create();
 
-    player->handleMainMenu();
+    musicApp->handleMainMenu();
 
     return 0;
 }

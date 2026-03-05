@@ -1,0 +1,4 @@
+PLAYLIST:My music
+Khat|Songs/Khat.mp3
+Gangsta Drip|Songs/Gangsta Drip.mp3
+Aahatein|Songs/Aahatein.mp3
