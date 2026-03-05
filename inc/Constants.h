@@ -20,7 +20,9 @@ namespace Constants {
     inline constexpr char NEW_LINE = '\n';
     inline const std::string PLAYLIST_FILE_PATH = "playlists.txt";
     inline const std::string SONGS_FOLDER_PATH = "Songs";
-
+    inline const std::string MARKER = ">> ";
+    inline const std::string MULTIPLE_SPACES = "   ";
+    inline const std::string MP3_EXTENSION = ".mp3";
 
     // Music Player
     inline const std::string MSG_WELCOME = 
@@ -56,9 +58,9 @@ namespace Constants {
     inline const std::string SEPARATOR = "|";
 
     //Library
-    const std::string MSG_LIBRARY_HEADER  = "\n============================================\n"
+    const std::string MSG_LIBRARY_HEADER  = "\n========================================\n"
                                             "           MUSIC LIBRARY\n"
-                                            "============================================\n";
+                                            "========================================\n";
     const std::string MSG_LIBRARY_EMPTY   = "No songs found in library.";
     const std::string MSG_LIBRARY_PROMPT  = "Enter number to play (0 to go back): ";
 
@@ -107,9 +109,20 @@ namespace Constants {
     inline const std::string MSG_INVALID_INDEX = "Invalid number. Please try again.\n";
     inline const std::string MSG_PAUSED_SONG = "Song is paused!\n";
     inline const std::string MSG_PLAYING_SONG = "Playing the Song!\n";
+    inline const std::string MSG_ADDED = " [Added]";
 
-    //Player
+    //Application
     inline const std::string MSG_PLAY_PROMPT = "\nPress p to play or b to go back: ";
+    inline const std::string MSG_FOUND = "Found: ";
+
+    // Audio errors
+    inline const std::string MSG_AUDIO_ENGINE_FAILED = "Failed to initialize audio engine.\n";
+    inline const std::string MSG_AUDIO_LOAD_FAILED = "Failed to load song: ";
+    inline const std::string MSG_AUDIO_START_FAILED = "Failed to start song: ";
+
+    // Persistence errors
+    inline const std::string MSG_FILE_SAVE_FAILED = "Could not open file for saving: ";
+    inline const std::string MSG_FILE_LOAD_FAILED = "Could not open file for loading: ";
 }
 
 #endif

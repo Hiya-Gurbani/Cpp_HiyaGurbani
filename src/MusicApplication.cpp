@@ -15,7 +15,8 @@ void MusicApplication::handleViewLibrary() {
         int index = 1;
         for (const Song& song : songs) 
         {
-            logger->printMessage(std::to_string(index++) + ".  " + song.name);
+            logger->printMessage(std::to_string(index++) + Constants::FULL_STOP
+            + Constants::WHITESPACE + song.name);
             logger->printNewLine();
         }
     }
@@ -47,7 +48,7 @@ void MusicApplication::handleSearch() {
     }
     else
     {
-        logger->printMessage("Found: " + result->name);
+        logger->printMessage(Constants::MSG_FOUND + result->name);
         handlePlayPrompt(*result);
     }
 }

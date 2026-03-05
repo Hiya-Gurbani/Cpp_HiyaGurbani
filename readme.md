@@ -52,7 +52,7 @@ ar rcs libmusicplayer.a bin/*.o
 **Step 4 — Build executable:**
 
 ```bash
-g++ -I./inc main.cpp -L. -lmusicplayer -o MusicPlayer.out
+g++ -I./inc main/main.cpp -L. -lmusicplayer -o MusicPlayer.out
 ```
 
 **Step 5 — Run:**

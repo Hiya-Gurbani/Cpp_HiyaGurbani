@@ -7,5 +7,6 @@ int main() {
 
     musicApp->handleMainMenu();
 
+    delete musicApp;
     return 0;
 }

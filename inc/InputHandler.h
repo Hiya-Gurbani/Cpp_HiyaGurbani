@@ -14,10 +14,6 @@ public:
     int inputValue() override; 
     char inputCharacter() override;     
     void inputString(std::string& input) override;  
-    
-    ~InputHandler() {
-        delete logger;
-    }
 };
 
 #endif

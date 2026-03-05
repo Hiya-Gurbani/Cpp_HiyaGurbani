@@ -49,8 +49,9 @@ void PlaylistController::displayLibrarySongs() {
         for (const Song& song : songs) 
         {
             bool alreadyAdded = (activePlaylist->searchSong(song.name) != nullptr);
-            std::string marker = alreadyAdded ? " [Added]" : "";
-            logger->printMessage(std::to_string(index) + ". " + song.name + marker);
+            std::string marker = alreadyAdded ? Constants::MSG_ADDED : Constants::EMPTY_STRING;
+            logger->printMessage(std::to_string(index) + Constants::FULL_STOP
+            + Constants::WHITESPACE + song.name + marker);
             logger->printNewLine();
             index++;
         }
@@ -207,8 +208,9 @@ void PlaylistController::displayPlaylistSongs() {
         {
             std::string marker = (currentSong != nullptr &&
                                  songIterator->filePath == currentSong->filePath)
-                                 ? ">> " : "   ";
-            logger->printMessage(marker + std::to_string(index) + ". " + songIterator->name);
+                                 ? Constants::MARKER : Constants::MULTIPLE_SPACES;
+            logger->printMessage(marker + std::to_string(index) + Constants::FULL_STOP
+            + Constants::WHITESPACE + songIterator->name);
             logger->printNewLine();
             index++;
             songIterator++;
@@ -245,7 +247,8 @@ void PlaylistController::displayAllPlaylists() {
 
         while (playlistIterator != playlistNames.end()) 
         {
-            logger->printMessage(std::to_string(index) + ". " + *playlistIterator);
+            logger->printMessage(std::to_string(index) + Constants::FULL_STOP
+            + Constants::WHITESPACE + *playlistIterator);
             logger->printNewLine();
             index++;
             playlistIterator++;

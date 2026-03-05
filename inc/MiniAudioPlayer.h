@@ -2,17 +2,19 @@
 #define MINI_AUDIO_PLAYER_H
 
 #include "IAudioPlayer.h"
+#include "ILogger.h"
 #include <functional>
 #include <string>
 
 class MiniAudioPlayer : public IAudioPlayer {
-    struct Impl;
-    Impl* impl;
+    ILogger* logger;
+    struct AudioResources;
+    AudioResources* audioResources;
     bool isCurrentlyPlaying;
     std::function<void()> onSongEndCallback;
 
 public:
-    MiniAudioPlayer();
+    MiniAudioPlayer(ILogger* logger);
     ~MiniAudioPlayer() override;
 
     MiniAudioPlayer(const MiniAudioPlayer&) = delete;

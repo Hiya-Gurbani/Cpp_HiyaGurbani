@@ -1,4 +1,5 @@
 #include "MusicLibrary.h"
+#include "Constants.h"
 #include <filesystem>
 
 bool MusicLibrary::loadSongsFromFolder(const std::string& folderPath) {
@@ -11,7 +12,7 @@ bool MusicLibrary::loadSongsFromFolder(const std::string& folderPath) {
     {
         for (const std::filesystem::directory_entry& entry : std::filesystem::recursive_directory_iterator(folderPath)) 
         {
-            if (entry.is_regular_file() && entry.path().extension() == ".mp3") 
+            if (entry.is_regular_file() && entry.path().extension() == Constants::MP3_EXTENSION) 
             {
                 std::string name = entry.path().stem().string();
                 std::string path = entry.path().string();

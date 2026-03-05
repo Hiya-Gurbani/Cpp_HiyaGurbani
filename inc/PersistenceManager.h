@@ -3,10 +3,12 @@
 
 #include "IPersistenceManager.h"
 #include "Constants.h"
+#include "ILogger.h"
 #include <string>
 #include <fstream>
 
 class PersistenceManager : public IPersistenceManager {
+    ILogger* logger;
     std::string filePath;
 
     void savePlaylist(std::ofstream& file, const std::string& playlistName, IPlaylist* playlist);
@@ -22,7 +24,7 @@ class PersistenceManager : public IPersistenceManager {
                      IPlaylistFactory* playlistFactory);
 
 public:
-    PersistenceManager(const std::string& filePath = Constants::PLAYLIST_FILE_PATH);
+    PersistenceManager(ILogger* logger, const std::string& filePath = Constants::PLAYLIST_FILE_PATH);
 
     void savePlaylists(std::map<std::string, IPlaylist*>& playlists) override;
     void loadPlaylists(std::map<std::string, IPlaylist*>& playlists, IPlaylistFactory* playlistFactory) override;

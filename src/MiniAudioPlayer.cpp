@@ -1,75 +1,65 @@
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 #include "MiniAudioPlayer.h"
-#include <iostream>
-#include <stdexcept>
+#include "Constants.h"
 
-struct MiniAudioPlayer::Impl {
+struct MiniAudioPlayer::AudioResources {
     ma_engine engine;
     ma_sound sound;
     bool engineReady;
     bool soundReady;
 
-    Impl() : engineReady(false), soundReady(false) {}
+    AudioResources() : engineReady(false), soundReady(false) {}
 };
 
-MiniAudioPlayer::MiniAudioPlayer()
-    : impl(new Impl())
+MiniAudioPlayer::MiniAudioPlayer(ILogger* logger)
+    : audioResources(new AudioResources())
     , isCurrentlyPlaying(false)
+    , logger(logger)
 {
-    if (ma_engine_init(nullptr, &impl->engine) != MA_SUCCESS) {
-        delete impl;
-        throw std::runtime_error("Failed to initialize audio engine.");
-    }
-    impl->engineReady = true;
-}
-
-MiniAudioPlayer::~MiniAudioPlayer() {
-    if (impl != nullptr) 
+    if (ma_engine_init(nullptr, &audioResources->engine) != MA_SUCCESS)
     {
-        if (impl->soundReady) 
-        {
-            ma_sound_uninit(&impl->sound);
-        }
-        if (impl->engineReady) 
-        {
-            ma_engine_uninit(&impl->engine);
-        }
-        delete impl;
+        logger->printMessage(Constants::MSG_AUDIO_ENGINE_FAILED);
+        audioResources->engineReady = false;
+    }
+    else
+    {
+        audioResources->engineReady = true;
     }
 }
 
 void MiniAudioPlayer::play(const std::string& filePath) {
-    if (impl->soundReady) 
+    if (audioResources->soundReady)
     {
-        ma_sound_stop(&impl->sound);
-        ma_sound_uninit(&impl->sound);
-        impl->soundReady = false;
+        ma_sound_stop(&audioResources->sound);
+        ma_sound_uninit(&audioResources->sound);
+        audioResources->soundReady = false;
     }
 
-    ma_result result = ma_sound_init_from_file(
-        &impl->engine,
+    ma_result loadResult = ma_sound_init_from_file(
+        &audioResources->engine,
         filePath.c_str(),
         MA_SOUND_FLAG_ASYNC,
         nullptr,
         nullptr,
-        &impl->sound
+        &audioResources->sound
     );
 
-    if (result != MA_SUCCESS) 
+    if (loadResult != MA_SUCCESS)
     {
-        std::cerr << "Failed to load: " << filePath << "\n";
+        logger->printMessage(Constants::MSG_AUDIO_LOAD_FAILED + filePath);
         isCurrentlyPlaying = false;
-    } 
-    else 
+    }
+    else
     {
-        impl->soundReady = true;
+        audioResources->soundReady = true;
 
-        if (ma_sound_start(&impl->sound) != MA_SUCCESS) 
+        if (ma_sound_start(&audioResources->sound) != MA_SUCCESS)
         {
-            std::cerr << "Failed to start: " << filePath << "\n";
+            logger->printMessage(Constants::MSG_AUDIO_START_FAILED + filePath);
             isCurrentlyPlaying = false;
-        } else 
+        }
+        else
         {
             isCurrentlyPlaying = true;
         }
@@ -77,26 +67,26 @@ void MiniAudioPlayer::play(const std::string& filePath) {
 }
 
 void MiniAudioPlayer::pause() {
-    if (impl->soundReady && isCurrentlyPlaying) 
+    if (audioResources->soundReady && isCurrentlyPlaying)
     {
-        ma_sound_stop(&impl->sound);
+        ma_sound_stop(&audioResources->sound);
         isCurrentlyPlaying = false;
     }
 }
 
 void MiniAudioPlayer::resume() {
-    if (impl->soundReady && !isCurrentlyPlaying) 
+    if (audioResources->soundReady && !isCurrentlyPlaying)
     {
-        ma_sound_start(&impl->sound);
+        ma_sound_start(&audioResources->sound);
         isCurrentlyPlaying = true;
     }
 }
 
 void MiniAudioPlayer::stop() {
-    if (impl->soundReady) 
+    if (audioResources->soundReady)
     {
-        ma_sound_stop(&impl->sound);
-        ma_sound_seek_to_pcm_frame(&impl->sound, 0);
+        ma_sound_stop(&audioResources->sound);
+        ma_sound_seek_to_pcm_frame(&audioResources->sound, 0);
         isCurrentlyPlaying = false;
     }
 }
@@ -105,21 +95,36 @@ bool MiniAudioPlayer::isPlaying() {
     return isCurrentlyPlaying;
 }
 
-void MiniAudioPlayer::setOnSongEnd(std::function<void()> callback) {
-    onSongEndCallback = callback;
+void MiniAudioPlayer::setOnSongEnd(std::function<void()> songEndCallback) {
+    onSongEndCallback = songEndCallback;
 }
 
 void MiniAudioPlayer::checkSongEnd() {
-    if (impl->soundReady && isCurrentlyPlaying) 
+    if (audioResources->soundReady && isCurrentlyPlaying)
     {
-        if (!ma_sound_is_playing(&impl->sound)) 
+        if (!ma_sound_is_playing(&audioResources->sound))
         {
             isCurrentlyPlaying = false;
 
-            if (onSongEndCallback) 
+            if (onSongEndCallback)
             {
                 onSongEndCallback();
             }
         }
+    }
+}
+
+MiniAudioPlayer::~MiniAudioPlayer() {
+    if (audioResources != nullptr)
+    {
+        if (audioResources->soundReady)
+        {
+            ma_sound_uninit(&audioResources->sound);
+        }
+        if (audioResources->engineReady)
+        {
+            ma_engine_uninit(&audioResources->engine);
+        }
+        delete audioResources;
     }
 }

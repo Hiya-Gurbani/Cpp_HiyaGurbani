@@ -1,10 +1,9 @@
 #include "PersistenceManager.h"
 #include "Constants.h"
 #include <fstream>
-#include <iostream>
 
-PersistenceManager::PersistenceManager(const std::string& filePath)
-    : filePath(filePath) {}
+PersistenceManager::PersistenceManager(ILogger* logger, const std::string& filePath)
+    : logger(logger), filePath(filePath) {}
 
 void PersistenceManager::savePlaylist(std::ofstream& file, const std::string& playlistName, IPlaylist* playlist) {
     file << Constants::PLAYLIST_PREFIX << playlistName << Constants::NEW_LINE;
@@ -24,7 +23,7 @@ void PersistenceManager::savePlaylists(std::map<std::string, IPlaylist*>& playli
 
     if (!file.is_open()) 
     {
-        std::cerr << "Could not open file for saving: " << filePath << "\n";
+        logger->printMessage(Constants::MSG_FILE_SAVE_FAILED + filePath);
     } 
     else 
     {
@@ -75,7 +74,7 @@ void PersistenceManager::loadPlaylists(std::map<std::string, IPlaylist*>& playli
 
     if (!file.is_open()) 
     {
-        std::cerr << "Could not open file for loading: " << filePath << "\n";
+        logger->printMessage(Constants::MSG_FILE_LOAD_FAILED + filePath);
     } 
     else 
     {
