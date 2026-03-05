@@ -8,12 +8,31 @@ PlaylistController::PlaylistController(IPlayerService* playerService,
     , logger(logger)
     , inputHandler(inputHandler) {}
 
+void PlaylistController::handlePlay(IPlaylist* activePlaylist) {
+    Song* currentSong = activePlaylist->getCurrentSong();
+
+    if (currentSong != nullptr) 
+    {
+        if (playerService->playSong(*currentSong)) 
+        {
+            logger->printMessage(Constants::MSG_PLAYING_SONG);
+            activePlaylist->setState(Constants::PlaybackState::PLAYING);
+        } 
+        else 
+        {
+            activePlaylist->setState(Constants::PlaybackState::STOPPED);
+        }
+    } 
+    else 
+    {
+        logger->printMessage(Constants::MSG_PLAYLIST_EMPTY);
+    }
+}
 
 void PlaylistController::handlePlayPause() {
     IPlaylist* activePlaylist = playerService->getActivePlaylist();
-    Constants::PlaybackState currentState = activePlaylist->getState();
 
-    if (currentState == Constants::PlaybackState::PLAYING) 
+    if (activePlaylist->getState() == Constants::PlaybackState::PLAYING) 
     {
         playerService->pause();
         logger->printMessage(Constants::MSG_PAUSED_SONG);
@@ -21,18 +40,7 @@ void PlaylistController::handlePlayPause() {
     } 
     else 
     {
-        Song* currentSong = activePlaylist->getCurrentSong();
-
-        if (currentSong != nullptr) 
-        {
-            playerService->playSong(*currentSong);
-            logger->printMessage(Constants::MSG_PLAYING_SONG);
-            activePlaylist->setState(Constants::PlaybackState::PLAYING);
-        } 
-        else 
-        {
-            logger->printMessage(Constants::MSG_PLAYLIST_EMPTY);
-        }
+        handlePlay(activePlaylist);
     }
 }
 

@@ -33,6 +33,10 @@ void MusicApplication::handlePlayPrompt(const Song& song) {
         logger->printMessage(Constants::MSG_NOW_PLAYING + song.name);
         logger->printNewLine();
     }
+    else if (userChoice != 'b')
+    {
+        logger->printMessage(Constants::MSG_INVALID_CHOICE);
+    }
 }
 
 void MusicApplication::handleSearch() {
@@ -53,6 +57,19 @@ void MusicApplication::handleSearch() {
     }
 }
 
+void MusicApplication::handlePlayPause() {
+    if (playerService->isPlaying()) 
+    {
+        playerService->pause();
+        logger->printMessage(Constants::MSG_PAUSED_SONG);
+    }
+    else 
+    {
+        playerService->resume();
+        logger->printMessage(Constants::MSG_PLAYING_SONG);
+    }
+}
+
 bool MusicApplication::handleChoice(int choice) {
     bool continueProgram = true;
 
@@ -69,8 +86,12 @@ bool MusicApplication::handleChoice(int choice) {
         case 3:
             handleSearch();
             break;
-
+            
         case 4:
+            handlePlayPause();
+            break;
+
+        case 5:
             playerService->savePlaylists();
             continueProgram = false;
             break;

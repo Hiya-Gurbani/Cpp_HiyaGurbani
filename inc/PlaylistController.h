@@ -11,6 +11,7 @@ class PlaylistController : public IPlaylistController {
     ILogger* logger;
     IInputHandler* inputHandler;
 
+    void handlePlay(IPlaylist* activePlaylist);
     void handlePlayPause();
     void displayLibrarySongs();
     void handleAddSong();

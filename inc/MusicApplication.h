@@ -15,6 +15,7 @@ class MusicApplication {
     void handlePlayPrompt(const Song& song);
     void handleViewLibrary();
     void handleSearch();
+    void handlePlayPause();
     bool handleChoice(int choice);
 
 public:

@@ -12,12 +12,13 @@ public:
     virtual const std::set<Song>& getAllSongs() = 0;
     virtual const Song* searchSong(const std::string& title) = 0;
 
-    virtual void playSong(const Song& song) = 0;
+    virtual bool playSong(const Song& song) = 0;
     virtual void pause() = 0;
     virtual void resume() = 0;
     virtual void next() = 0;
     virtual void previous() = 0;
     virtual void checkAndAdvance() = 0;
+    virtual bool isPlaying() = 0;
 
     virtual bool createPlaylist(const std::string& playlistName) = 0;
     virtual bool deletePlaylist(const std::string& playlistName) = 0;

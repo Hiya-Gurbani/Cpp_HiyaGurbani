@@ -16,12 +16,14 @@ class Playlist : public IPlaylist {
     std::list<Song>::iterator findByTitle(const std::string& title);
 
 public:
+    Playlist() {}
+    
     Playlist(const std::string& name);
 
     std::string getName() override;
     std::list<Song>& getSongs() override;
     Song* getCurrentSong() override;
-    Constants::PlaybackState    getState() override;
+    Constants::PlaybackState getState() override;
 
     void setState(Constants::PlaybackState state) override;
 

@@ -35,7 +35,8 @@ namespace Constants {
         "1. My Playlists\n"
         "2. Display All Songs\n"
         "3. Search\n"
-        "4. Exit\n"
+        "4. Pause/Resume\n"
+        "5. Exit\n"
     "========================================\n";
 
     inline const std::string MSG_INPUT_CHOICE = "\nEnter your choice: ";

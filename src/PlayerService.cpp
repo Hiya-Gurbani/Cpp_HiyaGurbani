@@ -24,9 +24,10 @@ const Song* PlayerService::searchSong(const std::string& songName) {
 }
 
 
-void PlayerService::playSong(const Song& song) {
+bool PlayerService::playSong(const Song& song) {
     audioPlayer->stop();
     audioPlayer->play(song.filePath);
+    return audioPlayer->isPlaying();
 }
 
 void PlayerService::pause() {
@@ -71,6 +72,9 @@ void PlayerService::checkAndAdvance() {
     audioPlayer->checkSongEnd();
 }
 
+bool PlayerService::isPlaying() {
+    return audioPlayer->isPlaying();
+}
 
 bool PlayerService::createPlaylist(const std::string& playlistName) {
     bool playlistExists = (playlists.find(playlistName) != playlists.end());

@@ -28,12 +28,13 @@ public:
     const std::set<Song>& getAllSongs() override;
     const Song* searchSong(const std::string& songName) override;
 
-    void playSong(const Song& song) override;
+    bool playSong(const Song& song) override;
     void pause() override;
     void resume() override;
     void next() override;
     void previous() override;
     void checkAndAdvance() override;
+    bool isPlaying() override;
 
     bool createPlaylist(const std::string& playlistName) override;
     bool deletePlaylist(const std::string& playlistName) override;

@@ -111,7 +111,7 @@ Enter your choice: 2
 Enter your choice: 3
 Enter song name: Aahatein
 Found: Aahatein
-p. Play    b. Back
+Press p to play or b to go back:        
 Enter choice: p
 Now playing: Aahatein
 ```
@@ -123,13 +123,13 @@ Now playing: Aahatein
 ### Compile all tests in a single test file
 
 ```bash
-cd Test && g++ -I../src -I./inc ../src/*.cpp src/*.cpp main/main.cpp -lgtest -lgmock -lpthread -o MusicPlayerTests.out
+cd Test && g++ -I../inc -I./inc ../src/*.cpp src/*.cpp main/main.cpp -lgtest -lgmock -lpthread -o MusicPlayerTests.out
 ```
 
 ### Compile a single test file
 
 ```bash
-cd Test && g++ -std=c++17 -I../src -I./inc ../src/*.cpp src/PlaylistTest.cpp main/main.cpp -lgtest -lgmock -lpthread -o MusicPlayerTests.out
+cd Test && g++ -I../inc -I./inc ../src/*.cpp src/PlaylistTest.cpp main/main.cpp -lgtest -lgmock -lpthread -o MusicPlayerTests.out
 ```
 
 Replace `PlaylistTest.cpp` with any other test file to compile that file instead.
