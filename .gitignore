@@ -18,3 +18,6 @@ bin/
 
 # Ignore Unnecessary Folders
 Songs/
+
+# Ignore the third party headers
+inc/miniaudio.h
