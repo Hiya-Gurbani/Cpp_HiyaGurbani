@@ -155,7 +155,7 @@ void PlaylistController::handleMoveSongDownward() {
         if (!activePlaylist->moveSongDownward(songName)) 
         {
             logger->printMessage(Constants::MSG_CANNOT_MOVE);
-            logger->printMessage(Constants::MSG_SONG_ALREADY_TOP);
+            logger->printMessage(Constants::MSG_SONG_ALREADY_BOTTOM);
         }
     }
 }
@@ -306,18 +306,21 @@ void PlaylistController::handleCreatePlaylist() {
 void PlaylistController::handleDeletePlaylist() {
     displayAllPlaylists();
 
-    logger->printMessage(Constants::MSG_ENTER_PLAYLIST_NAME);
-
-    std::string playlistName;
-    inputHandler->inputString(playlistName);
-
-    if (playerService->deletePlaylist(playlistName)) 
+    if (!playerService->getPlaylistNames().empty())
     {
-        logger->printMessage(Constants::MSG_PLAYLIST_DELETED);
-    } 
-    else 
-    {
-        logger->printMessage(Constants::MSG_PLAYLIST_NOT_FOUND);
+        logger->printMessage(Constants::MSG_ENTER_PLAYLIST_NAME);
+
+        std::string playlistName;
+        inputHandler->inputString(playlistName);
+
+        if (playerService->deletePlaylist(playlistName)) 
+        {
+            logger->printMessage(Constants::MSG_PLAYLIST_DELETED);
+        } 
+        else 
+        {
+            logger->printMessage(Constants::MSG_PLAYLIST_NOT_FOUND);
+        }
     }
 }
 

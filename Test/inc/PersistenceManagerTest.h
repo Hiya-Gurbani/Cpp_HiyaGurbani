@@ -19,6 +19,9 @@ protected:
     void SetUp() override {
         testFilePath = "testPlaylists.txt";
         persistenceManager = new PersistenceManager(&mockLogger, testFilePath);
+
+        ON_CALL(mockLogger, printMessage(testing::_))
+        .WillByDefault(testing::Return());
     }
 
     void TearDown() override {

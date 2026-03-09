@@ -1,5 +1,5 @@
-#ifndef MOCK_PLAYLIST_H
-#define MOCK_PLAYLIST_H
+#ifndef I_MOCK_PLAYLIST_H
+#define I_MOCK_PLAYLIST_H
 
 #include <gmock/gmock.h>
 #include "IPlaylist.h"

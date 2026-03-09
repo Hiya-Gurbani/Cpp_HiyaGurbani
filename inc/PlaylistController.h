@@ -20,7 +20,6 @@ class PlaylistController : public IPlaylistController {
     void handleMoveSongDownward();
     bool handlePlaylistChoice(int choice);
     void displayPlaylistSongs();
-    void handlePlaylistDetail();
     
     void handleOpenPlaylist();
     void handleCreatePlaylist();
@@ -33,6 +32,8 @@ public:
                        ILogger* logger,
                        IInputHandler* inputHandler);
 
+
+    void handlePlaylistDetail();
     void handlePlaylistMenu() override;
 };
 

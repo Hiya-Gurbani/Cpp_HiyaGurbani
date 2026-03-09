@@ -15,6 +15,10 @@ struct Song {
     bool operator<(const Song& other) const {
         return name < other.name;
     }
+
+    bool operator==(const Song& other) const {
+        return name == other.name;  
+    }
 };
 
 #endif

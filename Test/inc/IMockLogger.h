@@ -1,5 +1,5 @@
-#ifndef MOCK_LOGGER_H
-#define MOCK_LOGGER_H
+#ifndef I_MOCK_LOGGER_H
+#define I_MOCK_LOGGER_H
 
 #include <gmock/gmock.h>
 #include "ILogger.h"
