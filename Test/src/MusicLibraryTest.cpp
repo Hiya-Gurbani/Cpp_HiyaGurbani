@@ -1,4 +1,37 @@
 #include "MusicLibraryTest.h"
+#include <filesystem>
+#include <fstream>
+
+void GivenMusicLibraryTest::SetUp() {
+    std::filesystem::create_directory("TestSongs");
+    std::ofstream("TestSongs/Aahatein.mp3").close();
+    std::ofstream("TestSongs/Believer.mp3").close();
+    std::ofstream("TestSongs/Tum Hi Ho.mp3").close();
+    musicLibrary = new MusicLibrary("TestSongs");
+}
+
+void GivenMusicLibraryTest::TearDown() {
+    std::filesystem::remove_all("TestSongs");
+    delete musicLibrary;
+}
+
+void GivenEmptyMusicLibraryTest::SetUp() {
+    std::filesystem::create_directory("TestSongsEmpty");
+    musicLibrary = new MusicLibrary("TestSongsEmpty");
+}
+
+void GivenEmptyMusicLibraryTest::TearDown() {
+    std::filesystem::remove_all("TestSongsEmpty");
+    delete musicLibrary;
+}
+
+void GivenInvalidFolderMusicLibraryTest::SetUp() {
+    musicLibrary = new MusicLibrary("NonExistentFolder");
+}
+
+void GivenInvalidFolderMusicLibraryTest::TearDown() {
+    delete musicLibrary;
+}
 
 TEST_F(GivenMusicLibraryTest, WhenFolderHasThreeMp3Files_ThenLibraryHasThreeSongs) {
     EXPECT_EQ(musicLibrary->getSongs().size(), 3);

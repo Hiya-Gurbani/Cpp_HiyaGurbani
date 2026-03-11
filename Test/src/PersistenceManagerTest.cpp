@@ -1,8 +1,22 @@
 #include "PersistenceManagerTest.h"
+#include <filesystem>
 
 using ::testing::Return;
 using ::testing::ReturnRef;
 using ::testing::NiceMock;
+
+void GivenPersistenceManagerTest::SetUp() {
+    testFilePath = "testPlaylists.txt";
+    persistenceManager = new PersistenceManager(&mockLogger, testFilePath);
+
+    ON_CALL(mockLogger, printMessage(testing::_))
+        .WillByDefault(testing::Return());
+}
+
+void GivenPersistenceManagerTest::TearDown() {
+    std::filesystem::remove(testFilePath);
+    delete persistenceManager;
+}
 
 // Save Playlists
 

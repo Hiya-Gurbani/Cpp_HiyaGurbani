@@ -11,12 +11,7 @@ protected:
     Song songTwo;
     Song songThree;
 
-    void SetUp() override {
-        playlist = Playlist("Test Playlist");
-        songOne = Song("Aahatein", "Songs/Aahatein.mp3");
-        songTwo = Song("Believer", "Songs/Believer.mp3");
-        songThree = Song("Tum Hi Ho", "Songs/TumHiHo.mp3");
-    }
+    void SetUp() override;
 };
 
 #endif

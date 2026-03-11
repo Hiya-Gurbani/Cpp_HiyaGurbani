@@ -4,6 +4,23 @@ using ::testing::Return;
 using ::testing::ReturnRef;
 using ::testing::_;
 
+void GivenPlayerServiceTest::SetUp() {
+    mockMusicLibrary = new testing::NiceMock<IMockMusicLibrary>();
+    mockAudioPlayer = new testing::NiceMock<IMockAudioPlayer>();
+    mockPersistenceManager = new testing::NiceMock<IMockPersistenceManager>();
+    mockPlaylistFactory = new testing::NiceMock<IMockPlaylistFactory>();
+
+    playerService = new PlayerService(
+        mockMusicLibrary,
+        mockAudioPlayer,
+        mockPersistenceManager,
+        mockPlaylistFactory
+    );
+}
+
+void GivenPlayerServiceTest::TearDown() {
+    delete playerService;
+}
 
 TEST_F(GivenPlayerServiceTest, WhenGetAllSongsCalled_ThenDelegatesToMusicLibrary) {
     std::set<Song> songs;

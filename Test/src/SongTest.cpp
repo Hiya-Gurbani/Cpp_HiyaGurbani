@@ -1,5 +1,11 @@
 #include "SongTest.h"
 
+void GivenSongTest::SetUp() {
+    songOne = Song("Aahatein", "Songs/Aahatein.mp3");
+    songTwo = Song("Believer", "Songs/Believer.mp3");
+    songThree = Song("Aahatein", "Songs/Aahatein.mp3");
+}
+
 // Operator<
 
 TEST_F(GivenSongTest, WhenFirstSongNameIsSmaller_ThenFirstSongIsLessThanSecond) {

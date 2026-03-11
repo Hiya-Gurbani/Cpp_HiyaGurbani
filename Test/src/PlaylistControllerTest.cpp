@@ -7,6 +7,18 @@ using ::testing::DoAll;
 using ::testing::SetArgReferee;
 using ::testing::InSequence;
 
+void GivenPlaylistControllerTest::SetUp() {
+    playlistController = new PlaylistController(
+        &mockPlayerService,
+        &mockLogger,
+        &mockInputHandler
+    );
+}
+
+void GivenPlaylistControllerTest::TearDown() {
+    delete playlistController;
+}
+
 // Handle Create Playlist
 
 TEST_F(GivenPlaylistControllerTest, WhenCreatePlaylistCalledWithValidName_ThenServiceCreateCalled) {

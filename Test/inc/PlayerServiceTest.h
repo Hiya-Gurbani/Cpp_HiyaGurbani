@@ -18,23 +18,8 @@ protected:
     testing::NiceMock<IMockPlaylistFactory>* mockPlaylistFactory;
     PlayerService* playerService;
 
-    void SetUp() override {
-        mockMusicLibrary = new testing::NiceMock<IMockMusicLibrary>();
-        mockAudioPlayer = new testing::NiceMock<IMockAudioPlayer>();
-        mockPersistenceManager = new testing::NiceMock<IMockPersistenceManager>();
-        mockPlaylistFactory = new testing::NiceMock<IMockPlaylistFactory>();
-
-        playerService = new PlayerService(
-            mockMusicLibrary,
-            mockAudioPlayer,
-            mockPersistenceManager,
-            mockPlaylistFactory
-        );
-    }
-
-    void TearDown() override {
-        delete playerService;
-    }
+    void SetUp() override;
+    void TearDown() override;
 };
 
 #endif

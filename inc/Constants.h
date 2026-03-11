@@ -18,6 +18,8 @@ namespace Constants {
     inline constexpr char TAB = '\t';
     inline constexpr char FULL_STOP = '.';
     inline constexpr char NEW_LINE = '\n';
+    inline constexpr char CHARACTER_B = 'b';
+    inline constexpr char CHARACTER_P = 'p';
     inline const std::string PLAYLIST_FILE_PATH = "playlists.txt";
     inline const std::string SONGS_FOLDER_PATH = "Songs";
     inline const std::string MARKER = ">> ";

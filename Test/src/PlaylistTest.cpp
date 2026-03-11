@@ -1,5 +1,12 @@
 #include "PlaylistTest.h"
 
+void GivenPlaylistTest::SetUp() {
+    playlist = Playlist("Test Playlist");
+    songOne = Song("Aahatein", "Songs/Aahatein.mp3");
+    songTwo = Song("Believer", "Songs/Believer.mp3");
+    songThree = Song("Tum Hi Ho", "Songs/TumHiHo.mp3");
+}
+
 // Add Song
 
 TEST_F(GivenPlaylistTest, WhenSongAdded_ThenReturnsTrue) {

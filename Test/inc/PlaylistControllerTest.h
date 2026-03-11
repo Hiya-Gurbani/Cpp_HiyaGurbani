@@ -16,17 +16,8 @@ protected:
     testing::NiceMock<IMockInputHandler> mockInputHandler;
     PlaylistController* playlistController;
 
-    void SetUp() override {
-        playlistController = new PlaylistController(
-            &mockPlayerService,
-            &mockLogger,
-            &mockInputHandler
-        );
-    }
-
-    void TearDown() override {
-        delete playlistController;
-    }
+    void SetUp() override;
+    void TearDown() override;
 };
 
 #endif

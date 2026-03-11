@@ -27,13 +27,15 @@ void MusicApplication::handlePlayPrompt(const Song& song) {
 
     char userChoice = inputHandler->inputCharacter();
 
-    if (userChoice == 'p') 
+    if (userChoice == Constants::CHARACTER_P) 
     {
-        playerService->playSong(song);
-        logger->printMessage(Constants::MSG_NOW_PLAYING + song.name);
-        logger->printNewLine();
+        if (playerService->playSong(song)) 
+        {
+            logger->printMessage(Constants::MSG_NOW_PLAYING + song.name);
+            logger->printNewLine();
+        }
     }
-    else if (userChoice != 'b')
+    else if (userChoice != Constants::CHARACTER_B)
     {
         logger->printMessage(Constants::MSG_INVALID_CHOICE);
     }

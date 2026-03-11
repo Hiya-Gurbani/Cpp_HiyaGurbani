@@ -3,8 +3,6 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <fstream>
-#include <filesystem>
 #include "PersistenceManager.h"
 #include "IMockLogger.h"
 #include "IMockPlaylist.h"
@@ -16,18 +14,8 @@ protected:
     PersistenceManager* persistenceManager;
     std::string testFilePath;
 
-    void SetUp() override {
-        testFilePath = "testPlaylists.txt";
-        persistenceManager = new PersistenceManager(&mockLogger, testFilePath);
-
-        ON_CALL(mockLogger, printMessage(testing::_))
-        .WillByDefault(testing::Return());
-    }
-
-    void TearDown() override {
-        std::filesystem::remove(testFilePath);
-        delete persistenceManager;
-    }
+    void SetUp() override;
+    void TearDown() override;
 };
 
 #endif
