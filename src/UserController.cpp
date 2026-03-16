@@ -12,8 +12,7 @@ UserController::UserController(
     , orderedLaneCycle(orderedLaneCycle)
 {}
 
-Constants::Direction UserController::getLane(const std::string& prompt)
-{
+Constants::Direction UserController::getLane(const std::string& prompt) {
     std::string laneInput;
     Constants::Direction currentLane = Constants::Direction::NORTH;
 
@@ -35,56 +34,7 @@ Constants::Direction UserController::getLane(const std::string& prompt)
     return currentLane;
 }
 
-Constants::MoveType UserController::determineMoveType(
-    Constants::Direction fromLane,
-    Constants::Direction toLane)
-{
-    using D = Constants::Direction;
-    using M = Constants::MoveType;
-
-    M currentMove = M::STRAIGHT;
-
-    if (fromLane == toLane)
-    {
-        currentMove = M::UTURN;
-    }
-    else
-    {
-        switch (fromLane)
-        {
-            case D::NORTH:
-                if (toLane == D::SOUTH) { currentMove = M::STRAIGHT; }
-                if (toLane == D::EAST)  { currentMove = M::LEFT; }
-                if (toLane == D::WEST)  { currentMove = M::RIGHT; }
-                break;
-
-            case D::SOUTH:
-                if (toLane == D::NORTH) { currentMove = M::STRAIGHT; }
-                if (toLane == D::WEST)  { currentMove = M::LEFT; }
-                if (toLane == D::EAST)  { currentMove = M::RIGHT; }
-                break;
-
-            case D::EAST:
-                if (toLane == D::WEST)  { currentMove = M::STRAIGHT; }
-                if (toLane == D::NORTH) { currentMove = M::LEFT; }
-                if (toLane == D::SOUTH) { currentMove = M::RIGHT; }
-                break;
-
-            case D::WEST:
-                if (toLane == D::EAST)  { currentMove = M::STRAIGHT; }
-                if (toLane == D::SOUTH) { currentMove = M::LEFT; }
-                if (toLane == D::NORTH) { currentMove = M::RIGHT; }
-                break;
-        }
-    }
-
-    return currentMove;
-}
-
-int UserController::calculateWaitTimeInSeconds(
-    Constants::Direction fromLane,
-    const TrafficState& snapshot)
-{
+int UserController::calculateWaitTimeInSeconds(Constants::Direction fromLane, const TrafficState& snapshot) {
     int waitSeconds = 0;
 
     int activeIndex = 0;
@@ -109,12 +59,43 @@ int UserController::calculateWaitTimeInSeconds(
 
         while (orderedLaneCycle[current].direction != fromLane)
         {
-            waitSeconds += orderedLaneCycle[current].greenDurationSeconds;
+            waitSeconds += orderedLaneCycle[current].greenLightDuration;
             current = (current + 1) % totalLanes;
         }
     }
 
     return waitSeconds;
+}
+
+void UserController::processQuery(Constants::Direction fromLane, Constants::Direction toLane) {
+    TrafficState snapshot;
+    {
+        std::lock_guard<std::mutex> lock(trafficState->stateMutex);
+        snapshot.activeLane    = trafficState->activeLane;
+        snapshot.timeRemaining = trafficState->timeRemaining;
+    }
+
+    MoveResult result;
+    result.fromLane = fromLane;
+    result.toLane = toLane;
+    result.currentGreenLane = snapshot.activeLane;
+    result.timeRemaining = snapshot.timeRemaining;
+    result.moveType = Utils::determineMoveType(fromLane, toLane);
+
+    if (result.moveType == Constants::MoveType::UTURN || result.moveType == Constants::MoveType::LEFT)
+    {
+        result.permission = Constants::MovePermission::FREE;
+        result.canGoNow = true;
+        result.waitSeconds = 0;
+    }
+    else
+    {
+        result.permission = Constants::MovePermission::NEEDS_GREEN;
+        result.waitSeconds = calculateWaitTimeInSeconds(fromLane, snapshot);
+        result.canGoNow = (result.waitSeconds == 0);
+    }
+
+    displayMoveResult(result);
 }
 
 void UserController::displayMoveResult(const MoveResult& result)
@@ -144,48 +125,44 @@ void UserController::displayMoveResult(const MoveResult& result)
     logger->printMessage(Constants::MSG_DIVIDER);
 }
 
-void UserController::startHandlingUserQueries()
+bool UserController::askUserToContinue() {
+    bool shouldContinue = false;
+
+    while (true)
+    {
+        logger->printMessage(Constants::MSG_ASK_ANOTHER_QUERY);
+        std::string continueInput;
+        inputHandler->inputString(continueInput);
+
+        if (continueInput == "y" || continueInput == "Y")
+        {
+            shouldContinue = true;
+            break;
+        }
+        else if (continueInput == "n" || continueInput == "N")
+        {
+            shouldContinue = false;
+            break;
+        }
+        else
+        {
+            logger->printMessage(Constants::MSG_INVALID_CONTINUE_INPUT);
+        }
+    }
+
+    return shouldContinue;
+}
+
+void UserController::handleUserQueries()
 {
     while (true)
     {
         Constants::Direction fromLane = getLane(Constants::MSG_ENTER_LANE);
         Constants::Direction toLane   = getLane(Constants::MSG_ENTER_DESTINATION);
 
-        TrafficState snapshot;
-        {
-            std::lock_guard<std::mutex> lock(trafficState->stateMutex);
-            snapshot.activeLane    = trafficState->activeLane;
-            snapshot.timeRemaining = trafficState->timeRemaining;
-        }
+        processQuery(fromLane, toLane);
 
-        MoveResult result;
-        result.fromLane         = fromLane;
-        result.toLane           = toLane;
-        result.currentGreenLane = snapshot.activeLane;
-        result.timeRemaining    = snapshot.timeRemaining;
-        result.moveType         = determineMoveType(fromLane, toLane);
-
-        if (result.moveType == Constants::MoveType::UTURN ||
-            result.moveType == Constants::MoveType::LEFT)
-        {
-            result.permission  = Constants::MovePermission::FREE;
-            result.canGoNow    = true;
-            result.waitSeconds = 0;
-        }
-        else
-        {
-            result.permission  = Constants::MovePermission::NEEDS_GREEN;
-            result.waitSeconds = calculateWaitTimeInSeconds(fromLane, snapshot);
-            result.canGoNow    = (result.waitSeconds == 0);
-        }
-
-        displayMoveResult(result);
-
-        logger->printMessage(Constants::MSG_ASK_ANOTHER_QUERY);
-        std::string continueInput;
-        inputHandler->inputString(continueInput);
-
-        if (continueInput == "n" || continueInput == "N")
+        if (!askUserToContinue())
         {
             break;
         }

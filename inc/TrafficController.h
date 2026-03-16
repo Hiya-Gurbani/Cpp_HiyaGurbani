@@ -25,6 +25,10 @@ public:
     TrafficController(TrafficState* trafficState);
     ~TrafficController();
 
+    const std::vector<Lane>& getOrderedLaneCycle() {
+        return orderedLaneCycle;
+    }
+
     void startTrafficCycle() override;
     void stopTrafficCycle() override;
 };

@@ -4,14 +4,13 @@
 #include "Constants.h"
 #include <string>
 
-class Lane {
-public:
+struct Lane {
     Constants::Direction direction;
     std::string name;
     int greenLightDuration;
 
-    Lane (Constants::Direction direction, const std::string& name, int greenLightDuration)
-    : direction(direction), name(name), greenLightDuration(greenLightDuration) {}
+    Lane(Constants::Direction direction, const std::string& name, int greenLightDuration)
+        : direction(direction), name(name), greenLightDuration(greenLightDuration) {}
 
     bool operator==(const Lane& other) {
         return direction == other.direction;

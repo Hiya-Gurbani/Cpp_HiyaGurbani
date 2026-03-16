@@ -7,5 +7,5 @@ void Logger::printMessage(const std::string& message) {
 }
 
 void Logger::printNewLine() {
-    std::cout << "\n";
+    std::cout << Constants::NEW_LINE;
 }

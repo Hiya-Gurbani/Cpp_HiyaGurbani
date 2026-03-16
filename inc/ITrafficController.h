@@ -2,8 +2,6 @@
 #define ITRAFFIC_CONTROLLER_H
 
 #include "Constants.h"
-#include "Lane.h"
-#include <vector>
 
 class ITrafficController {
 public:

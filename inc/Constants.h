@@ -6,8 +6,8 @@
 namespace Constants {
     enum class Direction {
         NORTH,
-        SOUTH,
         EAST,
+        SOUTH,
         WEST
     };
 
@@ -18,13 +18,15 @@ namespace Constants {
         STRAIGHT
     };
 
-    // In future, any lane could be Blocked
     enum class MovePermission {
         FREE,           
         NEEDS_GREEN     
     };
     
+    
     const int GREEN_DURATION_SECONDS = 10;
+
+    inline constexpr char NEW_LINE = '\n';
 
     inline const std::string MSG_WELCOME =
         "\n========================================\n"
@@ -43,7 +45,7 @@ namespace Constants {
         "          |     |\n"
         "          |  v  |\n"
         "          |  S  |\n";
-
+    
     inline const std::string MSG_ENTER_LANE = "\nWhich lane are you in? (N/S/E/W): ";
 
     inline const std::string MSG_ENTER_DESTINATION = "Where do you want to go?  (N/S/E/W): ";
@@ -55,8 +57,14 @@ namespace Constants {
     inline const std::string MSG_DIVIDER = "\n----------------------------------------\n";
 
     inline const std::string WHITESPACE_CHARS = " \t\r\n";
+
     inline const std::string EMPTY_STRING = "";
+
     inline const std::string MSG_EMPTY_INPUT = "Input cannot be empty. Please try again.\n";
+
+    inline const std::string MSG_INVALID_INPUT = "Invalid input. Please enter N, S, E or W.\n";
+
+    inline const std::string MSG_INVALID_CONTINUE_INPUT = "Invalid input. Please enter y or n.\n";
 
     inline const std::string MSG_CAN_GO = "Status : GO — You can proceed now.\n";
 

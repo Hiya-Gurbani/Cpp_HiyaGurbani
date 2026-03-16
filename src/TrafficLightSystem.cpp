@@ -2,32 +2,27 @@
 #include "Constants.h"
 
 TrafficLightSystem::TrafficLightSystem(ITrafficController* trafficController,
-    IUserController* userController, IInputHandler* inputHandler, ILogger* logger
-)
-    : trafficController(trafficController), userController(userController),
-    inputHandler(inputHandler), logger(logger) {}
+    IUserController* userController, ILogger* logger)
+    : trafficController(trafficController), userController(userController), 
+    logger(logger) {}
 
-void TrafficLightSystem::start() {
+void TrafficLightSystem::initiateTrafficSystem() {
     logger->printMessage(Constants::MSG_WELCOME);
     logger->printMessage(Constants::MSG_ROAD);
 
     controllerThread = std::thread(&ITrafficController::startTrafficCycle, trafficController);
 
-    inputThread = std::thread(&IUserController::startHandlingUserQueries, userController);
+    inputThread = std::thread(&IUserController::handleUserQueries, userController);
 
     inputThread.join();
 
-    stop();
+    shutdownTrafficSystem();
 }
 
-void TrafficLightSystem::stop() {
+void TrafficLightSystem::shutdownTrafficSystem() {
     trafficController->stopTrafficCycle();
     if (controllerThread.joinable()) 
     {
         controllerThread.join();
     }
-}
-
-TrafficLightSystem::~TrafficLightSystem() {
-    stop();
 }

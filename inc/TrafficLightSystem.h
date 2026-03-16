@@ -3,28 +3,24 @@
 
 #include "ITrafficController.h"
 #include "IUserController.h"
-#include "InputHandler.h"
 #include "ILogger.h"
 #include <thread>
 
 class TrafficLightSystem {
-    IInputHandler* inputHandler;
-    ILogger* logger;
     ITrafficController* trafficController;
     IUserController* userController;
+    ILogger* logger;
 
     std::thread controllerThread;
     std::thread inputThread;
     
-    void stop();
+    void shutdownTrafficSystem();
 
 public:
-    TrafficLightSystem( ITrafficController* controller, 
-        IInputHandler* inputHandler, ILogger* logger);
+    TrafficLightSystem(ITrafficController* trafficController,
+    IUserController* userController, ILogger* logger);
 
-    void start();
-
-    ~TrafficLightSystem();
+    void initiateTrafficSystem();
 };
 
 #endif

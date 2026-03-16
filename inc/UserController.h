@@ -17,19 +17,14 @@ class UserController : public IUserController {
     const std::vector<Lane>& orderedLaneCycle;
 
     Constants::Direction getLane(const std::string& prompt);
-    
-    Constants::MoveType determineMoveType(Constants::Direction fromLane, Constants::Direction toLane);
     int calculateWaitTimeInSeconds(Constants::Direction fromLane, const TrafficState& snapshot);
-
+    void processQuery(Constants::Direction fromLane, Constants::Direction toLane);
+    bool askUserToContinue();
     void displayMoveResult(const MoveResult& result);
 
 public:
-    UserController(
-        IInputHandler* inputHandler,
-        ILogger* logger,
-        TrafficState* trafficState,
-        const std::vector<Lane>& orderedLaneCycle
-    );
+    UserController(IInputHandler* inputHandler, ILogger* logger,
+        TrafficState* trafficState, const std::vector<Lane>& orderedLaneCycle);
 
     void handleUserQueries() override;
 };

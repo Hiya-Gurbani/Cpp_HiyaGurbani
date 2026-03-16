@@ -1,6 +1,7 @@
 #include "Utils.h"
+#include "Constants.h"
 
-std::string& Utils::moveTypeToString(Constants::MoveType moveType) {
+std::string Utils::moveTypeToString(Constants::MoveType moveType) {
     std::string result;
 
     switch (moveType)
@@ -30,31 +31,7 @@ std::string& Utils::moveTypeToString(Constants::MoveType moveType) {
     return result;
 }
 
-std::string& Utils::movePermissionToString(Constants::MovePermission movePermission) {
-    std::string result;
-
-    switch (movePermission) 
-    {
-        case MovePermission::FREE:
-        {
-            result = "Always Allowed";
-            break;
-        }
-        case MovePermission::NEEDS_GREEN: 
-        {
-            result = "Needs Green Light";
-            break;
-        }
-        default:                          
-        {
-            result = "UNKNOWN";
-        }
-    }
-
-    return result;
-}
-
-std::string& Utils::directionToString(Constants::Direction direction) {
+std::string Utils::directionToString(Constants::Direction direction) {
     std::string result;
 
     switch (direction)
@@ -109,4 +86,17 @@ bool Utils::stringToDirection(const std::string& input, Constants::Direction& ou
     }
 
     return isValid;
+}
+
+Constants::MoveType Utils::determineMoveType(Constants::Direction fromLane, Constants::Direction toLane) {
+    using Move = Constants::MoveType;
+
+    static const Move moveTable[4][4] = {
+        { Move::UTURN,    Move::LEFT,      Move::STRAIGHT,  Move::RIGHT    },
+        { Move::LEFT,     Move::UTURN,     Move::RIGHT,     Move::STRAIGHT },
+        { Move::STRAIGHT, Move::RIGHT,     Move::UTURN,     Move::LEFT     },
+        { Move::RIGHT,    Move::STRAIGHT,  Move::LEFT,      Move::UTURN    } 
+    };
+    
+    return moveTable[(int)fromLane][(int)toLane];
 }

@@ -20,7 +20,7 @@ void TrafficController::activateNextPhase() {
 
     std::lock_guard<std::mutex> lock(trafficState->stateMutex);
     trafficState->activeLane    = orderedLaneCycle[activeLaneIndex].direction;
-    trafficState->timeRemaining = orderedLaneCycle[activeLaneIndex].greenDurationSeconds;
+    trafficState->timeRemaining = orderedLaneCycle[activeLaneIndex].greenLightDuration;
 }
 
 void TrafficController::countDownCurrentPhase() {
@@ -52,8 +52,7 @@ void TrafficController::startTrafficCycle() {
     }
 }
 
-void TrafficController::stopTrafficCycle()
-{
+void TrafficController::stopTrafficCycle() {
     isCyclingActive = false;
     sem_post(&phaseSemaphore);
 }
