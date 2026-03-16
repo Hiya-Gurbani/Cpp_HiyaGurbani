@@ -8,22 +8,22 @@ std::string Utils::moveTypeToString(Constants::MoveType moveType) {
     {
         case Constants::MoveType::UTURN:    
         { 
-            result = "U-Turn";     
+            result = Constants::MOVE_UTURN;     
             break; 
         }
         case Constants::MoveType::LEFT:     
         { 
-            result = "Left Turn";  
+            result = Constants::MOVE_LEFT;  
             break; 
         }
         case Constants::MoveType::RIGHT:    
         { 
-            result = "Right Turn"; 
+            result = Constants::MOVE_RIGHT; 
             break; 
         }
         case Constants::MoveType::STRAIGHT: 
         { 
-            result = "Straight";   
+            result = Constants::MOVE_STRAIGHT;   
             break; 
         }
     }
@@ -38,22 +38,22 @@ std::string Utils::directionToString(Constants::Direction direction) {
     {
         case Constants::Direction::NORTH:
         { 
-            result = "NORTH"; 
+            result = Constants::DIRECTION_NORTH; 
             break; 
         }
         case Constants::Direction::SOUTH: 
         { 
-            result = "SOUTH"; 
+            result = Constants::DIRECTION_SOUTH; 
             break; 
         }
         case Constants::Direction::EAST:  
         { 
-            result = "EAST";  
+            result = Constants::DIRECTION_EAST;  
             break; 
         }
         case Constants::Direction::WEST:  
         { 
-            result = "WEST";  
+            result = Constants::DIRECTION_WEST;  
             break; 
         }
     }
@@ -64,19 +64,19 @@ std::string Utils::directionToString(Constants::Direction direction) {
 bool Utils::stringToDirection(const std::string& input, Constants::Direction& outDirection) {
     bool isValid = true;
 
-    if (input == "N" || input == "NORTH")       
+    if (input == Constants::DIRECTION_NORTH_CHAR || input == Constants::DIRECTION_NORTH)       
     { 
         outDirection = Constants::Direction::NORTH; 
     }
-    else if (input == "S" || input == "SOUTH")  
+    else if (input == Constants::DIRECTION_SOUTH_CHAR || input == Constants::DIRECTION_SOUTH)  
     { 
         outDirection = Constants::Direction::SOUTH; 
     }
-    else if (input == "E" || input == "EAST")   
+    else if (input == Constants::DIRECTION_EAST_CHAR || input == Constants::DIRECTION_EAST)   
     { 
         outDirection = Constants::Direction::EAST;  
     }
-    else if (input == "W" || input == "WEST")   
+    else if (input == Constants::DIRECTION_WEST_CHAR || input == Constants::DIRECTION_WEST)   
     { 
         outDirection = Constants::Direction::WEST;  
     }
@@ -93,9 +93,9 @@ Constants::MoveType Utils::determineMoveType(Constants::Direction fromLane, Cons
 
     static const Move moveTable[4][4] = {
         { Move::UTURN,    Move::LEFT,      Move::STRAIGHT,  Move::RIGHT    },
-        { Move::LEFT,     Move::UTURN,     Move::RIGHT,     Move::STRAIGHT },
+        { Move::RIGHT,     Move::UTURN,     Move::LEFT,     Move::STRAIGHT },
         { Move::STRAIGHT, Move::RIGHT,     Move::UTURN,     Move::LEFT     },
-        { Move::RIGHT,    Move::STRAIGHT,  Move::LEFT,      Move::UTURN    } 
+        { Move::LEFT,    Move::STRAIGHT,  Move::RIGHT,      Move::UTURN    } 
     };
     
     return moveTable[(int)fromLane][(int)toLane];

@@ -98,28 +98,29 @@ void UserController::processQuery(Constants::Direction fromLane, Constants::Dire
     displayMoveResult(result);
 }
 
-void UserController::displayMoveResult(const MoveResult& result)
-{
-    logger->printMessage(Constants::MSG_DIVIDER);
-    logger->printMessage("From : " + Utils::directionToString(result.fromLane) + "\n");
-    logger->printMessage("To   : " + Utils::directionToString(result.toLane) + "\n");
-    logger->printMessage("Move : " + Utils::moveTypeToString(result.moveType) + "\n");
+void UserController::displayMoveResult(const MoveResult& result) {
+    logger->printMessage(Constants::MSG_TRAFFIC_STATUS);
+
+    logger->printMessage(Constants::MSG_FROM + Utils::directionToString(result.fromLane) + Constants::NEW_LINE);
+    logger->printMessage(Constants::MSG_TO   + Utils::directionToString(result.toLane)   + Constants::NEW_LINE);
+    logger->printMessage(Constants::MSG_MOVE + Utils::moveTypeToString(result.moveType)  + Constants::NEW_LINE);
     logger->printNewLine();
 
-    if (result.canGoNow)
+    if (result.permission == Constants::MovePermission::FREE)
     {
-        logger->printMessage(Constants::MSG_CAN_GO);
-        if (result.permission == Constants::MovePermission::FREE)
-        {
-            logger->printMessage(Constants::MSG_FREE_MOVE);
-        }
+        logger->printMessage(Constants::MSG_GREEN_FREE);
+    }
+    else if (result.canGoNow)
+    {
+        logger->printMessage(Constants::MSG_GREEN_GO);
+        logger->printMessage(Constants::MSG_TIME_REMAINING + std::to_string(result.timeRemaining) + Constants::MSG_SECONDS + Constants::NEW_LINE);
     }
     else
     {
-        logger->printMessage(Constants::MSG_MUST_WAIT);
-        logger->printMessage("Current green : " + Utils::directionToString(result.currentGreenLane) + "\n");
-        logger->printMessage("Time remaining: " + std::to_string(result.timeRemaining) + " seconds\n");
-        logger->printMessage("Your wait     : " + std::to_string(result.waitSeconds) + " seconds\n");
+        logger->printMessage(Constants::MSG_RED_WAIT);
+        logger->printMessage(Constants::MSG_CURRENT_GREEN + Utils::directionToString(result.currentGreenLane) + Constants::PARENTHESIS 
+        + std::to_string(result.timeRemaining) + Constants::MSG_SEC_REMAINING + Constants::NEW_LINE);
+        logger->printMessage(Constants::MSG_LANE_GREEN_IN + std::to_string(result.waitSeconds) + Constants::MSG_SECONDS + Constants::NEW_LINE);
     }
 
     logger->printMessage(Constants::MSG_DIVIDER);

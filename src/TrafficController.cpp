@@ -2,17 +2,17 @@
 #include "Constants.h"
 
 TrafficController::TrafficController(TrafficState* trafficState)
-    : trafficState(trafficState), activeLaneIndex(0), isCyclingActive(false)
+    : trafficState(trafficState), activeLaneIndex(-1), isCyclingActive(false)
 {
     sem_init(&phaseSemaphore, 0, 0);
     initializeLanes();
 }
 
 void TrafficController::initializeLanes() {
-    orderedLaneCycle.push_back(Lane(Constants::Direction::NORTH, "NORTH", Constants::GREEN_DURATION_SECONDS));
-    orderedLaneCycle.push_back(Lane(Constants::Direction::SOUTH, "SOUTH", Constants::GREEN_DURATION_SECONDS));
-    orderedLaneCycle.push_back(Lane(Constants::Direction::EAST,  "EAST",  Constants::GREEN_DURATION_SECONDS));
-    orderedLaneCycle.push_back(Lane(Constants::Direction::WEST,  "WEST",  Constants::GREEN_DURATION_SECONDS));
+    orderedLaneCycle.push_back(Lane(Constants::Direction::NORTH, Constants::DIRECTION_NORTH, Constants::GREEN_DURATION_SECONDS));
+    orderedLaneCycle.push_back(Lane(Constants::Direction::SOUTH, Constants::DIRECTION_SOUTH, Constants::GREEN_DURATION_SECONDS));
+    orderedLaneCycle.push_back(Lane(Constants::Direction::EAST,  Constants::DIRECTION_EAST,  Constants::GREEN_DURATION_SECONDS));
+    orderedLaneCycle.push_back(Lane(Constants::Direction::WEST,  Constants::DIRECTION_WEST,  Constants::GREEN_DURATION_SECONDS));
 }
 
 void TrafficController::activateNextPhase() {

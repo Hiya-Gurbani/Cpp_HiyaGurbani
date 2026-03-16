@@ -54,23 +54,55 @@ namespace Constants {
 
     inline const std::string MSG_GOODBYE = "\nThank you for using Traffic Light Simulation. Goodbye.\n";
 
-    inline const std::string MSG_DIVIDER = "\n----------------------------------------\n";
-
     inline const std::string WHITESPACE_CHARS = " \t\r\n";
 
     inline const std::string EMPTY_STRING = "";
 
-    inline const std::string MSG_EMPTY_INPUT = "Input cannot be empty. Please try again.\n";
+    inline const std::string MSG_DIVIDER = "\n========================================\n";
+
+    inline const std::string MSG_TRAFFIC_STATUS = 
+        "\n========================================\n"
+        "            TRAFFIC STATUS\n"
+        "\n========================================\n";
 
     inline const std::string MSG_INVALID_INPUT = "Invalid input. Please enter N, S, E or W.\n";
 
     inline const std::string MSG_INVALID_CONTINUE_INPUT = "Invalid input. Please enter y or n.\n";
 
-    inline const std::string MSG_CAN_GO = "Status : GO — You can proceed now.\n";
+    inline const std::string MSG_EMPTY_INPUT = "Input cannot be empty. Please try again.\n";
 
-    inline const std::string MSG_MUST_WAIT = "Status : WAIT — Your lane is red.\n";
+    inline const std::string MSG_GREEN_FREE = "\U0001F7E2  Free move — No signal needed. You may proceed.\n";
 
-    inline const std::string MSG_FREE_MOVE = "Note : This is a free move, no green light needed.\n";
+    inline const std::string MSG_GREEN_GO = "\U0001F7E2  Your lane is GREEN — You may proceed.\n";
+
+    inline const std::string MSG_RED_WAIT = "\U0001F534  Your lane is RED — Please wait.\n";
+
+    // User Controller
+    inline const std::string MSG_FROM = "  From : ";
+    inline const std::string MSG_TO = "  To   : ";
+    inline const std::string MSG_MOVE = "  Move : ";
+    inline const std::string MSG_CURRENT_GREEN = "  Current green  : ";
+    inline const std::string MSG_SEC_REMAINING = " sec remaining)";
+    inline const std::string MSG_TIME_REMAINING = "  Time remaining : ";
+    inline const std::string MSG_LANE_GREEN_IN = "  Your lane turns green in : ";
+    inline const std::string MSG_SECONDS = " seconds";
+    inline const std::string PARENTHESIS = " (";
+
+    // Utils
+    inline const std::string MOVE_UTURN = "U-Turn";
+    inline const std::string MOVE_LEFT = "Left Turn";
+    inline const std::string MOVE_RIGHT = "Right Turn";
+    inline const std::string MOVE_STRAIGHT = "Straight";
+
+    inline const std::string DIRECTION_NORTH = "NORTH";
+    inline const std::string DIRECTION_EAST = "EAST";
+    inline const std::string DIRECTION_SOUTH = "SOUTH";
+    inline const std::string DIRECTION_WEST = "WEST";
+
+    inline const std::string DIRECTION_NORTH_CHAR = "N";
+    inline const std::string DIRECTION_EAST_CHAR = "E";
+    inline const std::string DIRECTION_SOUTH_CHAR = "S";
+    inline const std::string DIRECTION_WEST_CHAR = "W";
 }
 
 #endif
