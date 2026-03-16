@@ -12,3 +12,6 @@ bin/
 
 # Ignore vs code files
 .vscode/
+
+# Ignore build folder
+build/
