@@ -135,12 +135,12 @@ bool UserController::askUserToContinue() {
         std::string continueInput;
         inputHandler->inputString(continueInput);
 
-        if (continueInput == "y" || continueInput == "Y")
+        if (continueInput == Constants::CHOICE_YES)
         {
             shouldContinue = true;
             break;
         }
-        else if (continueInput == "n" || continueInput == "N")
+        else if (continueInput == Constants::CHOICE_NO)
         {
             shouldContinue = false;
             break;

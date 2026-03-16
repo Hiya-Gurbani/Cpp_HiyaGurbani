@@ -24,6 +24,10 @@ target_include_directories(TrafficLightSimulation PRIVATE
     ${CMAKE_SOURCE_DIR}/inc
 )
 
+target_link_libraries(TrafficLightSimulation
+    pthread
+)
+
 find_package(GTest REQUIRED)
 enable_testing()
 
@@ -34,21 +38,21 @@ set(TEST_SOURCES
     Test/src/TrafficLightSystemTest.cpp
 )
 
-add_executable(AllTests
+add_executable(TrafficLightSimulationTests
     ${TEST_SOURCES}
     ${SOURCES}
 )
 
-target_include_directories(AllTests PRIVATE
+target_include_directories(TrafficLightSimulationTests PRIVATE
     ${CMAKE_SOURCE_DIR}/inc
     ${CMAKE_SOURCE_DIR}/Test/inc
 )
 
-target_link_libraries(AllTests
+target_link_libraries(TrafficLightSimulationTests
     GTest::GTest
     GTest::Main
     GTest::gmock
     pthread
 )
 
-add_test(NAME AllTests COMMAND AllTests)
+add_test(NAME TrafficLightSimulationTests COMMAND TrafficLightSimulationTests)

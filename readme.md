@@ -124,7 +124,7 @@ Thank you for using Traffic Light Simulation. Goodbye.
 
 **Step 1 — Build tests:**
 ```bash
-cd build && make AllTests
+cd build && make TrafficLightSimulationTests
 ```
 
 **Step 2 — Run all tests:**
@@ -134,15 +134,15 @@ ctest --output-on-failure
 
 **Or run the test binary directly:**
 ```bash
-./AllTests
+./TrafficLightSimulationTests
 ```
 
 **To run a specific test suite:**
 ```bash
-./AllTests --gtest_filter=GivenUtils*
-./AllTests --gtest_filter=GivenUserControllerTest*
-./AllTests --gtest_filter=GivenTrafficControllerTest*
-./AllTests --gtest_filter=GivenTrafficLightSystemTest*
+./TrafficLightSimulationTests --gtest_filter=GivenUtils*
+./TrafficLightSimulationTests --gtest_filter=GivenUserControllerTest*
+./TrafficLightSimulationTests --gtest_filter=GivenTrafficControllerTest*
+./TrafficLightSimulationTests --gtest_filter=GivenTrafficLightSystemTest*
 ```
 
 ---

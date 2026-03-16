@@ -22,14 +22,14 @@ void GivenUserControllerTest::TearDown() {
     delete userController;
 }
 
-// getLane — invalid input
+// getLane 
 
 TEST_F(GivenUserControllerTest, WhenLaneInputIsInvalid_ThenShowsInvalidInputMessage) {
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>("X"))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_INVALID_INPUT)).Times(AtLeast(1));
 
@@ -41,7 +41,7 @@ TEST_F(GivenUserControllerTest, WhenDestinationInputIsInvalid_ThenShowsInvalidIn
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>("Z"))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_INVALID_INPUT)).Times(AtLeast(1));
 
@@ -55,7 +55,7 @@ TEST_F(GivenUserControllerTest, WhenContinueInputIsInvalid_ThenShowsInvalidConti
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>("x"))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_INVALID_CONTINUE_INPUT)).Times(AtLeast(1));
 
@@ -66,7 +66,7 @@ TEST_F(GivenUserControllerTest, WhenContinueInputIsN_ThenShowsGoodbye) {
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_GOODBYE)).Times(1);
 
@@ -77,10 +77,10 @@ TEST_F(GivenUserControllerTest, WhenContinueInputIsY_ThenLoopsAndShowsTrafficSta
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
-        .WillOnce(SetArgReferee<0>("y"))
+        .WillOnce(SetArgReferee<0>("Y"))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_EAST_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_EAST_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_TRAFFIC_STATUS)).Times(2);
 
@@ -93,7 +93,7 @@ TEST_F(GivenUserControllerTest, WhenUTurn_ThenShowsFreeMoveMessage) {
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_GREEN_FREE)).Times(1);
 
@@ -104,7 +104,7 @@ TEST_F(GivenUserControllerTest, WhenLeftTurn_ThenShowsFreeMoveMessage) {
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_EAST_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_GREEN_FREE)).Times(1);
 
@@ -119,7 +119,7 @@ TEST_F(GivenUserControllerTest, WhenStraightAndLaneIsGreen_ThenShowsGoMessage) {
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_SOUTH_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_GREEN_GO)).Times(1);
 
@@ -133,7 +133,7 @@ TEST_F(GivenUserControllerTest, WhenRightTurnAndLaneIsGreen_ThenShowsGoMessage) 
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_WEST_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_GREEN_GO)).Times(1);
 
@@ -148,7 +148,7 @@ TEST_F(GivenUserControllerTest, WhenStraightAndLaneIsRed_ThenShowsWaitMessage) {
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_SOUTH_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_RED_WAIT)).Times(1);
 
@@ -162,7 +162,7 @@ TEST_F(GivenUserControllerTest, WhenRightAndLaneIsRed_ThenShowsWaitMessage) {
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_WEST_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_RED_WAIT)).Times(1);
 
@@ -178,7 +178,7 @@ TEST_F(GivenUserControllerTest, WhenMyLaneIsNextInCycle_ThenWaitIsTimeRemaining)
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_EAST_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_WEST_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_LANE_GREEN_IN + "6" + Constants::MSG_SECONDS + Constants::NEW_LINE)).Times(1);
 
@@ -192,7 +192,7 @@ TEST_F(GivenUserControllerTest, WhenMyLaneIsTwoPhasesAway_ThenWaitAccumulatesCor
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_SOUTH_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_NORTH_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_LANE_GREEN_IN + "14" + Constants::MSG_SECONDS + Constants::NEW_LINE)).Times(1);
 
@@ -206,7 +206,7 @@ TEST_F(GivenUserControllerTest, WhenMyLaneIsThreePhasesAway_ThenWaitAccumulatesC
     EXPECT_CALL(inputHandler, inputString(_))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_WEST_CHAR))
         .WillOnce(SetArgReferee<0>(Constants::DIRECTION_EAST_CHAR))
-        .WillOnce(SetArgReferee<0>("n"));
+        .WillOnce(SetArgReferee<0>("N"));
 
     EXPECT_CALL(logger, printMessage(Constants::MSG_LANE_GREEN_IN + "23" + Constants::MSG_SECONDS + Constants::NEW_LINE)).Times(1);
 
