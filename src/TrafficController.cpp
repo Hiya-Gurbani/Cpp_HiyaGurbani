@@ -4,7 +4,6 @@
 TrafficController::TrafficController(TrafficState* trafficState)
     : trafficState(trafficState), activeLaneIndex(-1), isCyclingActive(false)
 {
-    sem_init(&phaseSemaphore, 0, 0);
     initializeLanes();
 }
 
@@ -19,25 +18,22 @@ void TrafficController::activateNextPhase() {
     activeLaneIndex = (activeLaneIndex + 1) % orderedLaneCycle.size();
 
     std::lock_guard<std::mutex> lock(trafficState->stateMutex);
-    trafficState->activeLane    = orderedLaneCycle[activeLaneIndex].direction;
+    trafficState->activeLane = orderedLaneCycle[activeLaneIndex].direction;
     trafficState->timeRemaining = orderedLaneCycle[activeLaneIndex].greenLightDuration;
 }
 
 void TrafficController::countDownCurrentPhase() {
     for (int index = 0; index < Constants::GREEN_DURATION_SECONDS; index++)
     {
-        struct timespec timeSpec;
-        clock_gettime(CLOCK_REALTIME, &timeSpec);
-        timeSpec.tv_sec += 1;
+        std::unique_lock<std::mutex> lock(shutdownMutex);
+        bool shutdownRequested = shutdownSignal.wait_for(lock, std::chrono::seconds(1), [this] { return !isCyclingActive.load(); });
 
-        int result = sem_timedwait(&phaseSemaphore, &timeSpec);
-
-        if (result == 0)
+        if (shutdownRequested)
         {
             return;
         }
 
-        std::lock_guard<std::mutex> lock(trafficState->stateMutex);
+        std::lock_guard<std::mutex> stateLock(trafficState->stateMutex);
         trafficState->timeRemaining--;
     }
 }
@@ -54,9 +50,5 @@ void TrafficController::startTrafficCycle() {
 
 void TrafficController::stopTrafficCycle() {
     isCyclingActive = false;
-    sem_post(&phaseSemaphore);
-}
-
-TrafficController::~TrafficController() {
-    sem_destroy(&phaseSemaphore);
+    shutdownSignal.notify_one();
 }

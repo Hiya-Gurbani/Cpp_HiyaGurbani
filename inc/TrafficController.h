@@ -5,8 +5,9 @@
 #include "TrafficState.h"
 #include "Lane.h"
 #include <vector>
-#include <semaphore.h>
 #include <atomic>
+#include <mutex>
+#include <condition_variable>
 
 class TrafficController : public ITrafficController {
 
@@ -14,7 +15,8 @@ class TrafficController : public ITrafficController {
     std::vector<Lane> orderedLaneCycle;
     int activeLaneIndex;
 
-    sem_t phaseSemaphore;
+    std::mutex shutdownMutex;
+    std::condition_variable shutdownSignal;
     std::atomic<bool> isCyclingActive;
 
     void initializeLanes();
@@ -23,7 +25,6 @@ class TrafficController : public ITrafficController {
 
 public:
     TrafficController(TrafficState* trafficState);
-    ~TrafficController();
 
     const std::vector<Lane>& getOrderedLaneCycle() {
         return orderedLaneCycle;

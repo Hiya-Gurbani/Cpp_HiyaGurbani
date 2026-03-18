@@ -52,19 +52,17 @@ namespace Constants {
     inline const std::string MSG_WELCOME =
         "\n========================================\n"
         "       TRAFFIC LIGHT SIMULATION         \n"
-        "========================================\n"
-        "   Semaphore-based crossroad controller \n"
         "========================================\n";
 
     inline const std::string MSG_ROAD =
         "\n          |  N  |\n"
-        "          |  ^  |\n"
+        "          |  ↓  |\n"
         "          |     |\n"
         "----------+     +----------\n"
-        "  W <                > E   \n"
+        "  W →                ← E   \n"
         "----------+     +----------\n"
         "          |     |\n"
-        "          |  v  |\n"
+        "          |  ↑  |\n"
         "          |  S  |\n";
     
     inline const std::string MSG_ENTER_LANE = "\nWhich lane are you in? (N/S/E/W): ";
@@ -94,7 +92,8 @@ namespace Constants {
     inline const std::string MSG_FROM = "  From : ";
     inline const std::string MSG_TO = "  To   : ";
     inline const std::string MSG_MOVE = "  Move : ";
-    inline const std::string MSG_CURRENT_GREEN = "  Current green  : ";
+    inline const std::string MSG_CURRENT_GREEN = "  Current green  : Vehicles from ";
+    inline const std::string MSG_CAN_MOVE = " can move";
     inline const std::string MSG_SEC_REMAINING = " sec remaining)";
     inline const std::string MSG_TIME_REMAINING = "  Time remaining : ";
     inline const std::string MSG_LANE_GREEN_IN = "  Your lane turns green in : ";

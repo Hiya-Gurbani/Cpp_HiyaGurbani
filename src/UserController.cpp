@@ -113,8 +113,9 @@ void UserController::displayMoveResult(const MoveResult& result) {
     else
     {
         logger->printMessage(Constants::MSG_RED_WAIT);
-        logger->printMessage(Constants::MSG_CURRENT_GREEN + Utils::directionToString(result.currentGreenLane) + Constants::PARENTHESIS 
-        + std::to_string(result.timeRemaining) + Constants::MSG_SEC_REMAINING + Constants::NEW_LINE);
+        logger->printMessage(Constants::MSG_CURRENT_GREEN + Utils::directionToString(result.currentGreenLane) 
+        + Constants::MSG_CAN_MOVE + Constants::PARENTHESIS + std::to_string(result.timeRemaining) 
+        + Constants::MSG_SEC_REMAINING + Constants::NEW_LINE);
         logger->printMessage(Constants::MSG_LANE_GREEN_IN + std::to_string(result.waitSeconds) + Constants::MSG_SECONDS + Constants::NEW_LINE);
     }
 
