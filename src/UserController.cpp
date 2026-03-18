@@ -67,14 +67,8 @@ int UserController::calculateWaitTimeInSeconds(Constants::Direction fromLane, co
     return waitSeconds;
 }
 
-void UserController::processQuery(Constants::Direction fromLane, Constants::Direction toLane) {
-    TrafficState snapshot;
-    {
-        std::lock_guard<std::mutex> lock(trafficState->stateMutex);
-        snapshot.activeLane    = trafficState->activeLane;
-        snapshot.timeRemaining = trafficState->timeRemaining;
-    }
-
+MoveResult UserController::buildMoveResult(Constants::Direction fromLane, 
+    Constants::Direction toLane, const TrafficState& snapshot) {
     MoveResult result;
     result.fromLane = fromLane;
     result.toLane = toLane;
@@ -82,7 +76,8 @@ void UserController::processQuery(Constants::Direction fromLane, Constants::Dire
     result.timeRemaining = snapshot.timeRemaining;
     result.moveType = Utils::determineMoveType(fromLane, toLane);
 
-    if (result.moveType == Constants::MoveType::UTURN || result.moveType == Constants::MoveType::LEFT)
+    if (result.moveType == Constants::MoveType::UTURN || 
+        result.moveType == Constants::MoveType::LEFT)
     {
         result.permission = Constants::MovePermission::FREE;
         result.canGoNow = true;
@@ -95,7 +90,7 @@ void UserController::processQuery(Constants::Direction fromLane, Constants::Dire
         result.canGoNow = (result.waitSeconds == 0);
     }
 
-    displayMoveResult(result);
+    return result;
 }
 
 void UserController::displayMoveResult(const MoveResult& result) {
@@ -124,6 +119,18 @@ void UserController::displayMoveResult(const MoveResult& result) {
     }
 
     logger->printMessage(Constants::MSG_DIVIDER);
+}
+
+void UserController::processQuery(Constants::Direction fromLane, Constants::Direction toLane) {
+    TrafficState snapshot;
+    {
+        std::lock_guard<std::mutex> lock(trafficState->stateMutex);
+        snapshot.activeLane    = trafficState->activeLane;
+        snapshot.timeRemaining = trafficState->timeRemaining;
+    }
+
+    MoveResult result = buildMoveResult(fromLane, toLane, snapshot);
+    displayMoveResult(result);
 }
 
 bool UserController::askUserToContinue() {
