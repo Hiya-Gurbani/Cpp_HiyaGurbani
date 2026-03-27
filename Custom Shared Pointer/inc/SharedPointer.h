@@ -22,25 +22,13 @@ public:
         : pointer(givenPointer), referenceCount(givenPointer ? new int(1) : nullptr)
         , deleter(customDeleter) {}
 
-    SharedPointer(const SharedPointer& otherPointer): pointer(otherPointer.pointer)
-    , referenceCount(otherPointer.referenceCount), deleter(otherPointer.deleter) {
-        if (referenceCount)
-        {
-            (*referenceCount)++;
-        }
-    }
+    SharedPointer(const SharedPointer& otherPointer);
 
-    SharedPointer(SharedPointer&& otherPointer) noexcept: pointer(otherPointer.pointer)
-    , referenceCount(otherPointer.referenceCount), deleter(otherPointer.deleter) {
-        otherPointer.pointer = nullptr;
-        otherPointer.referenceCount = nullptr;
-        otherPointer.deleter = Deleter{};
-    }
+    SharedPointer(SharedPointer&& otherPointer) noexcept;
 
     ~SharedPointer() {
         releaseSharedPointer();
     }
-
 
     SharedPointer& operator=(const SharedPointer& otherPointer);
 
@@ -58,7 +46,6 @@ public:
         return referenceCount ? (*referenceCount) == 1 : false;
     }
 
-
     Type& operator*() {
         return *pointer;
     }
@@ -75,5 +62,7 @@ public:
 
     void reset(Type* newPointer);
 };
+
+#include "../src/SharedPointer.cpp"
 
 #endif
