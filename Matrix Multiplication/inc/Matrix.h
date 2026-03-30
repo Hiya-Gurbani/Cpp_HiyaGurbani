@@ -13,7 +13,7 @@ public:
 
     Matrix(int rows, int cols);
 
-    double getValue(int row, int col) {
+    double getValue(int row, int col) const {
         return data[row][col];
     }
 

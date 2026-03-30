@@ -4,7 +4,9 @@
 class InputHandler {
 public: 
     static bool isInputStreamValid();
-    static double inputValue();
-}
+    static int inputDimension();
+    static double inputElement(); 
+    static char getChoice();
+};
 
 #endif

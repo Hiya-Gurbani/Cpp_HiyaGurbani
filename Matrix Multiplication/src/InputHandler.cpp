@@ -1,20 +1,25 @@
+#include "../inc/InputHandler.h"
+#include "../inc/Constants.h"
+#include "../inc/Logger.h"
+#include "../inc/Validator.h"
 #include <iostream>
+#include <limits>
 
 bool InputHandler::isInputStreamValid() {
     bool isValidStream = false;
     if (std::cin.fail()) 
     {
         std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), Constants::NEW_LINE);
     }
     else
     {
-        while (std::cin.peek() == ' ' || std::cin.peek() == '\t') 
+        while (std::cin.peek() == Constants::WHITESPACE || std::cin.peek() == Constants::TAB) 
         {
             std::cin.get();
         }
     
-        if (std::cin.peek() == '\n') 
+        if (std::cin.peek() == Constants::NEW_LINE) 
         {
             isValidStream = true;
         }
@@ -26,18 +31,18 @@ bool InputHandler::isInputStreamValid() {
     return isValidStream;
 }
 
-int InputHandler::inputValue(InputType input) {
+int InputHandler::inputDimension() {
     int value;
     while (true) 
     {
         std::cin >> value;
         if (!isInputStreamValid())
         {
-            std::cout << "Invalid Input. Please enter an integer: ";
+            Logger::printMessage(Constants::MSG_INVALID_INTEGER);
         }
-        else if (!isValidRange(input, value))
+        else if (value <= 0)
         {
-            std::cout << "Invalid Value. Please enter an integer in range: ";
+            Logger::printMessage(Constants::MSG_OUT_OF_RANGE);
         } 
         else
         {
@@ -47,7 +52,7 @@ int InputHandler::inputValue(InputType input) {
     return value;
 }
 
-double InputHandler::inputValue() {
+double InputHandler::inputElement() {
     double value;
 
     while (true) 
@@ -59,19 +64,20 @@ double InputHandler::inputValue() {
         }
         else
         {
-            std::cout << "Invalid Input. Please enter a number: ";
+            Logger::printMessage(Constants::MSG_INVALID_NUMBER);
         }
     }
     
     return value;
 }
 
-char Utility::getUserChoice() {
+char InputHandler::getChoice() {
     std::string choice;
 
     while (true)
     {
         Logger::printMessage(Constants::MSG_CONTINUE); 
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), Constants::NEW_LINE);
         std::getline(std::cin, choice);
 
         if (Validator::isValidChoice(choice))

@@ -6,6 +6,7 @@
 class Logger {
 public:
     static void printMessage(const std::string& message);
+    static void printMatrixElement(double element);
 };
 
 #endif

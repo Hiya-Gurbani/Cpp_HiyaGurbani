@@ -1,6 +1,6 @@
 #include "../inc/Matrix.h"
 
-Matrix(int rows, int cols) : rows(rows), cols(cols) {
+Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols) {
     data = std::make_unique<std::unique_ptr<double[]>[]>(rows);
     for (int rowIndex = 0; rowIndex < rows; rowIndex++)
     {
@@ -8,7 +8,7 @@ Matrix(int rows, int cols) : rows(rows), cols(cols) {
     }
 }
 
-Matrix operator*(const Matrix& otherMatrix) {
+Matrix Matrix::operator*(const Matrix& otherMatrix) {
     Matrix result(rows, otherMatrix.cols);
 
     for (int rowIndex = 0; rowIndex < rows; rowIndex++)
