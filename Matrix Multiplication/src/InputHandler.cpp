@@ -73,11 +73,11 @@ double InputHandler::inputElement() {
 
 char InputHandler::getChoice() {
     std::string choice;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), Constants::NEW_LINE);
 
     while (true)
     {
         Logger::printMessage(Constants::MSG_CONTINUE); 
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), Constants::NEW_LINE);
         std::getline(std::cin, choice);
 
         if (Validator::isValidChoice(choice))

@@ -8,10 +8,7 @@ bool Validator::isValidChoice(const std::string& choice) {
     if (choice.length() == 1) {
         char character = choice[0];
 
-        if (character == Constants::CHOICE_YES ||
-            character == Constants::CHOICE_YES_UPPER ||
-            character == Constants::CHOICE_NO ||
-            character == Constants::CHOICE_NO_UPPER)
+        if (character == Constants::CHOICE_YES || character == Constants::CHOICE_NO )
         {
             isValid = true;
         }

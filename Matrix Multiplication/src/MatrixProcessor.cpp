@@ -44,6 +44,7 @@ void MatrixProcessor::displayMatrix(const Matrix& result, int rows, int cols) {
 void MatrixProcessor::performMatrixMultiplication() {
     Logger::printMessage(Constants::MSG_MATRIX1_DIMENSION);
     auto [rows1, cols1] = inputMatrixDimension();
+    Logger::printMessage(Constants::MSG_NOTE + Constants::MSG_MULTIPLICATION_NOTE);
 
     int rows2, cols2;
     do
@@ -52,7 +53,8 @@ void MatrixProcessor::performMatrixMultiplication() {
         std::tie(rows2, cols2) = inputMatrixDimension();
         if (cols1 != rows2)
         {
-            Logger::printMessage(Constants::MSG_INVALID_DIMENSIONS + Constants::MSG_ENTER_AGAIN);
+            Logger::printMessage(Constants::MSG_INVALID_DIMENSIONS + Constants::MSG_MULTIPLICATION_NOTE
+                + Constants::MSG_ENTER_AGAIN);
         }
     } while (cols1 != rows2);
 
@@ -77,7 +79,7 @@ void MatrixProcessor::executeProgram() {
 
         char choice = InputHandler::getChoice();
             
-        if (choice == Constants::CHOICE_NO || choice == Constants::CHOICE_NO_UPPER)
+        if (choice == Constants::CHOICE_NO)
         {
             Logger::printMessage(Constants::MSG_EXITING_PROGRAM);
             break;
