@@ -1,0 +1,14 @@
+# Ignore Object Files 
+*.o
+*.out
+
+# Ignore Binaries
+bin/
+*.exe
+main
+
+# Ignore Libraries
+*.so
+
+# Ignore vs code files
+.vscode/
