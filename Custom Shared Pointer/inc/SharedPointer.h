@@ -54,13 +54,11 @@ public:
         return pointer;
     }
 
-    operator bool() {
+    operator bool() const {
         return pointer != nullptr;
     }
 
-    void reset();
-
-    void reset(Type* newPointer);
+    void reset(Type* newPointer = nullptr);
 };
 
 #include "../src/SharedPointer.cpp"

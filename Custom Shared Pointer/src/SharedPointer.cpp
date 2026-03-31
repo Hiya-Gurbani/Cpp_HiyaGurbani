@@ -70,16 +70,8 @@ SharedPointer<Type, Deleter>& SharedPointer<Type, Deleter>::operator=(SharedPoin
 }
 
 template <typename Type, typename Deleter>
-void SharedPointer<Type, Deleter>::reset() {
-    releaseSharedPointer();
-    pointer = nullptr;
-    referenceCount = nullptr;
-    deleter = Deleter{};
-}
-
-template <typename Type, typename Deleter>
 void SharedPointer<Type, Deleter>::reset(Type* newPointer) {
-    reset();
+    releaseSharedPointer();
     pointer = newPointer;
     referenceCount = newPointer ? new int(1) : nullptr;
     deleter = Deleter{};

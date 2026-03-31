@@ -33,3 +33,20 @@ Lambda pointer        >> value: Lambda  useCount: 1
 Lambda deleter called for: Lambda
 After lambda scope : lambda deleter fired above
 ```
+
+### How to Run Tests
+```bash
+cd "Custom Shared Pointer"
+g++ test/main/main.cpp test/src/SharedPointerTest.cpp src/Logger.cpp -lgtest -lgmock -lpthread -o SharedPointerTest.out
+./SharedPointerTest.out
+```
+
+### Test Cases
+
+- Copy and move constructor — ref count behavior
+- Copy and move assignment — ownership transfer
+- reset() and reset(ptr) — release and replace
+- unique() — single owner detection
+- operator bool — null/valid check
+- Mock deleter — verifies deleter fires exactly once on last owner destruction
+- Edge cases — self assignment, null reset, copying null pointer
