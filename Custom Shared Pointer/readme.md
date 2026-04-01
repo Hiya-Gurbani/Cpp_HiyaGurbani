@@ -37,7 +37,7 @@ After lambda scope : lambda deleter fired above
 ### How to Run Tests
 ```bash
 cd "Custom Shared Pointer"
-g++ test/main/main.cpp test/src/SharedPointerTest.cpp src/Logger.cpp -lgtest -lgmock -lpthread -o SharedPointerTest.out
+cd Test && g++ ../src/Logger.cpp src/SharedPointerTest.cpp main/main.cpp -lgtest -lgmock -lpthread -o SharedPointerTests.out
 ./SharedPointerTest.out
 ```
 
