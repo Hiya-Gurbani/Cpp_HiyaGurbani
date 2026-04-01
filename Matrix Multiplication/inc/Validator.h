@@ -5,6 +5,7 @@
 
 class Validator {
 public: 
+    static bool isInputStreamValid();
     static bool isValidChoice(const std::string& choice);
 };
 

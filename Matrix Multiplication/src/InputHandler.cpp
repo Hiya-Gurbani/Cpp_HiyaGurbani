@@ -5,38 +5,12 @@
 #include <iostream>
 #include <limits>
 
-bool InputHandler::isInputStreamValid() {
-    bool isValidStream = false;
-    if (std::cin.fail()) 
-    {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), Constants::NEW_LINE);
-    }
-    else
-    {
-        while (std::cin.peek() == Constants::WHITESPACE || std::cin.peek() == Constants::TAB) 
-        {
-            std::cin.get();
-        }
-    
-        if (std::cin.peek() == Constants::NEW_LINE) 
-        {
-            isValidStream = true;
-        }
-        else
-        {
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
-    }
-    return isValidStream;
-}
-
 int InputHandler::inputDimension() {
     int value;
     while (true) 
     {
         std::cin >> value;
-        if (!isInputStreamValid())
+        if (!Validator::isInputStreamValid())
         {
             Logger::printMessage(Constants::MSG_INVALID_INTEGER);
         }
@@ -58,7 +32,7 @@ double InputHandler::inputElement() {
     while (true) 
     {
         std::cin >> value;
-        if (isInputStreamValid())
+        if (Validator::isInputStreamValid())
         {
             break;
         }
@@ -71,7 +45,7 @@ double InputHandler::inputElement() {
     return value;
 }
 
-char InputHandler::getChoice() {
+char InputHandler::inputChoice() {
     std::string choice;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), Constants::NEW_LINE);
 

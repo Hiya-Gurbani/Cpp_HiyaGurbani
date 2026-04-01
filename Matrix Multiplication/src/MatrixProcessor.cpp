@@ -1,16 +1,15 @@
 #include "../inc/MatrixProcessor.h"
 #include "../inc/Constants.h"
-#include "../inc/InputHandler.h"
 #include "../inc/Logger.h"
 #include <iomanip>
 
 std::pair<int, int> MatrixProcessor::inputMatrixDimension() {
     int rows, cols;
     Logger::printMessage(Constants::MSG_INPUT_ROWS);       
-    rows = InputHandler::inputDimension();
+    rows = inputHandler->inputDimension();
 
     Logger::printMessage(Constants::MSG_INPUT_COLS);
-    cols = InputHandler::inputDimension();
+    cols = inputHandler->inputDimension();
 
     return {rows, cols};
 }
@@ -24,7 +23,7 @@ void MatrixProcessor::inputMatrix(Matrix& matrix, int rows, int cols) {
                 + std::to_string(rowIndex) + Constants::CLOSE_BRACKET 
                 + Constants::OPEN_BRACKET + std::to_string(colIndex) 
                 + Constants::CLOSE_BRACKET + Constants::COLON + Constants::WHITESPACE);
-            double element = InputHandler::inputElement();
+            double element = inputHandler->inputElement();
             matrix.setValue(rowIndex, colIndex, element);
         }
     }
@@ -77,7 +76,7 @@ void MatrixProcessor::executeProgram() {
     while (true) {
         performMatrixMultiplication();
 
-        char choice = InputHandler::getChoice();
+        char choice = inputHandler->inputChoice();
             
         if (choice == Constants::CHOICE_NO)
         {

@@ -1,12 +1,13 @@
 #ifndef INPUT_HANDLER_H
 #define INPUT_HANDLER_H
 
-class InputHandler {
+#include "IInputHandler.h"
+
+class InputHandler : public IInputHandler {
 public: 
-    static bool isInputStreamValid();
-    static int inputDimension();
-    static double inputElement(); 
-    static char getChoice();
+    int inputDimension() override;
+    double inputElement() override; 
+    char inputChoice() override;
 };
 
 #endif

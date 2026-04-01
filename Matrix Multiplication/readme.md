@@ -37,3 +37,16 @@ Result:
 Do you want to multiply another set of matrices (y/n): n
 Thank you for using the program!
 ```
+
+### How to Run Tests
+```bash
+cd "Matrix Multiplication/Test"
+cd Test && g++ ../src/*.cpp src/*.cpp main/main.cpp -lgtest -lgmock -lpthread -o MatrixMultiplicationTests.out
+./MatrixMultiplicationTests.out
+```
+
+### Test Cases
+
+- Matrix multiplication — correct result and identity matrix
+- MatrixProcessor — full program flow, invalid dimensions retry, continue and exit
+- Validator — parameterized tests for valid (y, n) and invalid choices

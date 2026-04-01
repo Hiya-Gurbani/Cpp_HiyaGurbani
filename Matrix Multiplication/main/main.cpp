@@ -1,6 +1,9 @@
+#include "../inc/InputHandler.h"
 #include "../inc/MatrixProcessor.h"
 
+
 int main() {
-    MatrixProcessor matrixProcessor;
+    InputHandler inputHandler;
+    MatrixProcessor matrixProcessor(&inputHandler);
     matrixProcessor.executeProgram();
 }
