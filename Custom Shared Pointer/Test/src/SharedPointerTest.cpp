@@ -25,6 +25,20 @@ TEST_F(GivenSharedPointerTest, WhenMoveConstructorCalled_ThenReferenceCountIsSam
     EXPECT_FALSE(intPointer);
 }
 
+TYPED_TEST(GivenSharedPointerTypedTest, WhenCopyConstructorCalled_ThenReferenceCountIncreases) {
+    SharedPointer<TypeParam> anotherPointer(this->typedPointer);
+
+    EXPECT_EQ(this->typedPointer.useCount(), 2);
+    EXPECT_EQ(anotherPointer.useCount(), 2);
+}
+
+TYPED_TEST(GivenSharedPointerTypedTest, WhenMoveConstructorCalled_ThenOriginalBecomesNull) {
+    SharedPointer<TypeParam> anotherPointer(std::move(this->typedPointer));
+
+    EXPECT_EQ(anotherPointer.useCount(), 1);
+    EXPECT_EQ(this->typedPointer.get(), nullptr);
+}
+
 TEST_F(GivenSharedPointerTest, WhenCopyAssignmentCalled_ThenReferenceCountIncreases) {
     SharedPointer<int> anotherPointer;
     anotherPointer = intPointer;

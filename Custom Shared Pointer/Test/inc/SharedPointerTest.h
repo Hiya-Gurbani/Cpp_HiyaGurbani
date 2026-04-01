@@ -14,4 +14,17 @@ protected:
     }
 };
 
+template <typename Type>
+class GivenSharedPointerTypedTest : public ::testing::Test {
+protected:
+    SharedPointer<Type> typedPointer;
+
+    void SetUp() override {
+        typedPointer = SharedPointer<Type>(new Type());
+    }
+};
+
+using TestTypes = ::testing::Types<int, double, std::string>;
+TYPED_TEST_SUITE(GivenSharedPointerTypedTest, TestTypes);
+
 #endif
