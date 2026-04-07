@@ -2,20 +2,15 @@
 
 TEST_F(GivenMatrixProcessorTest, WhenUserChoosesToExit_ThenProgramEnds) {
     EXPECT_CALL(mockInputHandler, inputDimension())
-        .WillOnce(::testing::Return(2))
-        .WillOnce(::testing::Return(2))
-        .WillOnce(::testing::Return(2))
-        .WillOnce(::testing::Return(2));
+        .Times(4)
+        .WillRepeatedly(::testing::Return(2));
 
+    double counter = 1.0;
     EXPECT_CALL(mockInputHandler, inputElement())
-        .WillOnce(::testing::Return(1.0))
-        .WillOnce(::testing::Return(2.0))
-        .WillOnce(::testing::Return(3.0))
-        .WillOnce(::testing::Return(4.0))
-        .WillOnce(::testing::Return(5.0))
-        .WillOnce(::testing::Return(6.0))
-        .WillOnce(::testing::Return(7.0))
-        .WillOnce(::testing::Return(8.0));
+        .Times(8)
+        .WillRepeatedly([&]() {
+            return counter++;
+        });
 
     EXPECT_CALL(mockInputHandler, inputChoice())
         .WillOnce(::testing::Return('n'));
@@ -24,25 +19,21 @@ TEST_F(GivenMatrixProcessorTest, WhenUserChoosesToExit_ThenProgramEnds) {
 }
 
 TEST_F(GivenMatrixProcessorTest, WhenInvalidDimensionsEntered_ThenAsksAgain) {
+    std::vector<int> values = {2, 2, 3, 3, 2, 2};
+    int index = 0;
+
     EXPECT_CALL(mockInputHandler, inputDimension())
-        .WillOnce(::testing::Return(2))
-        .WillOnce(::testing::Return(2))
+        .Times(values.size())
+        .WillRepeatedly([&]() {
+            return values.at(index++);
+        });
 
-        .WillOnce(::testing::Return(3))  
-        .WillOnce(::testing::Return(2))
-
-        .WillOnce(::testing::Return(2))  
-        .WillOnce(::testing::Return(2));
-
+    double counter = 1.0;
     EXPECT_CALL(mockInputHandler, inputElement())
-        .WillOnce(::testing::Return(1.0))
-        .WillOnce(::testing::Return(2.0))
-        .WillOnce(::testing::Return(3.0))
-        .WillOnce(::testing::Return(4.0))
-        .WillOnce(::testing::Return(5.0))
-        .WillOnce(::testing::Return(6.0))
-        .WillOnce(::testing::Return(7.0))
-        .WillOnce(::testing::Return(8.0));
+        .Times(8)
+        .WillRepeatedly([&]() {
+            return counter++;
+        });
 
     EXPECT_CALL(mockInputHandler, inputChoice())
         .WillOnce(::testing::Return('n'));
@@ -52,20 +43,15 @@ TEST_F(GivenMatrixProcessorTest, WhenInvalidDimensionsEntered_ThenAsksAgain) {
 
 TEST_F(GivenMatrixProcessorTest, WhenUserChoosesToContinue_ThenRunsTwice) {
     EXPECT_CALL(mockInputHandler, inputDimension())
-        .WillOnce(::testing::Return(1))
-        .WillOnce(::testing::Return(1))
-        .WillOnce(::testing::Return(1))
-        .WillOnce(::testing::Return(1))
-        .WillOnce(::testing::Return(1))
-        .WillOnce(::testing::Return(1))
-        .WillOnce(::testing::Return(1))
-        .WillOnce(::testing::Return(1));
+        .Times(8)
+        .WillRepeatedly(::testing::Return(1));
 
+    double counter = 1.0;
     EXPECT_CALL(mockInputHandler, inputElement())
-        .WillOnce(::testing::Return(1.0))
-        .WillOnce(::testing::Return(2.0))
-        .WillOnce(::testing::Return(3.0))
-        .WillOnce(::testing::Return(4.0));
+        .Times(4)
+        .WillRepeatedly([&]() {
+            return counter++;
+        });
 
     EXPECT_CALL(mockInputHandler, inputChoice())
         .WillOnce(::testing::Return('y'))
