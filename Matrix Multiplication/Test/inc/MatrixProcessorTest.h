@@ -11,7 +11,7 @@ protected:
     MatrixProcessor* matrixProcessor;
 
     void SetUp() override {
-        matrixProcessor = new MatrixProcessor(&mockInputHandler);
+        matrixProcessor = new MatrixProcessor(mockInputHandler);
     }
 
     void TearDown() override {

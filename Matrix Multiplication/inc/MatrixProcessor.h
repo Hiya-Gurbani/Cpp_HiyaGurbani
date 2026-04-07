@@ -6,7 +6,7 @@
 #include <utility>
 
 class MatrixProcessor {
-    IInputHandler* inputHandler;
+    IInputHandler& inputHandler;
 
     std::pair<int, int> inputMatrixDimension();
     void inputMatrix(Matrix& matrix, int rows, int cols);
@@ -14,7 +14,7 @@ class MatrixProcessor {
     void performMatrixMultiplication();
 
 public: 
-    MatrixProcessor(IInputHandler* inputHandler) : inputHandler(inputHandler) {}
+    MatrixProcessor(IInputHandler& inputHandler) : inputHandler(inputHandler) {}
     void executeProgram();
 };
 
